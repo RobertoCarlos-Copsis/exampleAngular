@@ -1,0 +1,73 @@
+<div class="step-container">
+
+    <div class="text-center mb-5 fade-in">
+        <h1 class="step-title">Paso 3: Completa los Datos</h1>
+        <p class="step-subtitle">Algunos datos no pudieron ser extraídos automáticamente. Por favor complétalos.</p>
+    </div>
+
+    <form [formGroup]="completarForm" class="form-wrapper fade-in" style="animation-delay: 0.1s">
+
+        <!-- Email y Teléfono -->
+        <div class="row g-3 mb-4">
+            <div class="col-12 col-md-6">
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Correo Electrónico</mat-label>
+                    <input matInput formControlName="email" type="email" placeholder="ejemplo@correo.com">
+                    <mat-icon matSuffix>email</mat-icon>
+                    <mat-hint>Para enviar notificaciones automáticas</mat-hint>
+                    <mat-error *ngIf="completarForm.get('email')?.hasError('required')">Requerido</mat-error>
+                    <mat-error *ngIf="completarForm.get('email')?.hasError('email')">Correo inválido</mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-12 col-md-6">
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Número de Celular</mat-label>
+                    <input matInput formControlName="telefono" type="tel" placeholder="10 dígitos">
+                    <mat-icon matSuffix>phone_iphone</mat-icon>
+                    <mat-hint>Necesario para enviar SMS y mensajes de WhatsApp</mat-hint>
+                    <mat-error *ngIf="completarForm.get('telefono')?.hasError('pattern')">Debe tener 10
+                        dígitos</mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <!-- Commission Slider -->
+        <div class="commission-box mb-4 fade-in" style="animation-delay: 0.2s">
+            <div class="d-flex align-items-center gap-2 mb-3">
+                <span class="commission-title">% Porcentaje de Comisión</span>
+            </div>
+            <div class="d-flex align-items-center gap-3 mb-1">
+                <mat-slider class="flex-grow-1" min="0" max="30" step="1" discrete [displayWith]="formatLabel">
+                    <input matSliderThumb [value]="comisionPorcentaje" (valueChange)="updateComision($event)">
+                </mat-slider>
+                <div class="pct-badge">{{ comisionPorcentaje }}%</div>
+            </div>
+            <small class="text-muted">Porcentaje de comisión que recibes por esta póliza</small>
+        </div>
+
+        <!-- Comisiones calculadas (yellow box like Figma) -->
+        <div class="commission-result-box mb-5 fade-in" style="animation-delay: 0.3s">
+            <div class="result-row">
+                <span>Recibo 1/2:</span>
+                <span class="result-amount">${{ (24238.19 * comisionPorcentaje / 100) | number:'1.3-3' }}</span>
+            </div>
+            <div class="result-row">
+                <span>Recibo 2/2:</span>
+                <span class="result-amount">${{ (21154.23 * comisionPorcentaje / 100) | number:'1.3-3' }}</span>
+            </div>
+            <div class="result-row result-total">
+                <span>Total Comisión:</span>
+                <span class="result-total-amount">${{ comisionCalculada | number:'1.3-3' }}</span>
+            </div>
+        </div>
+
+        <!-- Botón -->
+        <div class="text-center fade-in" style="animation-delay: 0.4s">
+            <button class="btn-primary-figma" type="button" (click)="onSave()">
+                <mat-icon>check_circle</mat-icon>
+                Guardar y Continuar
+            </button>
+        </div>
+
+    </form>
+</div>

@@ -1,0 +1,160 @@
+$blue: #2563EB;
+$blue-h: #1D4ED8;
+$dark: #111827;
+$gray-5: #6B7280;
+$gray-2: #E5E7EB;
+
+.step-container {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 1.5rem 1rem 4rem;
+}
+
+.step-title {
+    font-size: 1.7rem;
+    font-weight: 800;
+    color: $dark;
+    letter-spacing: -0.02em;
+}
+
+.step-subtitle {
+    font-size: 0.95rem;
+    color: $gray-5;
+}
+
+// ── Indicador de días ─────────────────────────────────────
+.days-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #F0FDF4;
+    border: 1.5px solid #BBF7D0;
+    color: #15803D;
+    border-radius: 50px;
+    padding: 10px 24px;
+    font-weight: 600;
+    font-size: 0.95rem;
+
+    mat-icon {
+        font-size: 20px;
+        width: 20px;
+        height: 20px;
+    }
+}
+
+// ── Tarjetas de opciones de entrega ───────────────────────
+.delivery-card {
+    background: white;
+    border: 1.5px solid $gray-2;
+    border-radius: 16px;
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    width: 100%;
+    text-align: left;
+    margin-bottom: 12px;
+
+    .delivery-icon {
+        width: 52px;
+        height: 52px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+
+        mat-icon {
+            font-size: 26px;
+            width: 26px;
+            height: 26px;
+            color: white;
+        }
+    }
+
+    .delivery-info {
+        flex-grow: 1;
+    }
+
+    .delivery-name {
+        font-weight: 700;
+        font-size: 1rem;
+        color: $dark;
+    }
+
+    .delivery-desc {
+        font-size: 0.85rem;
+        color: $gray-5;
+        margin-top: 2px;
+    }
+
+    .chevron {
+        color: $gray-5;
+    }
+
+    &:hover {
+        border-color: rgba($blue, 0.5);
+        background: #EFF6FF;
+        transform: translateX(4px);
+        box-shadow: 0 4px 12px rgba($blue, 0.1);
+    }
+
+    &.opt-blue .delivery-icon {
+        background: $blue;
+    }
+
+    &.opt-purple .delivery-icon {
+        background: #9333EA;
+    }
+
+    &.opt-amber .delivery-icon {
+        background: #D97706;
+    }
+}
+
+// Botón continuar
+.btn-continue {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 36px;
+    background: $blue;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    mat-icon {
+        font-size: 20px;
+        width: 20px;
+        height: 20px;
+    }
+
+    &:hover {
+        background: $blue-h;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba($blue, 0.35);
+    }
+}
+
+.fade-in {
+    animation: fadeUp 0.4s ease-out both;
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

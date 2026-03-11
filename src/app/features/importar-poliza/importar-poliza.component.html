@@ -1,0 +1,119 @@
+<div class="container-fluid py-4 min-vh-100 bg-light-modern">
+  <!-- Stepper Header (Mat-Stepper Horizontal simulando la navegación de la imagen) -->
+  <mat-stepper linear #stepper class="bg-transparent mb-5 wizard-stepper d-none d-md-block">
+    <mat-step label="Importar" state="active"></mat-step>
+    <mat-step label="IA Extrae" state="done"></mat-step>
+    <mat-step label="Completar" state="done"></mat-step>
+    <mat-step label="Recibos" state="done"></mat-step>
+    <mat-step label="Póliza" state="done"></mat-step>
+    <mat-step label="Notificaciones" state="done"></mat-step>
+    <mat-step label="Estadísticas" state="done"></mat-step>
+  </mat-stepper>
+
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-10 col-lg-8 col-xl-7 text-center">
+      
+      <!-- Encabezado del paso actual -->
+      <h1 class="fw-bold mb-3 title-color">Paso 1: Importa tu Póliza</h1>
+      <p class="text-muted mb-5 px-md-5 subtitle-size">
+        Sube un PDF o imagen de la carátula de tu póliza. Nuestra IA extraerá automáticamente todos los datos importantes.
+      </p>
+
+      <!-- Zona Central de Carga Drag & Drop -->
+      <div 
+        class="upload-area p-4 p-md-5 mb-5 bg-white shadow-sm"
+        [class.drag-over]="isDragging"
+        (dragover)="onDragOver($event)"
+        (dragleave)="onDragLeave($event)"
+        (drop)="onDrop($event)">
+        
+        <input 
+          type="file" 
+          #fileInput 
+          class="d-none" 
+          accept=".pdf, .jpg, .jpeg, .png"
+          (change)="onFileSelected($event)">
+
+        <!-- Estado 1: Esperando Archivo -->
+        <div *ngIf="!uploadedFile; else fileUploadedState" class="fade-in">
+          
+          <!-- Íconos ilustrativos -->
+          <div class="d-flex justify-content-center gap-3 mb-4">
+            <div class="icon-circle icon-blue">
+              <mat-icon class="material-icons-outlined">description</mat-icon>
+            </div>
+            <div class="icon-circle icon-purple">
+              <mat-icon class="material-icons-outlined">photo_camera</mat-icon>
+            </div>
+          </div>
+
+          <!-- Mensaje principal arrastre -->
+          <h4 class="fw-bold mb-2 text-dark font-primary">Arrastra tu archivo aquí</h4>
+          <p class="text-muted mb-4">o da clic para seleccionar desde tu dispositivo</p>
+
+          <!-- Botones de Acción (Bootstrap Flex para responsivo móvil/desktop) -->
+          <div class="d-flex flex-column flex-sm-row justify-content-center gap-3 mb-4">
+            <button mat-flat-button class="btn-custom btn-primary-custom px-4 py-4 d-flex align-items-center justify-content-center gap-2" (click)="triggerFileInput()">
+              <mat-icon>upload</mat-icon>
+              <span>Subir PDF o Imagen</span>
+            </button>
+            <button mat-flat-button class="btn-custom btn-secondary-custom px-4 py-4 d-flex align-items-center justify-content-center gap-2" (click)="triggerCamera()">
+              <mat-icon>photo_camera</mat-icon>
+              <span>Tomar Foto</span>
+            </button>
+          </div>
+
+          <!-- Restricciones -->
+          <p class="small text-muted mb-0 format-info">Formatos aceptados: PDF. JPG. PNG &bull; Máximo 10MB</p>
+        </div>
+
+        <!-- Estado 2: Archivo Cargado Exitosamente -->
+        <ng-template #fileUploadedState>
+          <div class="uploaded-state text-center py-4 fade-in">
+            <mat-icon class="text-success uploaded-icon mb-3">check_circle</mat-icon>
+            <h4 class="fw-bold mb-1 text-dark truncate-text" [title]="uploadedFile?.fileName">{{ uploadedFile?.fileName }}</h4>
+            <p class="text-muted mb-2">Subido el {{ uploadedFile?.uploadDate }}</p>
+            <p class="small text-muted fw-bold mb-4">{{ (uploadedFile?.fileSize || 0) / (1024*1024) | number:'1.2-2' }} MB</p>
+            <button mat-stroked-button color="warn" class="btn-custom py-2" (click)="removeFile()">
+              <mat-icon>delete</mat-icon> Reemplazar archivo
+            </button>
+          </div>
+        </ng-template>
+      </div>
+
+      <!-- Tarjetas Inferiores de Beneficios / Opciones (Grid de Bootstrap) -->
+      <div class="row g-3 g-md-4 mt-2 mb-5">
+        
+        <div class="col-12 col-md-4">
+          <mat-card class="h-100 shadow-sm border-0 feature-card bg-white">
+            <mat-card-content class="text-center p-4 d-flex flex-column align-items-center justify-content-center">
+              <mat-icon class="text-blue mb-2 feature-icon">description</mat-icon>
+              <h6 class="mb-0 fw-bold text-dark font-primary">Cualquier PDF</h6>
+            </mat-card-content>
+          </mat-card>
+        </div>
+        
+        <div class="col-12 col-md-4">
+          <mat-card class="h-100 shadow-sm border-0 feature-card bg-white">
+            <mat-card-content class="text-center p-4 d-flex flex-column align-items-center justify-content-center">
+              <mat-icon class="text-purple mb-2 feature-icon">photo_camera</mat-icon>
+              <h6 class="mb-0 fw-bold text-dark font-primary">Foto con celular</h6>
+            </mat-card-content>
+          </mat-card>
+        </div>
+        
+        <div class="col-12 col-md-4">
+          <!-- Card destacada en verde según mockup -->
+          <mat-card class="h-100 shadow-sm border-0 feature-card bg-light-green">
+            <mat-card-content class="text-center p-4 d-flex flex-column align-items-center justify-content-center">
+              <mat-icon class="text-success mb-2 feature-icon">check_circle</mat-icon>
+              <h6 class="mb-0 fw-bold text-success-dark font-primary">Extracción automática</h6>
+            </mat-card-content>
+          </mat-card>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>

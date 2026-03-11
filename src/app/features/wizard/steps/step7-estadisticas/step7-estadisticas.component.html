@@ -1,0 +1,88 @@
+<div class="row justify-content-center pt-2 pb-5">
+    <div class="col-12 col-md-10 col-lg-8 col-xl-7 text-center">
+
+        <!-- Header de Éxito -->
+        <div class="mb-5 fade-in" style="animation-delay: 0.1s">
+            <div class="bg-success-light text-success rounded-circle d-inline-flex p-3 mb-4">
+                <mat-icon style="font-size: 48px; width: 48px; height: 48px;">check_circle</mat-icon>
+            </div>
+            <h2 class="fw-bold mb-3 title-color">¡Póliza Registrada con Éxito!</h2>
+            <p class="text-muted px-md-5">El documento fue procesado, el recibo fue configurado y el cliente cuenta con
+                sus notificaciones activas.</p>
+        </div>
+
+        <!-- Panel de Resumen Financiero -->
+        <mat-card class="stats-card text-start shadow-sm border border-light mb-4 fade-in"
+            style="animation-delay: 0.2s">
+            <mat-card-header class="border-bottom p-4">
+                <mat-card-title class="fw-bold fs-5 text-dark m-0 d-flex align-items-center gap-2">
+                    <mat-icon class="text-primary-blue">insights</mat-icon> Resumen Financiero
+                </mat-card-title>
+            </mat-card-header>
+            <mat-card-content class="p-4">
+
+                <div class="row g-4 mb-4">
+                    <div class="col-6 border-end">
+                        <span class="text-muted d-block mb-1 small">Prima Total</span>
+                        <span class="fs-4 fw-bold text-dark">${{ estadisticas.primaTotal | number:'1.2-2' }}</span>
+                    </div>
+                    <div class="col-6 px-4">
+                        <span class="text-muted d-block mb-1 small flex-wrap">
+                            Comisión Generada <span class="badge bg-primary-blue text-white ms-2">{{
+                                estadisticas.porcentajeComision }}%</span>
+                        </span>
+                        <span class="fs-4 fw-bold text-success-dark">${{ estadisticas.comisionGenerada | number:'1.2-2'
+                            }}</span>
+                    </div>
+                </div>
+
+                <!-- Barra de Progreso Simulativa (Gráfica de proporción) -->
+                <div class="progress-wrapper">
+                    <mat-progress-bar mode="determinate" [value]="estadisticas.porcentajeComision"
+                        class="custom-progress"></mat-progress-bar>
+                </div>
+
+            </mat-card-content>
+        </mat-card>
+
+        <!-- Checklist de Acciones Realizadas -->
+        <div class="bg-success-light rounded-4 p-4 text-start mb-5 fade-in border border-success border-opacity-25"
+            style="animation-delay: 0.3s">
+            <h6 class="fw-bold text-success-dark mb-3">Resumen de Acciones Automáticas</h6>
+
+            <div class="d-flex align-items-center gap-3 mb-2">
+                <mat-icon class="text-success small-icon">check_circle</mat-icon>
+                <span class="text-dark">Póliza y datos importados mediante IA</span>
+            </div>
+            <div class="d-flex align-items-center gap-3 mb-2">
+                <mat-icon class="text-success small-icon">check_circle</mat-icon>
+                <span class="text-dark">Cliente Juan Pérez García creado en CRM</span>
+            </div>
+            <div class="d-flex align-items-center gap-3 mb-2">
+                <mat-icon class="text-success small-icon">check_circle</mat-icon>
+                <span class="text-dark">Comisión del 10% configurada correctamente</span>
+            </div>
+            <div class="d-flex align-items-center gap-3">
+                <mat-icon class="text-success small-icon">check_circle</mat-icon>
+                <span class="text-dark">Recordatorios de Renovación activos</span>
+            </div>
+        </div>
+
+        <!-- Calls to Action -->
+        <div class="d-flex flex-column gap-3 justify-content-center mt-4 fade-in" style="animation-delay: 0.5s">
+            <button mat-flat-button
+                class="btn-primary-custom px-5 py-4 d-flex align-items-center justify-content-center gap-2 fs-6 mx-auto w-md-auto"
+                (click)="onProbarOtra()">
+                <mat-icon>autorenew</mat-icon> Probar con otra Póliza
+            </button>
+
+            <div class="mt-4 pt-4 border-top">
+                <p class="text-muted mb-3">La solución completa para gestionar tu cartera de seguros.</p>
+                <button mat-stroked-button class="btn-secondary-custom px-4 py-3 fw-bold mx-auto">
+                    Solicitar Demo Completa
+                </button>
+            </div>
+        </div>
+
+    </div>
+</div>

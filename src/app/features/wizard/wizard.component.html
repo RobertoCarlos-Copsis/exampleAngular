@@ -1,0 +1,82 @@
+<div class="app-layout min-vh-100 bg-light-modern d-flex flex-column">
+
+    <!-- Encabezado Fijo -->
+    <header class="top-nav shadow-sm bg-white py-3 px-4 d-flex align-items-center justify-content-between sticky-top">
+        <div class="logo-area d-flex align-items-center gap-3">
+            <div
+                class="logo-box bg-primary-blue text-white rounded d-flex justify-content-center align-items-center fw-bold fs-4">
+                q
+            </div>
+            <div class="logo-text">
+                <h5 class="mb-0 fw-bold text-dark font-primary">qCRM 2.0</h5>
+                <small class="text-muted">Demo Interactiva</small>
+            </div>
+        </div>
+
+        <div class="header-status d-none d-md-block text-end">
+            <h6 class="mb-0 fw-bold font-primary text-dark">Paso <span class="text-primary-blue">{{
+                    stepper.selectedIndex + 1 }}</span> de 7</h6>
+            <small class="text-muted">{{ getCurrentStepSummary(stepper.selectedIndex) }}</small>
+        </div>
+    </header>
+
+    <!-- Contenido Principal: Stepper -->
+    <main class="flex-grow-1 container-fluid py-4">
+
+        <!-- Stepper NO-linear para que podamos navegar libremente desde código -->
+        <mat-stepper #stepper class="bg-transparent mb-5 wizard-stepper global-stepper d-none d-md-block"
+            (selectionChange)="onStepChange($event)">
+
+            <!-- Paso 1 -->
+            <mat-step label="Importar" [completed]="completedSteps[0]">
+                <app-step1-importar (nextStep)="advance(0, stepper)"></app-step1-importar>
+            </mat-step>
+
+            <!-- Paso 2 -->
+            <mat-step label="IA Extrae" [completed]="completedSteps[1]">
+                <app-step2-extraccion (nextStep)="advance(1, stepper)"></app-step2-extraccion>
+            </mat-step>
+
+            <!-- Paso 3 -->
+            <mat-step label="Completar" [completed]="completedSteps[2]">
+                <app-step3-completar (nextStep)="advance(2, stepper)"></app-step3-completar>
+            </mat-step>
+
+            <!-- Paso 4 -->
+            <mat-step label="Recibos" [completed]="completedSteps[3]">
+                <app-step4-recibos (nextStep)="advance(3, stepper)"></app-step4-recibos>
+            </mat-step>
+
+            <!-- Paso 5 -->
+            <mat-step label="Póliza" [completed]="completedSteps[4]">
+                <app-step5-poliza (nextStep)="advance(4, stepper)"></app-step5-poliza>
+            </mat-step>
+
+            <!-- Paso 6 -->
+            <mat-step label="Notificaciones" [completed]="completedSteps[5]">
+                <app-step6-notificaciones (nextStep)="advance(5, stepper)"></app-step6-notificaciones>
+            </mat-step>
+
+            <!-- Paso 7 -->
+            <mat-step label="Estadísticas" [completed]="completedSteps[6]">
+                <app-step7-estadisticas (resetWizard)="resetAll(stepper)"></app-step7-estadisticas>
+            </mat-step>
+
+            <!-- Customización de Íconos del Stepper -->
+            <ng-template matStepperIcon="edit">
+                <mat-icon>check</mat-icon>
+            </ng-template>
+            <ng-template matStepperIcon="done">
+                <mat-icon>check</mat-icon>
+            </ng-template>
+
+        </mat-stepper>
+
+        <!-- Fallback Mobile Navigation -->
+        <div class="d-md-none stepper-mobile text-center mb-4">
+            <span class="badge bg-primary-blue rounded-pill px-3 py-2 fw-normal">Paso {{ stepper.selectedIndex + 1 }} de
+                7</span>
+        </div>
+
+    </main>
+</div>

@@ -1,0 +1,122 @@
+@import 'bootstrap/dist/css/bootstrap.min.css';
+@import '@angular/material/prebuilt-themes/indigo-pink.css';
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+
+// ── Variables Globales ────────────────────────────────────
+:root {
+    --blue-600: #2563EB;
+    --blue-700: #1D4ED8;
+    --blue-50: #EFF6FF;
+    --blue-100: #DBEAFE;
+    --purple-600: #9333EA;
+    --purple-700: #7E22CE;
+    --purple-50: #FAF5FF;
+    --green-600: #16A34A;
+    --green-50: #F0FDF4;
+    --amber-500: #F59E0B;
+    --gray-50: #F9FAFB;
+    --gray-100: #F3F4F6;
+    --gray-200: #E5E7EB;
+    --gray-300: #D1D5DB;
+    --gray-500: #6B7280;
+    --gray-700: #374151;
+    --gray-900: #111827;
+    --dark-navy: #0F172A;
+}
+
+// ── Estilos Base ──────────────────────────────────────────
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    color: var(--gray-900);
+    // Fondo con gradiente radial como en Figma
+    background: #EEF2FF;
+    background-image:
+        radial-gradient(ellipse 80% 50% at 100% 0%, #C7D7F8 0%, transparent 60%),
+        radial-gradient(ellipse 60% 40% at 0% 100%, #DDE8FB 0%, transparent 60%),
+        linear-gradient(180deg, #EEF2FF 0%, #E8EDFA 100%);
+    min-height: 100vh;
+}
+
+// ── Stepper Material (global overrides) ───────────────────
+.mat-stepper-horizontal,
+.mat-stepper-vertical {
+    background: transparent !important;
+}
+
+// Quitar fondo del mat-step-content
+::ng-deep .mat-horizontal-content-container {
+    padding: 0 !important;
+}
+
+// Líneas del stepper
+.mat-stepper-horizontal-line {
+    border-top-color: var(--gray-300) !important;
+}
+
+// Íconos del stepper — círculos
+.mat-step-icon {
+    width: 40px !important;
+    height: 40px !important;
+    font-size: 15px !important;
+    font-weight: 700 !important;
+}
+
+// Estado activo
+.mat-step-icon-state-number,
+.mat-step-icon-state-edit {
+    background-color: var(--gray-300) !important;
+    color: var(--gray-500) !important;
+}
+
+.mat-step-icon-selected {
+    background-color: var(--blue-600) !important;
+    color: white !important;
+}
+
+// Estado completado (check verde como en Figma)
+.mat-step-icon-state-done,
+.mat-step-icon-state-edit.mat-step-icon-selected {
+    background-color: var(--green-600) !important;
+    color: white !important;
+}
+
+// Etiquetas del stepper
+.mat-step-label {
+    font-family: 'Inter', sans-serif !important;
+    font-size: 0.82rem !important;
+    color: var(--gray-500) !important;
+}
+
+.mat-step-label-selected {
+    color: var(--gray-900) !important;
+    font-weight: 600 !important;
+}
+
+// Global snackbars
+.success-snackbar .mdc-snackbar__surface {
+    background-color: var(--green-600) !important;
+    color: white !important;
+    border-radius: 8px !important;
+}
+
+// Quita el padding lateral del mat-horizontal-content-container
+.mat-horizontal-content-container {
+    padding: 24px 16px !important;
+}
+
+@media (min-width: 768px) {
+    .mat-horizontal-content-container {
+        padding: 32px 40px !important;
+    }
+}

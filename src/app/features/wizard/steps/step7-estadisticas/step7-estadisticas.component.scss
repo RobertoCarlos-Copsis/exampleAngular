@@ -1,0 +1,305 @@
+$blue: #2563EB;
+$purple: #9333EA;
+$amber: #D97706;
+$green: #16A34A;
+$dark: #111827;
+$gray-2: #E5E7EB;
+$gray-5: #6B7280;
+
+.step-container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 1.5rem 1rem 4rem;
+}
+
+.step-title {
+    font-size: 1.7rem;
+    font-weight: 800;
+    color: $dark;
+    letter-spacing: -0.02em;
+}
+
+.step-subtitle {
+    font-size: 0.95rem;
+    color: $gray-5;
+}
+
+// ── KPI Cards (4 colores sólidos como en Figma) ────────────
+.kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+
+    @media (min-width: 640px) {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+.kpi-card {
+    border-radius: 16px;
+    padding: 1.25rem;
+    color: white;
+    display: flex;
+    flex-direction: column;
+
+    .kpi-icon {
+        font-size: 28px;
+        width: 28px;
+        height: 28px;
+        opacity: 0.9;
+        margin-bottom: 8px;
+    }
+
+    .kpi-value {
+        font-size: 1.5rem;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+    }
+
+    .kpi-label {
+        font-size: 0.8rem;
+        opacity: 0.85;
+        font-weight: 500;
+    }
+
+    &.kpi-blue {
+        background: $blue;
+    }
+
+    &.kpi-purple {
+        background: $purple;
+    }
+
+    &.kpi-amber {
+        background: $amber;
+    }
+
+    &.kpi-green {
+        background: $green;
+    }
+}
+
+// ── Contenedor de gráficas ────────────────────────────────
+.chart-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+    margin-bottom: 1.5rem;
+
+    @media (min-width: 640px) {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.chart-card {
+    background: white;
+    border: 1.5px solid $gray-2;
+    border-radius: 16px;
+    padding: 1.25rem;
+
+    .chart-title {
+        font-weight: 700;
+        font-size: 1rem;
+        color: $dark;
+        margin-bottom: 1rem;
+    }
+}
+
+// ── Bar chart (simulado con CSS) ──────────────────────────
+.bar-chart {
+    display: flex;
+    align-items: flex-end;
+    gap: 12px;
+    height: 160px;
+    padding: 0 8px;
+    border-bottom: 2px solid $gray-2;
+    margin-bottom: 8px;
+
+    .bar-group {
+        flex: 1;
+        display: flex;
+        align-items: flex-end;
+        gap: 4px;
+        height: 100%;
+
+        .bar {
+            flex: 1;
+            border-radius: 6px 6px 0 0;
+            transition: opacity 0.2s;
+
+            &:hover {
+                opacity: 0.85;
+            }
+
+            &.bar-prima {
+                background: $blue;
+            }
+
+            &.bar-comision {
+                background: $green;
+            }
+        }
+    }
+
+    .bar-label {
+        font-size: 0.74rem;
+        color: $gray-5;
+        text-align: center;
+        margin-top: 4px;
+    }
+}
+
+.bar-legend {
+    display: flex;
+    gap: 16px;
+    font-size: 0.8rem;
+    color: $gray-5;
+
+    .legend-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        display: inline-block;
+        margin-right: 6px;
+
+        &.dot-blue {
+            background: $blue;
+        }
+
+        &.dot-green {
+            background: $green;
+        }
+    }
+}
+
+// ── Pie chart simulado ────────────────────────────────────
+.pie-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 160px;
+
+    .pie-svg {
+        width: 150px;
+        height: 150px;
+    }
+}
+
+// ── Resumen de Acciones Realizadas ────────────────────────
+.summary-box {
+    background: #F0FDF4;
+    border: 1.5px solid #BBF7D0;
+    border-radius: 16px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+
+    .summary-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 1rem;
+
+        mat-icon {
+            font-size: 28px;
+            width: 28px;
+            height: 28px;
+            color: $green;
+            background: white;
+            border-radius: 8px;
+            padding: 2px;
+        }
+
+        .summary-title {
+            font-weight: 800;
+            font-size: 1.1rem;
+            color: $dark;
+        }
+    }
+
+    .summary-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+
+        @media (min-width: 640px) {
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+
+    .summary-column-title {
+        font-weight: 700;
+        font-size: 0.9rem;
+        color: $dark;
+        margin-bottom: 8px;
+    }
+
+    .summary-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 8px;
+        font-size: 0.875rem;
+        color: #374151;
+        margin-bottom: 4px;
+
+        &::before {
+            content: '●';
+            font-size: 8px;
+            margin-top: 4px;
+            flex-shrink: 0;
+        }
+
+        &.item-green::before {
+            color: $green;
+        }
+
+        &.item-blue::before {
+            color: $blue;
+        }
+    }
+}
+
+// ── Botón demo ────────────────────────────────────────────
+.btn-demo {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 36px;
+    background: $blue;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    mat-icon {
+        font-size: 20px;
+        width: 20px;
+        height: 20px;
+    }
+
+    &:hover {
+        background: #1D4ED8;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba($blue, 0.35);
+    }
+}
+
+.fade-in {
+    animation: fadeUp 0.4s ease-out both;
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

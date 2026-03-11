@@ -1,0 +1,350 @@
+// ── Paleta exacta del Figma ───────────────────────────────
+$blue: #2563EB; // Blue-600
+$blue-h: #1D4ED8; // Blue-700 (hover)
+$blue-50: #EFF6FF; // Blue-50 (tenue)
+$purple: #9333EA; // Purple-600
+$purple-h: #7E22CE; // Purple-700
+$purple-50: #FAF5FF; // Purple-50
+$green: #16A34A; // Green-600
+$green-50: #F0FDF4; // Green-50
+$dark: #111827; // Gray-900
+$gray-7: #374151; // Gray-700
+$gray-5: #6B7280; // Gray-500
+$gray-3: #D1D5DB; // Gray-300
+
+// ── Contenedor ───────────────────────────────────────────
+.step1-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1rem 4rem;
+    text-align: center;
+}
+
+// ── Títulos ───────────────────────────────────────────────
+.step-title {
+    font-size: 2rem;
+    font-weight: 800;
+    color: $dark;
+    letter-spacing: -0.03em;
+    margin-bottom: 0.75rem;
+}
+
+.step-subtitle {
+    font-size: 1rem;
+    color: $gray-5;
+    line-height: 1.7;
+    max-width: 520px;
+    margin: 0 auto 2rem;
+}
+
+// ── Caja Central (upload-box) ────────────────────────────
+.upload-box {
+    background: rgba(255, 255, 255, 0.9);
+    border: 2px dashed $gray-3;
+    border-radius: 20px;
+    padding: 3rem 2rem;
+    transition: all 0.3s ease;
+    min-height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 2rem;
+
+    &.processing {
+        border-style: solid;
+        border-color: rgba($blue, 0.4);
+        background: linear-gradient(135deg, rgba($blue-50, 0.8) 0%, rgba($purple-50, 0.8) 100%);
+    }
+
+    &.done {
+        border-style: solid;
+        border-color: rgba($green, 0.4);
+        background: rgba($green-50, 0.8);
+    }
+}
+
+.upload-content {
+    width: 100%;
+}
+
+// ── Íconos circulares (idle) ──────────────────────────────
+.icon-circle {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    mat-icon {
+        font-size: 36px;
+        width: 36px;
+        height: 36px;
+    }
+
+    &.icon-blue {
+        background: $blue-50;
+        color: $blue;
+    }
+
+    &.icon-purple {
+        background: $purple-50;
+        color: $purple;
+    }
+}
+
+.upload-title {
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: $dark;
+    margin: 1rem 0 0.4rem;
+}
+
+.upload-sub {
+    color: $gray-5;
+    font-size: 0.95rem;
+    margin-bottom: 0;
+}
+
+.format-hint {
+    font-size: 0.82rem;
+    color: $gray-3;
+}
+
+// ── BOTONES EN PÍLDORA (idénticos al Figma) ────────────────
+.btn-upload {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 32px;
+    border: none;
+    border-radius: 50px; // ← píldora exacta como en Figma
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    letter-spacing: 0.01em;
+
+    mat-icon {
+        font-size: 20px;
+        width: 20px;
+        height: 20px;
+    }
+
+    &--blue {
+        background: $blue;
+        color: white;
+
+        &:hover {
+            background: $blue-h;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba($blue, 0.35);
+        }
+
+        &:active {
+            transform: translateY(0);
+        }
+    }
+
+    &--purple {
+        background: $purple;
+        color: white;
+
+        &:hover {
+            background: $purple-h;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba($purple, 0.35);
+        }
+
+        &:active {
+            transform: translateY(0);
+        }
+    }
+}
+
+// ── Spinner de IA ─────────────────────────────────────────
+.processing-content {
+    padding: 1rem 0;
+}
+
+.ai-spinner-wrapper {
+    display: flex;
+    justify-content: center;
+}
+
+.ai-spinner {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &__ring {
+        position: absolute;
+        inset: 0;
+        border-radius: 50%;
+        border: 3px solid transparent;
+        border-top-color: $blue;
+        animation: spin 1.1s linear infinite;
+
+        &--2 {
+            inset: 12px;
+            border-top-color: $purple;
+            animation-duration: 0.8s;
+            animation-direction: reverse;
+        }
+    }
+
+    &__icon {
+        font-size: 30px;
+        width: 30px;
+        height: 30px;
+        color: $blue;
+        animation: pulse 1.2s ease-in-out infinite;
+    }
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.5;
+        transform: scale(0.85);
+    }
+}
+
+.processing-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: $blue;
+    margin-bottom: 0.25rem;
+}
+
+.processing-sub {
+    font-size: 0.9rem;
+    color: $gray-5;
+}
+
+// ── Checklist animada de extracción ───────────────────────
+.extraction-steps {
+    display: inline-flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 1.5rem;
+    text-align: left;
+}
+
+.extraction-step {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.9rem;
+    color: $gray-7;
+    opacity: 0;
+    animation: slideCheck 0.5s ease-in forwards;
+
+    .step-check {
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
+        color: $green;
+    }
+}
+
+@keyframes slideCheck {
+    from {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+// ── Ícono de éxito ────────────────────────────────────────
+.done-icon {
+    font-size: 64px;
+    width: 64px;
+    height: 64px;
+    color: $green;
+    animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes popIn {
+    from {
+        transform: scale(0);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+// ── Tarjetas Inferiores ───────────────────────────────────
+.feature-card {
+    border-radius: 16px !important;
+    border: none !important;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06) !important;
+    transition: transform 0.2s ease;
+
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08) !important;
+    }
+
+    .feature-icon {
+        font-size: 36px;
+        width: 36px;
+        height: 36px;
+    }
+}
+
+.text-blue {
+    color: $blue !important;
+}
+
+.text-purple {
+    color: $purple !important;
+}
+
+.bg-light-green {
+    background: rgba($green-50, 0.8) !important;
+}
+
+.text-success-dark {
+    color: darken($green, 8%) !important;
+}
+
+// ── Fade-in ───────────────────────────────────────────────
+.fade-in {
+    animation: fadeUp 0.4s ease-out both;
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

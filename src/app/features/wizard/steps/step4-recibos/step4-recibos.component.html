@@ -1,0 +1,56 @@
+<div class="step-container">
+
+    <div class="text-center mb-4 fade-in">
+        <h1 class="step-title">Paso 4: Gestión de Recibos</h1>
+        <p class="step-subtitle">Configura cómo cobrarás este primer recibo de la póliza emitida.</p>
+    </div>
+
+    <!-- Resumen del recibo -->
+    <div class="receipt-summary-card mb-5 fade-in" style="animation-delay: 0.1s">
+        <div>
+            <div class="d-flex align-items-center gap-2 mb-1">
+                <span class="receipt-title">Recibo {{ reciboActual.id }}</span>
+                <span class="receipt-badge">{{ reciboActual.estado }}</span>
+            </div>
+            <small class="text-muted">Vence: {{ reciboActual.vencimiento }}</small>
+        </div>
+        <div class="text-end">
+            <div class="receipt-amount-label">Importe a Cobrar</div>
+            <div class="receipt-amount">${{ reciboActual.monto | number:'1.2-2' }}</div>
+        </div>
+    </div>
+
+    <!-- Acciones de Cobro -->
+    <h2 class="section-title fade-in" style="animation-delay: 0.15s">Acciones de Cobro Inmediato</h2>
+
+    <div class="action-grid mb-5 fade-in" style="animation-delay: 0.2s">
+
+        <button class="action-btn-card action-email" (click)="onActionClick('Correo Automático')">
+            <mat-icon>email</mat-icon>
+            <span class="btn-label">Enviar Correo</span>
+        </button>
+
+        <button class="action-btn-card action-sms" (click)="onActionClick('Recordatorio SMS')">
+            <mat-icon>sms</mat-icon>
+            <span class="btn-label">Enviar SMS</span>
+        </button>
+
+        <button class="action-btn-card action-whatsapp" (click)="onActionClick('Liga de Pago WhatsApp')">
+            <mat-icon>chat</mat-icon>
+            <span class="btn-label">WhatsApp</span>
+        </button>
+
+        <button class="action-btn-card action-bitacora" (click)="onActionClick('Registro en Bitácora')">
+            <mat-icon>list_alt</mat-icon>
+            <span class="btn-label">Bitácora</span>
+        </button>
+
+    </div>
+
+    <div class="text-center fade-in" style="animation-delay: 0.3s">
+        <button class="btn-continue" (click)="onContinue()">
+            Continuar al Siguiente Paso <mat-icon>arrow_forward</mat-icon>
+        </button>
+    </div>
+
+</div>

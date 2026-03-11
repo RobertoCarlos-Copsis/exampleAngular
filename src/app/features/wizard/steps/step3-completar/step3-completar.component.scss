@@ -1,0 +1,164 @@
+$blue: #2563EB;
+$blue-h: #1D4ED8;
+$green: #16A34A;
+$dark: #111827;
+$gray-5: #6B7280;
+$gray-2: #E5E7EB;
+
+// Shared step container
+.step-container {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 1.5rem 1rem 4rem;
+}
+
+.step-title {
+    font-size: 1.7rem;
+    font-weight: 800;
+    color: $dark;
+    letter-spacing: -0.02em;
+}
+
+.step-subtitle {
+    font-size: 0.95rem;
+    color: $gray-5;
+    line-height: 1.6;
+}
+
+// ── Form fields overrides ─────────────────────────────────
+::ng-deep .mat-mdc-form-field {
+    .mdc-text-field--outlined {
+        --mdc-outlined-text-field-outline-color: #{$gray-2};
+        --mdc-outlined-text-field-focus-outline-color: #{$blue};
+        border-radius: 12px !important;
+    }
+
+    .mdc-notched-outline__leading,
+    .mdc-notched-outline__trailing {
+        border-radius: 12px !important;
+    }
+}
+
+// ── Commission box ────────────────────────────────────────
+.commission-box {
+    background: white;
+    border-radius: 16px;
+    padding: 1.5rem;
+    border: 1.5px solid $gray-2;
+
+    .commission-title {
+        font-weight: 700;
+        font-size: 1rem;
+        color: $dark;
+    }
+}
+
+// ── Badge de porcentaje (amarillo como en Figma) ──────────
+.pct-badge {
+    background: #FEF9C3;
+    border: 1.5px solid #FDE047;
+    color: #854D0E;
+    font-weight: 700;
+    border-radius: 8px;
+    padding: 6px 14px;
+    font-size: 0.95rem;
+    min-width: 60px;
+    text-align: center;
+}
+
+// ── Caja de comisiones calculadas (amarillo pálido) ───────
+.commission-result-box {
+    background: #FEFCE8;
+    border: 1.5px solid #FEF08A;
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+
+    .result-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 4px 0;
+        font-size: 0.9rem;
+        color: $gray-5;
+
+        &.result-total {
+            border-top: 1.5px solid #FEF08A;
+            margin-top: 8px;
+            padding-top: 8px;
+            font-weight: 700;
+            color: $dark;
+            font-size: 0.95rem;
+        }
+
+        .result-amount {
+            font-weight: 600;
+            color: #92400E;
+        }
+
+        .result-total-amount {
+            font-weight: 700;
+            color: #16A34A;
+            font-size: 1.1rem;
+        }
+    }
+}
+
+// ── Slider ────────────────────────────────────────────────
+::ng-deep .mat-mdc-slider {
+    .mdc-slider__track--active_fill {
+        background-color: $blue !important;
+        border-color: $blue !important;
+    }
+
+    .mdc-slider__thumb-knob {
+        background-color: white !important;
+        border: 3px solid $blue !important;
+        width: 20px !important;
+        height: 20px !important;
+    }
+}
+
+// ── Primary Button ────────────────────────────────────────
+.btn-primary-figma {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 36px;
+    background: $blue;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    mat-icon {
+        font-size: 20px;
+        width: 20px;
+        height: 20px;
+    }
+
+    &:hover {
+        background: $blue-h;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba($blue, 0.35);
+    }
+}
+
+.fade-in {
+    animation: fadeUp 0.4s ease-out both;
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

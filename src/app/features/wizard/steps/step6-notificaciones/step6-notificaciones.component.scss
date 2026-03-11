@@ -1,0 +1,175 @@
+$blue: #2563EB;
+$blue-h: #1D4ED8;
+$dark: #111827;
+$gray-5: #6B7280;
+$gray-2: #E5E7EB;
+
+.step-container {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 1.5rem 1rem 4rem;
+}
+
+.step-title {
+    font-size: 1.7rem;
+    font-weight: 800;
+    color: $dark;
+    letter-spacing: -0.02em;
+}
+
+.step-subtitle {
+    font-size: 0.95rem;
+    color: $gray-5;
+}
+
+// ── Toggle rows ───────────────────────────────────────────
+.toggle-row {
+    background: white;
+    border: 1.5px solid $gray-2;
+    border-radius: 14px;
+    padding: 1rem 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    transition: border-color 0.2s ease;
+
+    &:hover {
+        border-color: rgba($blue, 0.4);
+    }
+
+    .toggle-icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+
+        mat-icon {
+            font-size: 22px;
+            width: 22px;
+            height: 22px;
+            color: white;
+        }
+
+        &.icon-orange {
+            background: #F97316;
+        }
+
+        &.icon-gray {
+            background: #64748B;
+        }
+
+        &.icon-yellow {
+            background: #EAB308;
+        }
+
+        &.icon-blue {
+            background: $blue;
+        }
+    }
+
+    .toggle-info {
+        flex-grow: 1;
+    }
+
+    .toggle-name {
+        font-weight: 700;
+        font-size: 0.95rem;
+        color: $dark;
+    }
+
+    .toggle-desc {
+        font-size: 0.82rem;
+        color: $gray-5;
+        margin-top: 2px;
+    }
+}
+
+// Material Slide Toggle — override para que use azul
+::ng-deep .mat-mdc-slide-toggle.mat-primary .mdc-switch:enabled .mdc-switch__track::after {
+    background-color: $blue !important;
+    border-color: $blue !important;
+}
+
+::ng-deep .mat-mdc-slide-toggle.mat-primary .mdc-switch:enabled .mdc-switch__handle::after {
+    background-color: white !important;
+}
+
+// ── Info box ──────────────────────────────────────────────
+.info-box {
+    background: #EFF6FF;
+    border: 1.5px solid #BFDBFE;
+    border-radius: 14px;
+    padding: 1rem 1.25rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+
+    mat-icon {
+        color: $blue;
+        font-size: 22px;
+        width: 22px;
+        height: 22px;
+        flex-shrink: 0;
+        margin-top: 2px;
+    }
+
+    .info-title {
+        font-weight: 700;
+        font-size: 0.9rem;
+        color: $dark;
+        margin-bottom: 4px;
+    }
+
+    .info-text {
+        font-size: 0.85rem;
+        color: $gray-5;
+        line-height: 1.5;
+    }
+}
+
+.btn-primary-figma {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 40px;
+    background: $blue;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    mat-icon {
+        font-size: 20px;
+        width: 20px;
+        height: 20px;
+    }
+
+    &:hover {
+        background: $blue-h;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba($blue, 0.35);
+    }
+}
+
+.fade-in {
+    animation: fadeUp 0.4s ease-out both;
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

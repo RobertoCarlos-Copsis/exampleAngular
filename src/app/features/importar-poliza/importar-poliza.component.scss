@@ -1,0 +1,203 @@
+// Variables y paleta de colores extraída del diseño (SaaS Moderno)
+$primary-blue: #2D5BFF;        // Azul brillante botones
+$primary-blue-hover: #1c44d6;  // Azul interacciones
+$secondary-purple: #A52DFF;    // Morado botones
+$secondary-purple-hover: #8e15eb;// Morado interacciones
+$text-dark: #121826;           // Textos principales oscurs
+$text-muted: #6B7280;          // Textos secundarios
+$border-color: #D1D5DB;        // Gris claro para bordes
+$bg-main: #F8FAFC;             // Fondo principal de la pantalla
+
+// Tipografía y utilidad
+.font-primary {
+  font-family: 'Inter', -apple-system, sans-serif;
+}
+
+.bg-light-modern {
+  background-color: $bg-main;
+}
+
+.title-color {
+  color: $text-dark;
+  font-size: 2.25rem;
+  letter-spacing: -0.02em;
+}
+
+.subtitle-size {
+  font-size: 1.15rem;
+  line-height: 1.6;
+}
+
+// Stepper Personalizado Horizontal
+::ng-deep .wizard-stepper {
+  .mat-step-header {
+    pointer-events: none; // Desactiva clic porque es ilustrativo en la previsualización
+    
+    .mat-step-icon {
+      background-color: #E2E8F0;
+      color: #64748B;
+      font-weight: 600;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      
+      &.mat-step-icon-selected {
+        background-color: $primary-blue;
+        color: white;
+      }
+    }
+
+    .mat-step-label {
+      color: #94A3B8;
+      font-weight: 500;
+      &.mat-step-label-active {
+        color: $text-dark;
+        font-weight: 600;
+      }
+    }
+  }
+
+  .mat-stepper-horizontal-line {
+    border-top-color: #E2E8F0;
+    margin: 0 -16px;
+  }
+}
+
+// Zona Central - Drag & Drop Wrapper
+.upload-area {
+  border: 2px dashed #CBD5E1;
+  border-radius: 16px; // Bordes redondeados similares a una Card
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background-color: white;
+  
+  &:hover {
+    border-color: rgba($primary-blue, 0.6);
+  }
+  
+  // Estado cuando se arrastra un archivo encima
+  &.drag-over {
+    border-color: $primary-blue;
+    background-color: #EFF6FF !important; // Fondo azul tenue
+    transform: scale(1.02);
+    box-shadow: 0 10px 25px -5px rgba($primary-blue, 0.15);
+  }
+}
+
+// Íconos SVG/Material Redondeados
+.icon-circle {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  mat-icon {
+    font-size: 30px;
+    height: 30px;
+    width: 30px;
+  }
+
+  &.icon-blue {
+    background-color: #EFF6FF;
+    color: $primary-blue;
+  }
+  
+  &.icon-purple {
+    background-color: #FAF5FF;
+    color: $secondary-purple;
+  }
+}
+
+// Colores de utilería directos
+.text-blue { color: $primary-blue !important; }
+.text-purple { color: $secondary-purple !important; }
+
+.format-info {
+  letter-spacing: 0.05em;
+  font-size: 0.85rem;
+}
+
+// Botones Angular Material Customizados
+.btn-custom {
+  border-radius: 10px; // Ligeramente redondeados (SaaS style)
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  box-shadow: none !important;
+  font-size: 1rem;
+  
+  ::ng-deep .mat-mdc-button-touch-target {
+    display: none;
+  }
+
+  mat-icon {
+    margin-right: 4px;
+  }
+}
+
+.btn-primary-custom {
+  background-color: $primary-blue !important;
+  color: white !important;
+  &:hover {
+    background-color: $primary-blue-hover !important;
+  }
+}
+
+.btn-secondary-custom {
+  background-color: $secondary-purple !important;
+  color: white !important;
+  &:hover {
+    background-color: $secondary-purple-hover !important;
+  }
+}
+
+// Tarjetas Inferiores (Cards de información)
+.feature-card {
+  border-radius: 16px !important;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: default;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.08) !important;
+  }
+
+  .feature-icon {
+    font-size: 36px;
+    height: 36px;
+    width: 36px;
+  }
+}
+
+// Highlight explícito verde para "Extracción Automática"
+.bg-light-green {
+  background-color: #F0FDF4 !important; // Tailwind green-50
+}
+
+.text-success-dark {
+  color: #166534 !important; // Tailwind green-800
+}
+
+// Elementos de Éxito al Subir Archivo
+.uploaded-icon {
+  font-size: 56px;
+  height: 56px;
+  width: 56px;
+}
+
+.truncate-text {
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+// Utilidad CSS
+.fade-in {
+  animation: fadeIn 0.4s ease-in;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}

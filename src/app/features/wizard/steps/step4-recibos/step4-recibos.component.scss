@@ -1,0 +1,179 @@
+$blue: #2563EB;
+$blue-h: #1D4ED8;
+$dark: #111827;
+$gray-5: #6B7280;
+$gray-2: #E5E7EB;
+
+.step-container {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 1.5rem 1rem 4rem;
+}
+
+.step-title {
+    font-size: 1.7rem;
+    font-weight: 800;
+    color: $dark;
+    letter-spacing: -0.02em;
+}
+
+.step-subtitle {
+    font-size: 0.95rem;
+    color: $gray-5;
+}
+
+// ── Tarjeta del recibo actual ─────────────────────────────
+.receipt-summary-card {
+    background: white;
+    border: 1.5px solid $gray-2;
+    border-radius: 16px;
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+
+    .receipt-title {
+        font-weight: 700;
+        font-size: 1rem;
+        color: $dark;
+    }
+
+    .receipt-badge {
+        background: #FEF9C3;
+        color: #854D0E;
+        border: 1px solid #FDE047;
+        border-radius: 20px;
+        padding: 2px 10px;
+        font-size: 0.75rem;
+        font-weight: 600;
+    }
+
+    .receipt-amount-label {
+        font-size: 0.8rem;
+        color: $gray-5;
+    }
+
+    .receipt-amount {
+        font-size: 1.6rem;
+        font-weight: 800;
+        color: $blue;
+    }
+}
+
+// ── Títulos de sección ────────────────────────────────────
+.section-title {
+    font-weight: 700;
+    font-size: 1rem;
+    color: $dark;
+    margin-bottom: 1rem;
+}
+
+// ── Grid 2x2 de botones de acción ─────────────────────────
+.action-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+
+    @media (min-width: 640px) {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+.action-btn-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 1.5rem 1rem;
+    background: white;
+    border: 1.5px solid $gray-2;
+    border-radius: 16px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+    min-height: 110px;
+
+    mat-icon {
+        font-size: 32px;
+        width: 32px;
+        height: 32px;
+    }
+
+    .btn-label {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: $dark;
+        line-height: 1.2;
+    }
+
+    &:hover {
+        border-color: rgba($blue, 0.5);
+        background: #EFF6FF;
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba($blue, 0.12);
+    }
+
+    &.action-email mat-icon {
+        color: $blue;
+    }
+
+    &.action-sms mat-icon {
+        color: #9333EA;
+    }
+
+    &.action-whatsapp mat-icon {
+        color: #16A34A;
+    }
+
+    &.action-bitacora mat-icon {
+        color: $gray-5;
+    }
+}
+
+// ── Botón continuar ───────────────────────────────────────
+.btn-continue {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 36px;
+    background: $blue;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    mat-icon {
+        font-size: 20px;
+        width: 20px;
+        height: 20px;
+    }
+
+    &:hover {
+        background: $blue-h;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba($blue, 0.35);
+    }
+}
+
+.fade-in {
+    animation: fadeUp 0.4s ease-out both;
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

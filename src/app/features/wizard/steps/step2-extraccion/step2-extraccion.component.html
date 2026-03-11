@@ -1,0 +1,102 @@
+<div class="step2-container">
+
+    <!-- Título -->
+    <div class="text-center mb-4 fade-in">
+        <h1 class="step-title"><span class="ai-badge">✨</span> Paso 2: Datos Extraídos por IA</h1>
+        <p class="step-subtitle">Nuestra inteligencia artificial ha leído y extraído automáticamente los siguientes
+            datos de tu póliza</p>
+    </div>
+
+    <!-- Grid 2x2 de tarjetas -->
+    <div class="cards-grid mb-5 fade-in" style="animation-delay: 0.15s">
+
+        <!-- Tarjeta Azul: Datos del Cliente -->
+        <mat-card class="data-card card-blue">
+            <div class="card-header-row">
+                <div class="card-icon icon-blue"><mat-icon>person</mat-icon></div>
+                <span class="card-title">Datos del Cliente</span>
+            </div>
+            <div class="card-body">
+                <div class="data-field">
+                    <span class="field-label">Nombre Completo</span>
+                    <span class="field-value">{{ extractedData.cliente.nombre }}</span>
+                </div>
+                <div class="data-field">
+                    <span class="field-label">RFC</span>
+                    <span class="field-value">{{ extractedData.cliente.rfc }}</span>
+                </div>
+                <div class="data-field">
+                    <span class="field-label">Dirección</span>
+                    <span class="field-value">{{ extractedData.cliente.direccion }}</span>
+                </div>
+            </div>
+        </mat-card>
+
+        <!-- Tarjeta Verde: Datos de la Póliza -->
+        <mat-card class="data-card card-green">
+            <div class="card-header-row">
+                <div class="card-icon icon-green"><mat-icon>verified_user</mat-icon></div>
+                <span class="card-title">Datos de la Póliza</span>
+            </div>
+            <div class="card-body">
+                <div class="data-field">
+                    <span class="field-label">Número de Póliza</span>
+                    <span class="field-value">{{ extractedData.poliza.numero }}</span>
+                </div>
+                <div class="data-field">
+                    <span class="field-label">Concepto</span>
+                    <span class="field-value">{{ extractedData.poliza.ramo }}</span>
+                </div>
+                <div class="data-field">
+                    <span class="field-label">Aseguradora</span>
+                    <span class="field-value">{{ extractedData.poliza.aseguradora }}</span>
+                </div>
+            </div>
+        </mat-card>
+
+        <!-- Tarjeta Morada: Vigencia -->
+        <mat-card class="data-card card-purple">
+            <div class="card-header-row">
+                <div class="card-icon icon-purple"><mat-icon>calendar_today</mat-icon></div>
+                <span class="card-title">Vigencia</span>
+            </div>
+            <div class="card-body">
+                <div class="data-field">
+                    <span class="field-label">Fecha de Inicio</span>
+                    <span class="field-value fs-5">{{ extractedData.vigencia.inicio | date:'dd MMM yyyy' }}</span>
+                </div>
+                <div class="data-field">
+                    <span class="field-label">Fecha de Fin</span>
+                    <span class="field-value fs-5">{{ extractedData.vigencia.fin | date:'dd MMM yyyy' }}</span>
+                </div>
+            </div>
+        </mat-card>
+
+        <!-- Tarjeta Ámbar: Recibos -->
+        <mat-card class="data-card card-amber">
+            <div class="card-header-row">
+                <div class="card-icon icon-amber"><mat-icon>receipt_long</mat-icon></div>
+                <span class="card-title">Recibos (SEMESTRAL)</span>
+            </div>
+            <div class="card-body">
+                <div class="data-field data-field--row" *ngFor="let rec of extractedData.recibos">
+                    <div>
+                        <span class="field-value d-block">Recibo {{ rec.id }}</span>
+                        <span class="field-label">{{ rec.fecha }}</span>
+                    </div>
+                    <span class="field-amount">${{ rec.monto | number:'1.2-2' }}</span>
+                </div>
+            </div>
+        </mat-card>
+
+    </div>
+
+    <!-- Botón Confirmar -->
+    <div class="text-center fade-in" style="animation-delay: 0.3s">
+        <button class="btn-confirm" (click)="onConfirm()">
+            <mat-icon>check_circle_outline</mat-icon>
+            Confirmar y Continuar
+        </button>
+    </div>
+
+</div>

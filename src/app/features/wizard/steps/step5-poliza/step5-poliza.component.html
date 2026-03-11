@@ -1,0 +1,52 @@
+<div class="step-container">
+
+    <div class="text-center mb-4 fade-in">
+        <h1 class="step-title">Paso 5: Entrega de Póliza</h1>
+        <p class="step-subtitle">Selecciona cómo deseas compartir esta póliza con tu cliente.</p>
+    </div>
+
+    <div class="text-center mb-5 fade-in" style="animation-delay: 0.1s">
+        <div class="days-badge">
+            <mat-icon>timer</mat-icon>
+            Faltan {{ diasRestantes }} días para su vencimiento
+        </div>
+    </div>
+
+    <div class="mb-5 fade-in" style="animation-delay: 0.2s">
+
+        <button class="delivery-card opt-blue" (click)="onDeliveryOption('TuPoliza')">
+            <div class="delivery-icon"><mat-icon>language</mat-icon></div>
+            <div class="delivery-info">
+                <div class="delivery-name">TuPoliza</div>
+                <div class="delivery-desc">Compartir una landing page interactiva y personalizada del cliente.</div>
+            </div>
+            <mat-icon class="chevron">chevron_right</mat-icon>
+        </button>
+
+        <button class="delivery-card opt-purple" (click)="onDeliveryOption('MiPoliza App')">
+            <div class="delivery-icon"><mat-icon>app_shortcut</mat-icon></div>
+            <div class="delivery-info">
+                <div class="delivery-name">MiPoliza App</div>
+                <div class="delivery-desc">Dar acceso a la aplicación móvil para consultar sus documentos.</div>
+            </div>
+            <mat-icon class="chevron">chevron_right</mat-icon>
+        </button>
+
+        <button class="delivery-card opt-amber" (click)="onDeliveryOption('Renovación Programada')">
+            <div class="delivery-icon"><mat-icon>event_repeat</mat-icon></div>
+            <div class="delivery-info">
+                <div class="delivery-name">Renovación Programada</div>
+                <div class="delivery-desc">Agendar recordatorio automático 30 días antes del vencimiento.</div>
+            </div>
+            <mat-icon class="chevron">chevron_right</mat-icon>
+        </button>
+
+    </div>
+
+    <div class="text-center fade-in" style="animation-delay: 0.3s">
+        <button class="btn-continue" (click)="onContinue()">
+            Continuar al Siguiente Paso <mat-icon>arrow_forward</mat-icon>
+        </button>
+    </div>
+
+</div>
