@@ -1,71 +1,93 @@
-<div class="step-container">
-
-    <div class="text-center mb-5 fade-in">
+<div class="h-100 d-flex flex-column p-4 animation-fade-in">
+    <div class="text-center mb-5">
         <h1 class="step-title">Paso 3: Completa los Datos</h1>
-        <p class="step-subtitle">Algunos datos no pudieron ser extraídos automáticamente. Por favor complétalos.</p>
+        <p class="step-subtitle">Algunos datos no pudieron ser extraídos automáticamente o requieren tu revisión.</p>
     </div>
 
-    <form [formGroup]="completarForm" class="form-wrapper fade-in" style="animation-delay: 0.1s">
-
-        <!-- Email y Teléfono -->
-        <div class="row g-3 mb-4">
-            <div class="col-12 col-md-6">
-                <mat-form-field appearance="outline" class="w-100">
-                    <mat-label>Correo Electrónico</mat-label>
-                    <input matInput formControlName="email" type="email" placeholder="ejemplo@correo.com">
-                    <mat-icon matSuffix>email</mat-icon>
-                    <mat-hint>Para enviar notificaciones automáticas</mat-hint>
-                    <mat-error *ngIf="completarForm.get('email')?.hasError('required')">Requerido</mat-error>
-                    <mat-error *ngIf="completarForm.get('email')?.hasError('email')">Correo inválido</mat-error>
-                </mat-form-field>
-            </div>
-            <div class="col-12 col-md-6">
-                <mat-form-field appearance="outline" class="w-100">
-                    <mat-label>Número de Celular</mat-label>
-                    <input matInput formControlName="telefono" type="tel" placeholder="10 dígitos">
-                    <mat-icon matSuffix>phone_iphone</mat-icon>
-                    <mat-hint>Necesario para enviar SMS y mensajes de WhatsApp</mat-hint>
-                    <mat-error *ngIf="completarForm.get('telefono')?.hasError('pattern')">Debe tener 10
-                        dígitos</mat-error>
-                </mat-form-field>
+    <form [formGroup]="completarForm" class="row g-4 w-100 mx-auto" style="max-width: 600px;">
+        
+        <!-- Correo Electrónico -->
+        <div class="col-12 col-md-6">
+            <div class="form-group">
+                <label class="form-label fw-semibold text-dark">Correo Electrónico</label>
+                <div class="input-group">
+                    <span class="input-group-text bg-white border-end-0 text-muted"><i class="bi bi-envelope"></i></span>
+                    <input type="email" class="form-control border-start-0 ps-0" formControlName="email" placeholder="ejemplo@correo.com">
+                </div>
+                <!-- Validation Feedback -->
+                <div *ngIf="completarForm.get('email')?.touched && completarForm.get('email')?.invalid" class="text-danger small mt-1 fade-in">
+                    <i class="bi bi-exclamation-circle me-1"></i>
+                    <span *ngIf="completarForm.get('email')?.hasError('required')">El correo es requerido.</span>
+                    <span *ngIf="completarForm.get('email')?.hasError('email')">Formato de correo inválido.</span>
+                </div>
+                <div class="form-text small text-muted mt-1"><i class="bi bi-info-circle me-1"></i>Para notificaciones automáticas</div>
             </div>
         </div>
 
-        <!-- Commission Slider -->
-        <div class="commission-box mb-4 fade-in" style="animation-delay: 0.2s">
-            <div class="d-flex align-items-center gap-2 mb-3">
-                <span class="commission-title">% Porcentaje de Comisión</span>
-            </div>
-            <div class="d-flex align-items-center gap-3 mb-1">
-                <mat-slider class="flex-grow-1" min="0" max="30" step="1" discrete [displayWith]="formatLabel">
-                    <input matSliderThumb [value]="comisionPorcentaje" (valueChange)="updateComision($event)">
-                </mat-slider>
-                <div class="pct-badge">{{ comisionPorcentaje }}%</div>
-            </div>
-            <small class="text-muted">Porcentaje de comisión que recibes por esta póliza</small>
-        </div>
-
-        <!-- Comisiones calculadas (yellow box like Figma) -->
-        <div class="commission-result-box mb-5 fade-in" style="animation-delay: 0.3s">
-            <div class="result-row">
-                <span>Recibo 1/2:</span>
-                <span class="result-amount">${{ (24238.19 * comisionPorcentaje / 100) | number:'1.3-3' }}</span>
-            </div>
-            <div class="result-row">
-                <span>Recibo 2/2:</span>
-                <span class="result-amount">${{ (21154.23 * comisionPorcentaje / 100) | number:'1.3-3' }}</span>
-            </div>
-            <div class="result-row result-total">
-                <span>Total Comisión:</span>
-                <span class="result-total-amount">${{ comisionCalculada | number:'1.3-3' }}</span>
+        <!-- Teléfono Celular -->
+        <div class="col-12 col-md-6">
+            <div class="form-group">
+                <label class="form-label fw-semibold text-dark">Número de Celular</label>
+                <div class="input-group">
+                    <span class="input-group-text bg-white border-end-0 text-muted"><i class="bi bi-telephone"></i></span>
+                    <input type="tel" class="form-control border-start-0 ps-0" formControlName="telefono" placeholder="10 dígitos" maxlength="10">
+                </div>
+                <div *ngIf="completarForm.get('telefono')?.touched && completarForm.get('telefono')?.invalid" class="text-danger small mt-1 fade-in">
+                    <i class="bi bi-exclamation-circle me-1"></i>
+                    <span *ngIf="completarForm.get('telefono')?.hasError('required')">El celular es requerido.</span>
+                    <span *ngIf="completarForm.get('telefono')?.hasError('pattern')">Debe contener exactamente 10 numéros.</span>
+                </div>
+                <div class="form-text small text-muted mt-1"><i class="bi bi-info-circle me-1"></i>Para alertas vía SMS o WhatsApp</div>
             </div>
         </div>
 
-        <!-- Botón -->
-        <div class="text-center fade-in" style="animation-delay: 0.4s">
-            <button class="btn-primary-figma" type="button" (click)="onSave()">
-                <mat-icon>check_circle</mat-icon>
-                Guardar y Continuar
+        <!-- Commission Configuration -->
+        <div class="col-12 mt-5">
+            <div class="card border-0 shadow-sm rounded-4 p-4 bg-white position-relative overflow-hidden">
+                <div class="position-absolute top-0 start-0 w-100" style="height: 4px; background: linear-gradient(90deg, #f59e0b, #fbbf24);"></div>
+                
+                <h5 class="fw-bold text-dark mb-4 d-flex align-items-center gap-2">
+                    <div class="icon-circle bg-orange-subtle text-orange rounded p-2 d-inline-flex" style="width: 32px; height: 32px">
+                        <i class="bi bi-currency-dollar"></i>
+                    </div>
+                    Configuración de Comisión
+                </h5>
+
+                <div class="mb-4">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <label class="form-label fw-semibold text-muted mb-0">Porcentaje de ganancia (%):</label>
+                        <span class="badge bg-warning text-dark fs-6 px-3 py-2 rounded-pill shadow-sm">{{ comisionPorcentaje }}%</span>
+                    </div>
+                    
+                    <input type="range" class="form-range" min="0" max="30" step="1" 
+                           [value]="comisionPorcentaje" (input)="updateComision($event)" id="commissionRange">
+                    
+                    <div class="d-flex justify-content-between text-muted small mt-1">
+                        <span>0%</span>
+                        <span>15%</span>
+                        <span>30%</span>
+                    </div>
+                </div>
+
+                <!-- Simulation Results -->
+                <div class="bg-light-modern rounded-3 p-3">
+                    <div class="d-flex justify-content-between align-items-center mb-2 text-muted">
+                        <span class="small fw-medium"><i class="bi bi-receipt me-1"></i> Primas Detectadas ({{ state?.receipts?.length || 0 }} recibos)</span>
+                        <span class="fw-bold">{{ totalPrima | currency:'MXN':'symbol':'1.0-0' }}</span>
+                    </div>
+                    <hr class="my-2 border-secondary opacity-25">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="fw-bold text-dark">Comisión Estimada</span>
+                        <span class="fs-4 fw-bold text-success">{{ comisionCalculada | currency:'MXN':'symbol':'1.0-2' }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="col-12 mt-5 text-center">
+            <button class="btn btn-primary-blue btn-lg px-5 shadow-sm rounded-pill" type="button" (click)="onSave()">
+                <i class="bi bi-check-circle me-2"></i> Guardar y Continuar
             </button>
         </div>
 

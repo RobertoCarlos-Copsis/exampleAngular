@@ -1,46 +1,44 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter, OnInit } from '@angular/core';
 import { CommonModule, DecimalPipe } from '@angular/common';
-import { MatCardModule } from '@angular/material/card';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { WizardService, WizardState } from '../../../../core/services/wizard.service';
 
 @Component({
   selector: 'app-step4-recibos',
   standalone: true,
   imports: [
     CommonModule,
-    MatCardModule,
-    MatButtonModule,
-    MatIconModule,
-    MatSnackBarModule,
     DecimalPipe
   ],
   templateUrl: './step4-recibos.component.html',
   styleUrls: ['./step4-recibos.component.scss']
 })
-export class Step4RecibosComponent {
+export class Step4RecibosComponent implements OnInit {
   @Output() nextStep = new EventEmitter<void>();
 
-  reciboActual = {
-    id: '1/2',
-    monto: 24238.19,
-    vencimiento: '15 Feb 2025',
-    estado: 'PENDIENTE'
-  };
+  state!: WizardState;
 
-  constructor(private snackBar: MatSnackBar) { }
+  constructor(private wizardService: WizardService) { }
+
+  ngOnInit(): void {
+    this.wizardService.state$.subscribe(s => this.state = s);
+  }
+
+  togglePaidStatus(index: number) {
+    const updatedReceipts = [...this.state.receipts];
+    updatedReceipts[index] = {
+      ...updatedReceipts[index],
+      isPaid: !updatedReceipts[index].isPaid
+    };
+    this.wizardService.updateState({ receipts: updatedReceipts });
+  }
 
   onActionClick(action: string) {
-    this.snackBar.open(`${action} configurado/enviado exitosamente.`, 'Cerrar', {
-      duration: 3000,
-      panelClass: ['success-snackbar'],
-      horizontalPosition: 'center',
-      verticalPosition: 'bottom'
-    });
+    // This could optionally open a beautiful Bootstrap modal instead of just snackbar.
+    alert(`${action} configurado/enviado exitosamente.`);
   }
 
   onContinue() {
+    this.wizardService.nextStep();
     this.nextStep.emit();
   }
 }

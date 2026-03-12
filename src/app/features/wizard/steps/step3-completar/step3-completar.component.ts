@@ -1,11 +1,7 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter, OnInit } from '@angular/core';
 import { CommonModule, DecimalPipe } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatSliderModule } from '@angular/material/slider';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
+import { WizardService, WizardState } from '../../../../core/services/wizard.service';
 
 @Component({
   selector: 'app-step3-completar',
@@ -14,46 +10,62 @@ import { MatIconModule } from '@angular/material/icon';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatSliderModule,
-    MatButtonModule,
-    MatIconModule,
     DecimalPipe
   ],
   templateUrl: './step3-completar.component.html',
   styleUrls: ['./step3-completar.component.scss']
 })
-export class Step3CompletarComponent {
+export class Step3CompletarComponent implements OnInit {
   @Output() nextStep = new EventEmitter<void>();
 
   completarForm: FormGroup;
+  state!: WizardState;
+  
+  comisionPorcentaje = 0;
 
-  // Simulamos datos de comisiones basados en el total de primas
-  primaTotal = 45392.42;
-  comisionPorcentaje = 10;
-
-  get comisionCalculada() {
-    return (this.primaTotal * this.comisionPorcentaje) / 100;
-  }
-
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private wizardService: WizardService) {
     this.completarForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       telefono: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]]
     });
   }
 
-  updateComision(value: number) {
-    this.comisionPorcentaje = value;
+  ngOnInit(): void {
+    this.wizardService.state$.subscribe(s => {
+      this.state = s;
+      if (this.completarForm.pristine) {
+         this.completarForm.patchValue({
+           email: s.client.email,
+           telefono: s.client.phone
+         });
+      }
+      this.comisionPorcentaje = s.commissionPercentage;
+    });
   }
 
-  formatLabel(value: number): string {
-    return `${value}%`;
+  get totalPrima() {
+    return this.state?.receipts.reduce((acc, r) => acc + (r.prima || 0), 0) || 0;
+  }
+
+  get comisionCalculada() {
+    return (this.totalPrima * this.comisionPorcentaje) / 100;
+  }
+
+  updateComision(event: any) {
+    const val = Number(event.target.value);
+    this.wizardService.updateState({ commissionPercentage: val });
   }
 
   onSave() {
     if (this.completarForm.valid) {
+      this.wizardService.updateState({
+        client: {
+          ...this.state.client,
+          email: this.completarForm.value.email,
+          phone: this.completarForm.value.telefono
+        }
+      });
+      this.wizardService.nextStep();
       this.nextStep.emit();
     } else {
       this.completarForm.markAllAsTouched();

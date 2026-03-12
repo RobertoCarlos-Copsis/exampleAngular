@@ -1,49 +1,48 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter, OnInit } from '@angular/core';
 import { CommonModule, DecimalPipe, DatePipe } from '@angular/common';
-import { MatCardModule } from '@angular/material/card';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
+import { WizardService, WizardState } from '../../../../core/services/wizard.service';
 
 @Component({
   selector: 'app-step2-extraccion',
   standalone: true,
   imports: [
     CommonModule,
-    MatCardModule,
-    MatButtonModule,
-    MatIconModule,
     DecimalPipe,
     DatePipe
   ],
   templateUrl: './step2-extraccion.component.html',
   styleUrls: ['./step2-extraccion.component.scss']
 })
-export class Step2ExtraccionComponent {
+export class Step2ExtraccionComponent implements OnInit {
   @Output() nextStep = new EventEmitter<void>();
 
-  // Mock data basándonos en el prototipo de figma
-  extractedData = {
-    cliente: {
-      nombre: 'Juan Pérez García',
-      rfc: 'PEGJ800101XYZ',
-      direccion: 'Av. Paseo de la Reforma 222, CDMX'
-    },
-    poliza: {
-      numero: 'POL-9023841',
-      ramo: 'Seguro de Auto Residente',
-      aseguradora: 'GNP Seguros'
-    },
-    vigencia: {
-      inicio: new Date(2025, 1, 15), // 15 Feb 2025
-      fin: new Date(2026, 1, 15)
-    },
-    recibos: [
-      { id: '1/2', fecha: '15 Feb 2025 - 15 Ago 2025', monto: 24238.19 },
-      { id: '2/2', fecha: '15 Ago 2025 - 15 Feb 2026', monto: 21154.23 }
-    ]
-  };
+  state!: WizardState;
+  loading = true;
+
+  constructor(private wizardService: WizardService) {}
+
+  ngOnInit(): void {
+    this.wizardService.state$.subscribe(s => {
+      this.state = s;
+    });
+
+    // Simulamos un retraso visual estético de extracción
+    setTimeout(() => {
+      // Cargamos algunos recibos mock si no hay
+      if (this.state.receipts.length === 0) {
+        this.wizardService.updateState({
+          receipts: [
+            { id: 1, periodo: 'Semestre 1', prima: 14500.00, isPaid: false },
+            { id: 2, periodo: 'Semestre 2', prima: 14500.00, isPaid: false }
+          ]
+        });
+      }
+      this.loading = false;
+    }, 1500);
+  }
 
   onConfirm() {
+    this.wizardService.nextStep();
     this.nextStep.emit();
   }
 }

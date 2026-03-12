@@ -24,15 +24,12 @@
             <h4 class="upload-title">Arrastra tu archivo aquí</h4>
             <p class="upload-sub">o da clic para seleccionar desde tu dispositivo</p>
 
-            <!-- Botones de acción (simulados — sin file picker) -->
+            <!-- Botones de acción real -->
+            <input type="file" id="fileUploadInput" accept="application/pdf" class="d-none" (change)="onFileSelected($event)">
             <div class="d-flex flex-column flex-sm-row justify-content-center gap-3 mt-4 mb-4">
-                <button class="btn-upload btn-upload--blue" (click)="simulateUpload()">
+                <button class="btn-upload btn-upload--blue" (click)="triggerFileInput()">
                     <mat-icon>upload</mat-icon>
-                    <span>Subir PDF o Imagen</span>
-                </button>
-                <button class="btn-upload btn-upload--purple" (click)="simulateUpload()">
-                    <mat-icon>photo_camera</mat-icon>
-                    <span>Tomar Foto</span>
+                    <span>Subir Póliza (PDF)</span>
                 </button>
             </div>
 

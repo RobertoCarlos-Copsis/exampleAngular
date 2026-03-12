@@ -120,3 +120,53 @@ body {
         padding: 32px 40px !important;
     }
 }
+
+/* Custom utility classes mimicking Bootstrap & Figma */
+.font-primary { font-family: 'Outfit', 'Inter', sans-serif; }
+.text-primary-blue { color: var(--blue-600) !important; }
+.bg-primary-blue { background-color: var(--blue-600) !important; }
+.btn-primary-blue {
+    background: linear-gradient(135deg, var(--blue-600), var(--purple-600));
+    color: white;
+    border: none;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+}
+.btn-primary-blue:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 8px 25px rgba(37, 99, 235, 0.4);
+    color: white;
+}
+
+.text-purple { color: var(--purple-600) !important; }
+.text-orange { color: var(--amber-500) !important; }
+.bg-purple-subtle { background-color: var(--purple-50) !important; }
+.bg-orange-subtle { background-color: #fffbeb !important; border-color: #fef3c7 !important; }
+
+.bg-light-modern { background-color: var(--gray-50) !important; }
+.letter-spacing-1 { letter-spacing: 1px; }
+.cursor-pointer { cursor: pointer; }
+.transition-all { transition: all 0.3s ease; }
+
+.animation-fade-in {
+    animation: fadeIn 0.4s ease forwards;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Action Cards (Steps 4, 5) */
+.action-card {
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.action-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05) !important;
+}
+
+/* Remove default pointer events on Stepper Headers */
+.mat-step-header {
+    pointer-events: none !important;
+}

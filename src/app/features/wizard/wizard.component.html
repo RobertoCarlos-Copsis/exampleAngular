@@ -59,7 +59,7 @@
 
             <!-- Paso 7 -->
             <mat-step label="Estadísticas" [completed]="completedSteps[6]">
-                <app-step7-estadisticas (resetWizard)="resetAll(stepper)"></app-step7-estadisticas>
+                <app-step7-estadisticas (nextStep)="advance(6, stepper)"></app-step7-estadisticas>
             </mat-step>
 
             <!-- Customización de Íconos del Stepper -->
