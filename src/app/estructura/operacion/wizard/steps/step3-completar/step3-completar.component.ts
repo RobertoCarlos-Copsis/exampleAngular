@@ -1,7 +1,9 @@
 import { Component, Output, EventEmitter, OnInit } from '@angular/core';
 import { CommonModule, DecimalPipe } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { WizardService, WizardState } from '../../../../core/services/wizard.service';
+import { MatIconModule } from '@angular/material/icon';
+import { MatSliderModule } from '@angular/material/slider';
+import { WizardService, WizardState } from '../../../../../core/services/wizard.service';
 
 @Component({
   selector: 'app-step3-completar',
@@ -10,7 +12,9 @@ import { WizardService, WizardState } from '../../../../core/services/wizard.ser
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    DecimalPipe
+    DecimalPipe,
+    MatIconModule,
+    MatSliderModule
   ],
   templateUrl: './step3-completar.component.html',
   styleUrls: ['./step3-completar.component.scss']
@@ -19,7 +23,7 @@ export class Step3CompletarComponent implements OnInit {
   @Output() nextStep = new EventEmitter<void>();
 
   completarForm: FormGroup;
-  state!: WizardState;
+  state = this.wizardService.state;
   
   comisionPorcentaje = 0;
 
@@ -31,20 +35,16 @@ export class Step3CompletarComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.wizardService.state$.subscribe(s => {
-      this.state = s;
-      if (this.completarForm.pristine) {
-         this.completarForm.patchValue({
-           email: s.client.email,
-           telefono: s.client.phone
-         });
-      }
-      this.comisionPorcentaje = s.commissionPercentage;
+    const s = this.state();
+    this.completarForm.patchValue({
+      email: s.client.email,
+      telefono: s.client.phone
     });
+    this.comisionPorcentaje = s.commissionPercentage || 0;
   }
 
   get totalPrima() {
-    return this.state?.receipts.reduce((acc, r) => acc + (r.prima || 0), 0) || 0;
+    return this.state().receipts.reduce((acc, r) => acc + (r.prima || 0), 0);
   }
 
   get comisionCalculada() {
@@ -60,7 +60,7 @@ export class Step3CompletarComponent implements OnInit {
     if (this.completarForm.valid) {
       this.wizardService.updateState({
         client: {
-          ...this.state.client,
+          ...this.state().client,
           email: this.completarForm.value.email,
           phone: this.completarForm.value.telefono
         }

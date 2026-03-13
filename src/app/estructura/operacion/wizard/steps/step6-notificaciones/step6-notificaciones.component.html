@@ -1,0 +1,76 @@
+<div class="step-container animation-fade-in max-w-4xl mx-auto">
+    
+    <!-- Header Section -->
+    <div class="text-center mb-32px">
+        <h1 class="fs-32x font-700 text-figma-gray-900">Paso 6: Notificaciones Automáticas</h1>
+        <p class="fs-18x text-figma-gray-600 mt-10px">Personaliza las alertas que se activarán automáticamente para esta póliza.</p>
+    </div>
+
+    <!-- Toggles List -->
+    <div class="figma-card mb-32px">
+        <div class="toggle-list">
+            
+            <div class="toggle-row">
+                <div class="toggle-left">
+                    <div class="icon-box icon-blue"><mat-icon>notifications_active</mat-icon></div>
+                    <div class="toggle-text">
+                        <h4 class="fs-16x font-700 mb-0">Recordatorios de Cobranza</h4>
+                        <p class="fs-14x text-figma-gray-400 mb-0">Avisos automáticos de pago a clientes vía Email/WhatsApp.</p>
+                    </div>
+                </div>
+                <div class="toggle-action">
+                    <mat-slide-toggle [checked]="state().notifications.cobranza.active" (change)="toggleNotification('cobranza', $event)"></mat-slide-toggle>
+                </div>
+            </div>
+
+            <div class="toggle-row">
+                <div class="toggle-left">
+                    <div class="icon-box icon-purple"><mat-icon>event_repeat</mat-icon></div>
+                    <div class="toggle-text">
+                        <h4 class="fs-16x font-700 mb-0">Alertas de Renovación</h4>
+                        <p class="fs-14x text-figma-gray-400 mb-0">Recordatorios 30 días antes del fin de vigencia.</p>
+                    </div>
+                </div>
+                <div class="toggle-action">
+                    <mat-slide-toggle [checked]="state().notifications.renovacion.active" (change)="toggleNotification('renovacion', $event)"></mat-slide-toggle>
+                </div>
+            </div>
+
+            <div class="toggle-row">
+                <div class="toggle-left">
+                    <div class="icon-box icon-amber"><mat-icon>warning_amber</mat-icon></div>
+                    <div class="toggle-text">
+                        <h4 class="fs-16x font-700 mb-0">Estatus de Siniestros</h4>
+                        <p class="fs-14x text-figma-gray-400 mb-0">Notificaciones sobre el avance de siniestros reportados.</p>
+                    </div>
+                </div>
+                <div class="toggle-action">
+                    <mat-slide-toggle [checked]="state().notifications.siniestros.active" (change)="toggleNotification('siniestros', $event)"></mat-slide-toggle>
+                </div>
+            </div>
+
+            <div class="toggle-row">
+                <div class="toggle-left">
+                    <div class="icon-box icon-green"><mat-icon>account_balance_wallet</mat-icon></div>
+                    <div class="toggle-text">
+                        <h4 class="fs-16x font-700 mb-0">Corte de Comisiones</h4>
+                        <p class="fs-14x text-figma-gray-400 mb-0">Avisos de dispersión y estados de cuenta mensuales.</p>
+                    </div>
+                </div>
+                <div class="toggle-action">
+                    <mat-slide-toggle [checked]="state().notifications.comisiones.active" (change)="toggleNotification('comisiones', $event)"></mat-slide-toggle>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Final Actions -->
+    <div class="text-center">
+        <button class="btn-primary-blue mx-auto vertical-center justify-content-center gap-2 px-32px" (click)="onContinue()">
+            <span>Finalizar y Ver Estadísticas Finales</span>
+            <mat-icon class="fs-20x">bar_chart</mat-icon>
+        </button>
+    </div>
+
+</div>

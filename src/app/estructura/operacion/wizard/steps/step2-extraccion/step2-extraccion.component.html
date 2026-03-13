@@ -1,0 +1,107 @@
+<div class="step-container animation-fade-in max-w-4xl mx-auto">
+    
+    <!-- Loading State -->
+    <div *ngIf="loading" class="text-center py-40px fade-in">
+        <div class="spinner-border text-figma-blue-600 mb-4" role="status" style="width: 3rem; height: 3rem;">
+            <span class="visually-hidden">Cargando...</span>
+        </div>
+        <h3 class="fs-24x font-600 text-figma-gray-900 mb-2">Analizando documento con IA...</h3>
+        <p class="fs-16x text-figma-gray-600">Extrayendo datos de la póliza, cliente y recibos.</p>
+    </div>
+
+    <!-- Main Content -->
+    <div *ngIf="!loading" class="fade-in">
+        <div class="text-center mb-32px">
+            <h1 class="fs-32x font-700 text-figma-gray-900">✨ Datos Extraídos</h1>
+            <p class="fs-18x text-figma-gray-600 mt-10px">Nuestra IA ha procesado el archivo. Revisa la información detectada antes de continuar.</p>
+        </div>
+
+        <div class="grid-2x2 mb-32px">
+            <!-- Client Card (Blue) -->
+            <div class="figma-data-card border-l-blue">
+                <div class="card-header">
+                    <div class="header-icon bg-blue-50 text-blue">
+                        <mat-icon>person</mat-icon>
+                    </div>
+                    <span class="fs-16x font-600">Datos del Cliente</span>
+                </div>
+                <div class="card-content">
+                    <div class="data-row">
+                        <span class="label">NOMBRE COMPLETO</span>
+                        <span class="value">{{ state().client.name || 'N/A' }}</span>
+                    </div>
+                    <div class="data-row">
+                        <span class="label">DIRECCIÓN</span>
+                        <span class="value">{{ state().client.address || '—' }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Policy Card (Green) -->
+            <div class="figma-data-card border-l-green">
+                <div class="card-header">
+                    <div class="header-icon bg-green-50 text-green">
+                        <mat-icon>article</mat-icon>
+                    </div>
+                    <span class="fs-16x font-600">Datos de la Póliza</span>
+                </div>
+                <div class="card-content">
+                    <div class="data-row">
+                        <span class="label">NÚMERO DE PÓLIZA</span>
+                        <span class="value">{{ state().policy.data.policyNumber || 'N/A' }}</span>
+                    </div>
+                    <div class="data-row">
+                        <span class="label">CONCEPTO</span>
+                        <span class="value">{{ state().policy.data.concept || 'N/A' }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Validity Card (Purple) -->
+            <div class="figma-data-card border-l-purple">
+                <div class="card-header">
+                    <div class="header-icon bg-purple-50 text-purple">
+                        <mat-icon>calendar_today</mat-icon>
+                    </div>
+                    <span class="fs-16x font-600">Vigencia</span>
+                </div>
+                <div class="card-content">
+                    <div class="data-row">
+                        <span class="label">FECHA INICIO</span>
+                        <span class="value">{{ state().policy.data.startDate || 'N/A' }}</span>
+                    </div>
+                    <div class="data-row">
+                        <span class="label">FECHA FIN</span>
+                        <span class="value">{{ state().policy.data.endDate || 'N/A' }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Receipts Card (Yellow) -->
+            <div class="figma-data-card border-l-yellow">
+                <div class="card-header">
+                    <div class="header-icon bg-yellow-50 text-yellow">
+                        <mat-icon>payments</mat-icon>
+                    </div>
+                    <span class="fs-16x font-600">Recibos Detectados</span>
+                </div>
+                <div class="card-content overflow-y-auto" style="max-height: 160px;">
+                    <div *ngFor="let r of state().receipts" class="receipt-item">
+                        <div class="receipt-info">
+                            <span class="fs-14x font-600">RECIBO {{ r.id }}</span>
+                            <span class="fs-12x text-figma-gray-400">Vence: {{ r.vencimiento }}</span>
+                        </div>
+                        <span class="fs-14x font-700 text-figma-blue-600">{{ r.prima | currency:'USD' }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center">
+            <button class="btn-success-figma vertical-center gap-2 mx-auto" (click)='onConfirm()'>
+                <span>Confirmar y Continuar</span>
+                <mat-icon class="fs-20x">arrow_forward</mat-icon>
+            </button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,111 @@
+<div class="step-container animation-fade-in max-w-4xl mx-auto">
+
+    <!-- Header Section -->
+    <div class="text-center mb-32px">
+        <h1 class="fs-32x font-700 text-figma-gray-900">Paso 1: Importa tu Póliza</h1>
+        <p class="fs-18x text-figma-gray-600 mt-10px">
+            Sube un PDF o imagen de la carátula de tu póliza.<br>
+            Nuestra IA extraerá automáticamente todos los datos importantes.
+        </p>
+    </div>
+
+    <!-- Upload Area -->
+    <div class="upload-area" [class.processing]="state === 'processing'" [class.done]="state === 'done'">
+        
+        <!-- IDLE STATE -->
+        <div *ngIf="state === 'idle'" class="w-100 fade-in">
+            <ngx-dropzone (change)="onSelect($event)" class="figma-dropzone" [multiple]="false">
+                <ngx-dropzone-label>
+                    <div class="p-32px text-center">
+                        <!-- Icons -->
+                        <div class="d-flex justify-content-center gap-4 mb-20px">
+                            <div class="icon-orb icon-blue"><mat-icon>description</mat-icon></div>
+                            <div class="icon-orb icon-purple"><mat-icon>photo_camera</mat-icon></div>
+                        </div>
+
+                        <h4 class="fs-20x font-600 text-figma-gray-900">Arrastra tu archivo aquí</h4>
+                        <p class="fs-16x text-figma-gray-600">o da clic para seleccionar desde tu dispositivo</p>
+                    </div>
+                </ngx-dropzone-label>
+                <ngx-dropzone-preview *ngFor="let f of files" [removable]="true" (removed)="onRemove(f)">
+                    <ngx-dropzone-label class="fs-14x">{{ f.name }}</ngx-dropzone-label>
+                </ngx-dropzone-preview>
+            </ngx-dropzone>
+
+            <!-- Secondary Actions -->
+            <div class="d-flex flex-column flex-sm-row justify-content-center gap-3 mt-32px">
+                <button class="btn-primary-blue vertical-center gap-2" (click)="triggerFileInput()">
+                    <mat-icon class="fs-20x">upload_file</mat-icon>
+                    <span>Subir PDF o Imagen</span>
+                </button>
+                <button class="btn-secondary-figma vertical-center gap-2" (click)="onCapturePhoto()">
+                    <mat-icon class="fs-20x">photo_camera</mat-icon>
+                    <span>Tomar Foto</span>
+                </button>
+            </div>
+            
+            <p class="text-center mt-20px fs-14x text-figma-gray-400">
+                Formatos aceptados: PDF, JPG, PNG &bull; Máximo 10MB
+            </p>
+        </div>
+
+        <!-- PROCESSING STATE -->
+        <div *ngIf="state === 'processing'" class="w-100 text-center py-40px fade-in">
+            <div class="ai-orb-wrapper mb-32px">
+                <div class="ai-orb">
+                    <div class="orb-ring"></div>
+                    <div class="orb-ring orb-ring--alt"></div>
+                    <mat-icon class="orb-icon">psychology</mat-icon>
+                </div>
+            </div>
+            <h4 class="fs-24x font-600 text-figma-gray-900">Procesando con IA...</h4>
+            <p class="fs-16x text-figma-gray-600">Extrayendo datos de la póliza</p>
+
+            <div class="extraction-checklist mt-32px mx-auto">
+                <div class="check-item" style="animation-delay: 0.2s">
+                    <mat-icon class="check-icon">check_circle</mat-icon>
+                    <span class="fs-14x">Leyendo documento</span>
+                </div>
+                <div class="check-item" style="animation-delay: 0.8s">
+                    <mat-icon class="check-icon">check_circle</mat-icon>
+                    <span class="fs-14x">Identificando datos del cliente</span>
+                </div>
+                <div class="check-item" style="animation-delay: 1.4s">
+                    <mat-icon class="check-icon">check_circle</mat-icon>
+                    <span class="fs-14x">Extrayendo información de la póliza</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- DONE STATE -->
+        <div *ngIf="state === 'done'" class="w-100 text-center py-40px fade-in">
+            <div class="success-orb mb-20px">
+                <mat-icon>check_circle</mat-icon>
+            </div>
+            <h4 class="fs-24x font-700 text-figma-gray-900">¡Póliza procesada!</h4>
+            <p class="fs-16x text-figma-gray-600">Continuando al resumen de datos...</p>
+        </div>
+    </div>
+
+    <!-- Feature Highlights -->
+    <div class="row g-4 mt-32px h-feature-highlights" *ngIf="state === 'idle'">
+        <div class="col-md-4">
+            <div class="feature-tile">
+                <mat-icon class="tile-icon text-blue">description</mat-icon>
+                <span class="fs-14x font-600">Cualquier PDF</span>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="feature-tile">
+                <mat-icon class="tile-icon text-purple">photo_camera</mat-icon>
+                <span class="fs-14x font-600">Foto con celular</span>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="feature-tile bg-figma-green-50 border-figma-green">
+                <mat-icon class="tile-icon text-green">auto_awesome</mat-icon>
+                <span class="fs-14x font-600 text-figma-green-700">Extracción auto</span>
+            </div>
+        </div>
+    </div>
+</div>

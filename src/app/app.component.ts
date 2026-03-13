@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { WizardComponent } from './features/wizard/wizard.component';
+import { WizardComponent } from './estructura/operacion/wizard/wizard.component';
 
 @Component({
   selector: 'app-root',

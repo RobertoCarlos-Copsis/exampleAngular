@@ -5,6 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { FormsModule } from '@angular/forms';
+import { WizardService } from '../../../../../core/services/wizard.service';
 
 @Component({
   selector: 'app-step6-notificaciones',
@@ -23,14 +24,18 @@ import { FormsModule } from '@angular/forms';
 export class Step6NotificacionesComponent {
   @Output() nextStep = new EventEmitter<void>();
 
-  notificaciones = {
-    renovaciones: true,
-    siniestros: false,
-    comisiones: true,
-    generales: true
-  };
+  state = this.wizardService.state;
+
+  constructor(private wizardService: WizardService) { }
+
+  toggleNotification(key: string, event: any) {
+    const currentNotifications = { ...this.state().notifications };
+    currentNotifications[key] = { active: event.checked };
+    this.wizardService.updateState({ notifications: currentNotifications });
+  }
 
   onContinue() {
+    this.wizardService.nextStep();
     this.nextStep.emit();
   }
 }

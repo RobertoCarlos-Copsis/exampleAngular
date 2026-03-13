@@ -4,6 +4,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { WizardService } from '../../../../../core/services/wizard.service';
 
 @Component({
   selector: 'app-step5-poliza',
@@ -21,7 +22,12 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 export class Step5PolizaComponent {
   @Output() nextStep = new EventEmitter<void>();
 
-  constructor(private snackBar: MatSnackBar) { }
+  state = this.wizardService.state;
+
+  constructor(
+    private snackBar: MatSnackBar,
+    private wizardService: WizardService
+  ) { }
 
   diasRestantes = 365; // Simulación para la UI
 
@@ -35,6 +41,7 @@ export class Step5PolizaComponent {
   }
 
   onContinue() {
+    this.wizardService.nextStep();
     this.nextStep.emit();
   }
 }

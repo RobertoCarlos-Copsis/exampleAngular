@@ -1,6 +1,7 @@
 import { Component, Output, EventEmitter, OnInit } from '@angular/core';
 import { CommonModule, DecimalPipe, DatePipe } from '@angular/common';
-import { WizardService, WizardState } from '../../../../core/services/wizard.service';
+import { MatIconModule } from '@angular/material/icon';
+import { WizardService, WizardState } from '../../../../../core/services/wizard.service';
 
 @Component({
   selector: 'app-step2-extraccion',
@@ -8,7 +9,8 @@ import { WizardService, WizardState } from '../../../../core/services/wizard.ser
   imports: [
     CommonModule,
     DecimalPipe,
-    DatePipe
+    DatePipe,
+    MatIconModule
   ],
   templateUrl: './step2-extraccion.component.html',
   styleUrls: ['./step2-extraccion.component.scss']
@@ -16,24 +18,20 @@ import { WizardService, WizardState } from '../../../../core/services/wizard.ser
 export class Step2ExtraccionComponent implements OnInit {
   @Output() nextStep = new EventEmitter<void>();
 
-  state!: WizardState;
+  state = this.wizardService.state;
   loading = true;
 
   constructor(private wizardService: WizardService) {}
 
   ngOnInit(): void {
-    this.wizardService.state$.subscribe(s => {
-      this.state = s;
-    });
-
-    // Simulamos un retraso visual estético de extracción
+    // La señal del servicio se actualiza automáticamente.
+    // Solo simulamos el retraso visual.
     setTimeout(() => {
-      // Cargamos algunos recibos mock si no hay
-      if (this.state.receipts.length === 0) {
+      if (this.state().receipts.length === 0) {
         this.wizardService.updateState({
           receipts: [
-            { id: 1, periodo: 'Semestre 1', prima: 14500.00, isPaid: false },
-            { id: 2, periodo: 'Semestre 2', prima: 14500.00, isPaid: false }
+            { id: 1, periodo: 'Mensual 1', prima: 1250.00, estado: 'Pendiente', vencimiento: '15/05/2024' },
+            { id: 2, periodo: 'Mensual 2', prima: 1250.00, estado: 'Pendiente', vencimiento: '15/06/2024' }
           ]
         });
       }

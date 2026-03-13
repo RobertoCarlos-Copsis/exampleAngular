@@ -1,0 +1,79 @@
+<div class="step-container animation-fade-in max-w-4xl mx-auto">
+    
+    <!-- Header Section -->
+    <div class="text-center mb-32px">
+        <h1 class="fs-32x font-700 text-figma-gray-900">Paso 3: Completa los Datos</h1>
+        <p class="fs-18x text-figma-gray-600 mt-10px">Valida la información de contacto y configura la comisión para esta póliza.</p>
+    </div>
+
+    <form [formGroup]="completarForm" class="mx-auto" style="max-width: 540px;">
+        
+        <!-- Contact Information -->
+        <div class="mb-20px">
+            <label class="fs-14x font-600 text-figma-gray-600 mb-10px d-block">Correo Electrónico</label>
+            <div class="figma-input-wrapper">
+                <mat-icon class="input-icon">mail</mat-icon>
+                <input type="email" class="figma-input" formControlName="email" placeholder="ejemplo@correo.com">
+            </div>
+            <div *ngIf="completarForm.get('email')?.touched && completarForm.get('email')?.invalid" class="text-danger fs-12x mt-1">
+                <span *ngIf="completarForm.get('email')?.hasError('required')">El correo es requerido.</span>
+                <span *ngIf="completarForm.get('email')?.hasError('email')">Formato inválido.</span>
+            </div>
+        </div>
+
+        <div class="mb-32px">
+            <label class="fs-14x font-600 text-figma-gray-600 mb-10px d-block">Número de Celular</label>
+            <div class="figma-input-wrapper">
+                <mat-icon class="input-icon">smartphone</mat-icon>
+                <input type="tel" class="figma-input" formControlName="telefono" placeholder="10 dígitos" maxlength="10">
+            </div>
+            <div *ngIf="completarForm.get('telefono')?.touched && completarForm.get('telefono')?.invalid" class="text-danger fs-12x mt-1">
+                <span *ngIf="completarForm.get('telefono')?.hasError('required')">El celular es requerido.</span>
+                <span *ngIf="completarForm.get('telefono')?.hasError('pattern')">Debe tener 10 números.</span>
+            </div>
+        </div>
+
+        <!-- Commission Configuration -->
+        <div class="figma-card mb-32px p-20px">
+            <div class="d-flex justify-content-between align-items-center mb-20px">
+                <span class="fs-16x font-700">Porcentaje de Comisión</span>
+                <span class="pct-pill">{{ comisionPorcentaje }}%</span>
+            </div>
+
+            <div class="slider-container mb-10px">
+                <input type="range" min="0" max="40" step="1" 
+                       [(ngModel)]="comisionPorcentaje" 
+                       [ngModelOptions]="{standalone: true}" 
+                       (input)="updateComision($event)"
+                       class="figma-range-slider">
+            </div>
+            
+            <div class="d-flex justify-content-between text-figma-gray-400 fs-12x mb-20px">
+                <span>0%</span>
+                <span>20%</span>
+                <span>40%</span>
+            </div>
+
+            <!-- Commission Summary (Yellow Box) -->
+            <div class="figma-summary-box">
+                <div class="summary-row">
+                    <span class="fs-14x text-figma-gray-600">Total Primas ({{ state().receipts.length }} recibos)</span>
+                    <span class="fs-14x font-600">{{ totalPrima | currency:'MXN' }}</span>
+                </div>
+                <div class="summary-row mt-10px highlight">
+                    <span class="fs-16x font-700">Comisión Estimada</span>
+                    <span class="fs-20x font-800 text-figma-blue-600">{{ comisionCalculada | currency:'MXN' }}</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="text-center">
+            <button class="btn-primary-blue w-100 vertical-center justify-content-center gap-2" type="button" (click)="onSave()">
+                <span>Guardar y Continuar</span>
+                <mat-icon class="fs-20x">arrow_forward</mat-icon>
+            </button>
+        </div>
+
+    </form>
+</div>

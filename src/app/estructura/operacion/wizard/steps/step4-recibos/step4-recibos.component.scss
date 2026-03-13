@@ -1,0 +1,113 @@
+.max-w-4xl { max-width: 896px; }
+.mx-auto { margin-left: auto; margin-right: auto; }
+.mb-24px { margin-bottom: 24px; }
+.mb-32px { margin-bottom: 32px; }
+.p-24px { padding: 24px; }
+
+.receipts-carousel-wrapper {
+    overflow-x: auto;
+    padding-bottom: 10px;
+    &::-webkit-scrollbar { height: 6px; }
+    &::-webkit-scrollbar-thumb { background: var(--figma-gray-200); border-radius: 10px; }
+}
+
+.receipts-carousel {
+    display: flex;
+    gap: 16px;
+    padding: 4px;
+}
+
+.receipt-card-mini {
+    min-width: 180px;
+    background: white;
+    border: 1px solid var(--figma-gray-200);
+    border-radius: var(--figma-radius-xl);
+    padding: 16px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover { border-color: var(--figma-blue-600); transform: translateY(-2px); }
+
+    &.active {
+        border-color: var(--figma-blue-600);
+        background: var(--figma-blue-50);
+        box-shadow: var(--figma-shadow-md);
+    }
+
+    .status-dot {
+        width: 8px;
+        height: 8px;
+        background: var(--figma-amber-500);
+        border-radius: 50%;
+        &.paid { background: var(--figma-green-600); }
+    }
+}
+
+.active-receipt-details {
+    .receipt-icon-box {
+        width: 52px;
+        height: 52px;
+        background: var(--figma-blue-50);
+        color: var(--figma-blue-600);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        mat-icon { font-size: 28px; width: 28px; height: 28px; }
+    }
+}
+
+.action-buttons-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+
+@media (max-width: 576px) {
+    .action-buttons-grid { grid-template-columns: 1fr; }
+}
+
+.figma-action-btn {
+    background: white;
+    border: 1px solid var(--figma-gray-200);
+    border-radius: var(--figma-radius-xl);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.2s;
+    outline: none;
+
+    .icon-circle {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        mat-icon { font-size: 22px; width: 22px; height: 22px; }
+    }
+
+    &:hover { transform: translateY(-3px); box-shadow: var(--figma-shadow-md); }
+
+    &.btn-border-blue {
+        &:hover { border-color: var(--figma-blue-600); }
+        .icon-circle { background: var(--figma-blue-50); color: var(--figma-blue-600); }
+    }
+    &.btn-border-green {
+        &:hover { border-color: var(--figma-green-600); }
+        .icon-circle { background: var(--figma-green-50); color: var(--figma-green-600); }
+    }
+    &.btn-border-purple {
+        &:hover { border-color: var(--figma-purple-600); }
+        .icon-circle { background: var(--figma-purple-50); color: var(--figma-purple-600); }
+    }
+}
+
+.figma-card {
+    background: white;
+    border-radius: var(--figma-radius-xl);
+    border: 1px solid var(--figma-gray-200);
+    box-shadow: var(--figma-shadow-sm);
+}

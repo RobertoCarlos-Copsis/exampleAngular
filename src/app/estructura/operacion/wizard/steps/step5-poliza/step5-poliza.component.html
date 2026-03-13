@@ -1,0 +1,46 @@
+<div class="step-container animation-fade-in max-w-4xl mx-auto">
+    
+    <!-- Header Section -->
+    <div class="text-center mb-32px">
+        <h1 class="fs-32x font-700 text-figma-gray-900">Paso 5: Entrega y Renovación</h1>
+        <p class="fs-18x text-figma-gray-600 mt-10px">Selecciona cómo deseas compartir esta póliza con tu cliente y configura su renovación.</p>
+    </div>
+
+    <!-- Gradient Cards Grid -->
+    <div class="delivery-grid mb-32px">
+        <!-- Email Card -->
+        <div class="gradient-card bg-blue-grad" (click)="onDeliveryOption('Email')">
+            <div class="card-icon">
+                <mat-icon>mail</mat-icon>
+            </div>
+            <h3 class="fs-20x font-700">Enviar por Email</h3>
+            <p class="fs-14x opacity-80 mt-10px">Se enviará una landing page interactiva con todos los datos.</p>
+        </div>
+
+        <!-- Download Card -->
+        <div class="gradient-card bg-purple-grad" (click)="onDeliveryOption('WhatsApp')">
+            <div class="card-icon">
+                <mat-icon>picture_as_pdf</mat-icon>
+            </div>
+            <h3 class="fs-20x font-700">Descargar PDF</h3>
+            <p class="fs-14x opacity-80 mt-10px">Descarga la carátula de la póliza digitalizada en PDF.</p>
+        </div>
+
+        <!-- Renewal Card -->
+        <div class="gradient-card bg-orange-grad" (click)="onDeliveryOption('Renovación')">
+            <div class="card-icon">
+                <mat-icon>event_repeat</mat-icon>
+            </div>
+            <h3 class="fs-20x font-700">Configurar Renovación</h3>
+            <p class="fs-14x opacity-80 mt-10px">Agenda un recordatorio automático 30 días antes del vencimiento.</p>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="text-center">
+        <button class="btn-primary-blue mx-auto vertical-center justify-content-center gap-2 px-32px" (click)="onContinue()">
+            <span>Configurar Notificaciones Automatizadas</span>
+            <mat-icon class="fs-20x">settings_suggest</mat-icon>
+        </button>
+    </div>
+</div>

@@ -1,5 +1,6 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Injectable, signal, computed } from '@angular/core';
+import { toObservable } from '@angular/core/rxjs-interop';
+import { Observable } from 'rxjs';
 
 export interface WizardState {
   currentStep: number;
@@ -54,31 +55,42 @@ const initialState: WizardState = {
   providedIn: 'root'
 })
 export class WizardService {
-  private stateSubject = new BehaviorSubject<WizardState>(initialState);
-  state$ = this.stateSubject.asObservable();
+  // Señal principal de estado (pública para consumo directo, o usar un getter)
+  readonly state = signal<WizardState>(initialState);
+  
+  // Señales computadas para partes específicas
+  readonly currentStep = computed(() => this.state().currentStep);
+  readonly receipts = computed(() => this.state().receipts);
+
+  // Observable para compatibilidad con código existente (RxJS)
+  readonly state$ = toObservable(this.state);
 
   constructor() {}
 
-  get currentState(): WizardState {
-    return this.stateSubject.value;
+  // Getter síncrono para el valor del estado actual
+  get currentStateValue(): WizardState {
+    return this.state();
   }
 
+  // Update compatible con el patrón anterior pero usando señales
   updateState(partialState: Partial<WizardState>): void {
-    this.stateSubject.next({
-      ...this.currentState,
+    this.state.update(state => ({
+      ...state,
       ...partialState
-    });
+    }));
   }
 
   nextStep(): void {
-    if (this.currentState.currentStep < 7) {
-      this.updateState({ currentStep: this.currentState.currentStep + 1 });
+    const current = this.state().currentStep;
+    if (current < 7) {
+      this.updateState({ currentStep: current + 1 });
     }
   }
 
   prevStep(): void {
-    if (this.currentState.currentStep > 1) {
-      this.updateState({ currentStep: this.currentState.currentStep - 1 });
+    const current = this.state().currentStep;
+    if (current > 1) {
+      this.updateState({ currentStep: current - 1 });
     }
   }
 
@@ -89,6 +101,6 @@ export class WizardService {
   }
 
   resetState(): void {
-    this.stateSubject.next(initialState);
+    this.state.set(initialState);
   }
 }

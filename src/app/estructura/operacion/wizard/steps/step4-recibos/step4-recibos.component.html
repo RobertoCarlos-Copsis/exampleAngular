@@ -1,0 +1,68 @@
+<div class="step-container animation-fade-in max-w-4xl mx-auto">
+    
+    <!-- Header Section -->
+    <div class="text-center mb-32px">
+        <h1 class="fs-32x font-700 text-figma-gray-900">Paso 4: Gestión de Recibos</h1>
+        <p class="fs-18x text-figma-gray-600 mt-10px">Gestiona y realiza acciones de cobro para tus recibos programados.</p>
+    </div>
+
+    <!-- Horizontal Receipt List -->
+    <div class="receipts-carousel-wrapper mb-32px">
+        <div class="receipts-carousel">
+            <div *ngFor="let r of state().receipts; let i = index" 
+                 class="receipt-card-mini" 
+                 [class.active]="i === activeIndex"
+                 (click)="selectReceipt(i)">
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                    <span class="fs-14x font-700">Recibo {{ r.id }}</span>
+                    <span class="status-dot" [class.paid]="r.estado === 'Pagado'"></span>
+                </div>
+                <div class="fs-16x font-800 text-figma-blue-600">{{ r.prima | currency:'USD' }}</div>
+                <div class="fs-10x font-600 text-figma-gray-400 mt-1">Vence: {{ r.vencimiento }}</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Active Receipt Summary -->
+    <div class="figma-card active-receipt-details mb-32px p-24px">
+        <div class="d-flex justify-content-between align-items-center mb-24px">
+            <div class="vertical-center gap-3">
+                <div class="receipt-icon-box">
+                    <mat-icon>receipt_long</mat-icon>
+                </div>
+                <div>
+                    <h3 class="fs-20x font-700 mb-0">Detalle del Recibo {{ reciboActual.id }}</h3>
+                    <span class="fs-12x text-figma-gray-600">Estado: <strong [class.text-success]="reciboActual.estado === 'Pagado'">{{ reciboActual.estado }}</strong></span>
+                </div>
+            </div>
+            <div class="text-end">
+                <span class="fs-24x font-800 text-figma-blue-600">{{ reciboActual.prima | currency:'USD' }}</span>
+                <p class="fs-12x text-figma-gray-400 mb-0">Importe Total con IVA</p>
+            </div>
+        </div>
+
+        <!-- Action Grid Below Active Receipt -->
+        <div class="action-buttons-grid">
+            <button class="figma-action-btn btn-border-blue" (click)="onActionClick('Recordatorio Enviado')">
+                <div class="icon-circle"><mat-icon>notifications_active</mat-icon></div>
+                <span class="fs-14x font-600">Recordatorio</span>
+            </button>
+            <button class="figma-action-btn btn-border-green" (click)="onActionClick('WhatsApp Enviado')">
+                <div class="icon-circle"><mat-icon>chat_bubble</mat-icon></div>
+                <span class="fs-14x font-600">SMS/WhatsApp</span>
+            </button>
+            <button class="figma-action-btn btn-border-purple" (click)="onActionClick('Nota en Bitácora')">
+                <div class="icon-circle"><mat-icon>history_edu</mat-icon></div>
+                <span class="fs-14x font-600">Bitácora</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="text-center">
+        <button class="btn-primary-blue mx-auto vertical-center justify-content-center gap-2" (click)="onContinue()">
+            <span>Continuar a Entrega</span>
+            <mat-icon class="fs-20x">arrow_forward</mat-icon>
+        </button>
+    </div>
+</div>
