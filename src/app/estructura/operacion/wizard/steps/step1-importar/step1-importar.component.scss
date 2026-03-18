@@ -1,150 +1,128 @@
-.max-w-4xl { max-width: 896px; }
-.mx-auto { margin-left: auto; margin-right: auto; }
-.py-40px { padding-top: 40px; padding-bottom: 40px; }
-.mt-32px { margin-top: 32px; }
-.mb-32px { margin-bottom: 32px; }
-
-.figma-dropzone {
-    min-height: 380px;
-    background-color: var(--figma-gray-50);
-    border: 2px dashed var(--figma-gray-200) !important;
-    border-radius: var(--figma-radius-xl) !important;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    cursor: pointer;
-
-    &:hover {
-        background-color: white;
-        border-color: var(--figma-blue-600) !important;
-        box-shadow: var(--figma-shadow-lg);
-        transform: translateY(-2px);
-    }
-}
-
-.icon-orb {
-    width: 64px;
-    height: 64px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    mat-icon { font-size: 32px; width: 32px; height: 32px; }
-    
-    &.icon-blue { background: var(--figma-blue-50); color: var(--figma-blue-600); }
-    &.icon-purple { background: var(--figma-purple-50); color: var(--figma-purple-600); }
-}
-
-.btn-secondary-figma {
-    background: transparent;
-    border: 1px solid var(--figma-gray-200);
+.dropzone-figma {
+    border: 2px dashed var(--figma-gray-200);
+    padding: 60px 20px;
+    text-align: center;
     border-radius: var(--figma-radius-xl);
-    padding: 0.75rem 2rem;
-    font-weight: 600;
-    color: var(--figma-gray-600);
-    transition: all 0.2s;
+    background: white;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
     &:hover {
-        background: var(--figma-gray-100);
-        color: var(--figma-gray-900);
+        border-color: var(--figma-blue-600);
+        background: var(--figma-gray-50);
+    }
+
+    &.processing {
+        border-style: solid;
+        border-color: var(--figma-blue-600);
+        cursor: wait;
+    }
+
+    &.success {
+        border-style: solid;
+        border-color: var(--figma-green-600);
     }
 }
 
-/* AI Processing Orb */
-.ai-orb-wrapper {
+.orb-container {
     display: flex;
     justify-content: center;
+    gap: -12px;
+
+    .orb {
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        box-shadow: var(--figma-shadow-md);
+
+        mat-icon {
+            font-size: 28px;
+            width: 28px;
+            height: 28px;
+        }
+
+        &.blue {
+            background: var(--figma-blue-600);
+        }
+
+        &.purple {
+            background: var(--figma-purple-600);
+            margin-left: -15px;
+        }
+    }
 }
 
-.ai-orb {
-    position: relative;
+.scanner-container {
     width: 100px;
     height: 100px;
-}
-
-.orb-ring {
-    position: absolute;
-    inset: 0;
-    border: 4px solid var(--figma-blue-50);
-    border-top-color: var(--figma-blue-600);
-    border-radius: 50%;
-    animation: rotate 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-    
-    &--alt {
-        inset: 12px;
-        border-top-color: var(--figma-purple-600);
-        animation-duration: 2s;
-        animation-direction: reverse;
-    }
-}
-
-.orb-icon {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 40px;
-    width: 40px;
-    height: 40px;
-    color: var(--figma-blue-600);
-}
-
-@keyframes rotate {
-    to { transform: rotate(360deg); }
-}
-
-.extraction-checklist {
-    max-width: 380px;
-}
-
-.check-item {
+    background: var(--figma-blue-50);
+    border-radius: 20px;
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 8px 0;
-    color: var(--figma-gray-400);
-    opacity: 0;
-    animation: slideIn 0.4s ease forwards;
-    
-    .check-icon {
-        color: var(--figma-green-600);
-        font-size: 20px;
-        width: 20px;
-        height: 20px;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+
+    .ai-brain-icon {
+        font-size: 48px;
+        width: 48px;
+        height: 48px;
+        color: var(--figma-blue-600);
+        z-index: 1;
+    }
+
+    .scanner-line {
+        position: absolute;
+        width: 100%;
+        height: 2px;
+        background: var(--figma-blue-600);
+        box-shadow: 0 0 15px var(--figma-blue-600);
+        top: -2px;
+        animation: scan 2s linear infinite;
+        z-index: 2;
     }
 }
 
-@keyframes slideIn {
-    from { opacity: 0; transform: translateX(-12px); }
-    to { opacity: 1; transform: translateX(0); }
+.custom-progress {
+    height: 6px;
+    background: var(--figma-gray-200);
+    border-radius: 3px;
+    overflow: hidden;
+
+    .progress-fill {
+        height: 100%;
+        background: var(--figma-blue-600);
+        transition: width 0.3s ease;
+    }
 }
 
 .success-orb {
-    color: var(--figma-green-600);
-    mat-icon { font-size: 64px; width: 64px; height: 64px; }
+    width: 80px;
+    height: 80px;
+    background: var(--figma-green-600);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    mat-icon {
+        font-size: 40px;
+        width: 40px;
+        height: 40px;
+    }
 }
 
-/* Feature Tiles */
-.feature-tile {
-    background: white;
-    border: 1px solid var(--figma-gray-200);
-    border-radius: var(--figma-radius-xl);
-    padding: 24px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
-    transition: all 0.2s;
-    
-    &:hover { border-color: var(--figma-blue-600); transform: translateY(-4px); }
-    
-    .tile-icon { font-size: 28px; width: 28px; height: 28px; }
-    .text-blue { color: var(--figma-blue-600); }
-    .text-purple { color: var(--figma-purple-600); }
-    .text-green { color: var(--figma-green-600); }
-    
-    &.bg-figma-green-50 {
-        background-color: var(--figma-green-50);
-        border-color: var(--figma-green-600);
+@keyframes scan {
+    0% {
+        top: 0%;
+    }
+
+    100% {
+        top: 100%;
     }
 }

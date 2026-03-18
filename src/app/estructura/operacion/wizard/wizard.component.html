@@ -1,82 +1,83 @@
-<div class="app-layout min-vh-100 bg-light-modern d-flex flex-column">
-
-    <!-- Encabezado Fijo -->
-    <header class="top-nav shadow-sm bg-white py-3 px-4 d-flex align-items-center justify-content-between sticky-top">
-        <div class="logo-area d-flex align-items-center gap-3">
-            <div
-                class="logo-box bg-primary-blue text-white rounded d-flex justify-content-center align-items-center fw-bold fs-4">
-                q
+<div class="app-container">
+    <header class="header-brand">
+        <div class="figma-container header-container py-2">
+            <div class="logo-box" style="background: #5d5bf0; box-shadow: 0 0 15px rgba(93, 91, 240, 0.4);">q</div>
+            <div class="ms-3">
+                <h1 style="font-size: 1.25rem; font-weight: 800; margin: 0; color: white;">qCRM 2.0</h1>
+                <p style="font-size: 0.75rem; margin: 0; opacity: 0.8; color: white; font-weight: 500;">Demo Interactiva</p>
             </div>
-            <div class="logo-text">
-                <h5 class="mb-0 fw-bold text-dark font-primary">qCRM 2.0</h5>
-                <small class="text-muted">Demo Interactiva</small>
+            <div class="ms-auto pe-4 text-end d-none d-md-block">
+                <p style="font-size: 0.75rem; font-weight: 700; margin: 0; text-transform: uppercase; color: rgba(255, 255, 255, 0.6); letter-spacing: 0.05em;">Paso {{ stepper.selectedIndex + 1 }} de 7</p>
+                <p style="font-size: 0.95rem; font-weight: 600; margin: 0; color: white;">
+                    {{ getCurrentStepSummary(stepper.selectedIndex) }}
+                </p>
             </div>
-        </div>
-
-        <div class="header-status d-none d-md-block text-end">
-            <h6 class="mb-0 fw-bold font-primary text-dark">Paso <span class="text-primary-blue">{{
-                    stepper.selectedIndex + 1 }}</span> de 7</h6>
-            <small class="text-muted">{{ getCurrentStepSummary(stepper.selectedIndex) }}</small>
         </div>
     </header>
 
-    <!-- Contenido Principal: Stepper -->
-    <main class="flex-grow-1 container-fluid py-4">
+    <!-- Main Wizard Content -->
+    <main class="wizard-main fade-in w-100">
+        <div class="figma-container wizard-card-wrapper" style="margin: 0 auto !important; display: block;">
 
-        <!-- Stepper NO-linear para que podamos navegar libremente desde código -->
-        <mat-stepper #stepper class="bg-transparent mb-5 wizard-stepper global-stepper d-none d-md-block"
-            (selectionChange)="onStepChange($event)">
+            <!-- Stepper Indicator Container (Synced 1000px with React) -->
+            <div class="custom-stepper" style="max-width: 1000px; margin: 0 auto 4rem auto;">
+                <div class="step-item" *ngFor="let step of stepSummaries; let i = index"
+                    [class.active]="stepper.selectedIndex === i"
+                    [class.completed]="completedSteps[i] || stepper.selectedIndex > i">
+                    <div class="step-circle">{{ i + 1 }}</div>
+                    <span class="step-label">{{ step }}</span>
+                </div>
+            </div>
 
-            <!-- Paso 1 -->
-            <mat-step label="Importar" [completed]="completedSteps[0]">
-                <app-step1-importar (nextStep)="advance(0, stepper)"></app-step1-importar>
-            </mat-step>
-
-            <!-- Paso 2 -->
-            <mat-step label="IA Extrae" [completed]="completedSteps[1]">
-                <app-step2-extraccion (nextStep)="advance(1, stepper)"></app-step2-extraccion>
-            </mat-step>
-
-            <!-- Paso 3 -->
-            <mat-step label="Completar" [completed]="completedSteps[2]">
-                <app-step3-completar (nextStep)="advance(2, stepper)"></app-step3-completar>
-            </mat-step>
-
-            <!-- Paso 4 -->
-            <mat-step label="Recibos" [completed]="completedSteps[3]">
-                <app-step4-recibos (nextStep)="advance(3, stepper)"></app-step4-recibos>
-            </mat-step>
-
-            <!-- Paso 5 -->
-            <mat-step label="Póliza" [completed]="completedSteps[4]">
-                <app-step5-poliza (nextStep)="advance(4, stepper)"></app-step5-poliza>
-            </mat-step>
-
-            <!-- Paso 6 -->
-            <mat-step label="Notificaciones" [completed]="completedSteps[5]">
-                <app-step6-notificaciones (nextStep)="advance(5, stepper)"></app-step6-notificaciones>
-            </mat-step>
-
-            <!-- Paso 7 -->
-            <mat-step label="Estadísticas" [completed]="completedSteps[6]">
-                <app-step7-estadisticas (nextStep)="advance(6, stepper)"></app-step7-estadisticas>
-            </mat-step>
-
-            <!-- Customización de Íconos del Stepper -->
-            <ng-template matStepperIcon="edit">
-                <mat-icon>check</mat-icon>
-            </ng-template>
-            <ng-template matStepperIcon="done">
-                <mat-icon>check</mat-icon>
-            </ng-template>
-
-        </mat-stepper>
-
-        <!-- Fallback Mobile Navigation -->
-        <div class="d-md-none stepper-mobile text-center mb-4">
-            <span class="badge bg-primary-blue rounded-pill px-3 py-2 fw-normal">Paso {{ stepper.selectedIndex + 1 }} de
-                7</span>
+            <!-- Mat Stepper (Hidden Headers via CSS) -->
+            <mat-stepper #stepper class="bg-transparent" (selectionChange)="onStepChange($event)">
+                <mat-step label="Importar" [completed]="completedSteps[0]">
+                    <app-step1-importar (nextStep)="advance(0, stepper)"></app-step1-importar>
+                </mat-step>
+                <mat-step label="IA Extrae" [completed]="completedSteps[1]">
+                    <app-step2-extraccion (nextStep)="advance(1, stepper)"></app-step2-extraccion>
+                </mat-step>
+                <mat-step label="Completar" [completed]="completedSteps[2]">
+                    <app-step3-completar (nextStep)="advance(2, stepper)"></app-step3-completar>
+                </mat-step>
+                <mat-step label="Recibos" [completed]="completedSteps[3]">
+                    <app-step4-recibos (nextStep)="advance(3, stepper)"></app-step4-recibos>
+                </mat-step>
+                <mat-step label="Póliza" [completed]="completedSteps[4]">
+                    <app-step5-poliza (nextStep)="advance(4, stepper)"></app-step5-poliza>
+                </mat-step>
+                <mat-step label="Notificaciones" [completed]="completedSteps[5]">
+                    <app-step6-notificaciones (nextStep)="advance(5, stepper)"></app-step6-notificaciones>
+                </mat-step>
+                <mat-step label="Estadísticas" [completed]="completedSteps[6]">
+                    <app-step7-estadisticas (resetWizard)="resetAll(stepper)"></app-step7-estadisticas>
+                </mat-step>
+            </mat-stepper>
         </div>
-
     </main>
+
+    <!-- Footer Brand (React Style) -->
+    <footer class="app-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo d-flex align-items-center justify-content-center gap-2 mb-3">
+                    <div class="logo-box">q</div>
+                    <h2 style="font-size: 1.5rem; font-weight: 700; color: white;">qCRM 2.0</h2>
+                </div>
+                <p style="color: #9ca3af; margin-bottom: 2rem;">
+                    La solución completa para gestionar tu cartera de seguros
+                </p>
+                <div class="footer-actions d-flex flex-column align-items-center gap-3">
+                    <button class="btn-demo" style="min-width: 280px;">Solicitar Demo Completa</button>
+                    <button *ngIf="stepper.selectedIndex > 0" class="btn btn-link text-white-50 text-decoration-none"
+                        (click)="stepper.previous()" style="font-weight: 600; font-size: 0.9rem;">
+                        ← Volver al paso anterior
+                    </button>
+                </div>
+                <p style="font-size: 0.75rem; color: #6b7280; margin-top: 3rem;">
+                    © 2025 qCRM 2.0. Todos los derechos reservados.
+                </p>
+            </div>
+        </div>
+    </footer>
 </div>

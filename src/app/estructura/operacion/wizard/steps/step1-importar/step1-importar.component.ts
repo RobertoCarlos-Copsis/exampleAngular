@@ -1,14 +1,8 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter, ViewChild, ElementRef, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatCardModule } from '@angular/material/card';
-import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { NgxDropzoneModule } from 'ngx-dropzone';
-import * as pdfjsLib from 'pdfjs-dist';
 import { WizardService } from '../../../../../core/services/wizard.service';
-
-// Set the worker source path
-pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
+import { GeminiExtractionService } from '../../../../../core/services/gemini-extraction.service';
 
 /** Estados posibles de la demo de importación */
 type UploadState = 'idle' | 'processing' | 'done';
@@ -18,10 +12,7 @@ type UploadState = 'idle' | 'processing' | 'done';
   standalone: true,
   imports: [
     CommonModule,
-    MatCardModule,
-    MatButtonModule,
-    MatIconModule,
-    NgxDropzoneModule
+    MatIconModule
   ],
   templateUrl: './step1-importar.component.html',
   styleUrls: ['./step1-importar.component.scss']
@@ -29,16 +20,24 @@ type UploadState = 'idle' | 'processing' | 'done';
 export class Step1ImportarComponent {
   @Output() nextStep = new EventEmitter<void>();
 
-  state: UploadState = 'idle';
-  files: File[] = [];
+  private wizardService = inject(WizardService);
+  public geminiService = inject(GeminiExtractionService);
 
-  constructor(private wizardService: WizardService) {}
+  get state(): UploadState {
+    if (this.geminiService.extrayendo()) return 'processing';
+    if (this.geminiService.datosExtraidos()) return 'done';
+    return 'idle';
+  }
+
+  get files(): File[] {
+    const file = this.geminiService.archivoSeleccionado();
+    return file ? [file] : [];
+  }
 
   /** Handles real file upload from the hidden file input or dropzone */
   async onSelect(event: any) {
     const file: File = event.addedFiles[0];
     if (!file) return;
-    this.files = [file];
     
     // Check if it's a PDF or Image
     const isPdf = file.type === 'application/pdf';
@@ -49,80 +48,65 @@ export class Step1ImportarComponent {
       return;
     }
 
-    this.state = 'processing';
-
     try {
-      if (isPdf) {
-        const arrayBuffer = await file.arrayBuffer();
-        const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
-        let fullText = '';
-        
-        for (let i = 1; i <= pdf.numPages; i++) {
-          const page = await pdf.getPage(i);
-          const textContent = await page.getTextContent();
-          const pageText = textContent.items.map((item: any) => item.str).join(' ');
-          fullText += pageText + ' ';
+      // Usar el servicio de Gemini para extraer datos
+      const datos = await this.geminiService.extractText(file);
+      
+      // Actualizar el estado global del wizard con lo extraído
+      this.wizardService.updateState({
+        client: {
+          name: datos.cliente.nombreCompleto,
+          email: datos.cliente.email,
+          phone: datos.cliente.telefono,
+          address: datos.cliente.direccion
+        },
+        policy: {
+          data: {
+            policyNumber: datos.poliza.numeroPoliza,
+            concept: datos.poliza.tipoPoliza,
+            agentCode: datos.poliza.claveAgente,
+            startDate: datos.vigencia.vigenciaDesde,
+            endDate: datos.vigencia.vigenciaHasta,
+            extractedData: datos // Guardar objeto completo para pasos posteriores
+          }
         }
-        
-        this.processExtractedText(fullText.toLowerCase());
-      } else {
-        // Simular extracción de imagen
-        setTimeout(() => {
-          this.processExtractedText('segmento auto modelo 2024 póliza 987654');
-        }, 3000);
-      }
+      });
+
+      // Avanzar automáticamente después de un breve delay para mostrar el estado "done"
+      setTimeout(() => {
+        this.nextStep.emit();
+      }, 1500);
 
     } catch (error) {
-      console.error('Error al procesar el archivo', error);
-      alert('Hubo un error interpretando el documento.');
-      this.state = 'idle';
+      console.error('Error al procesar el archivo con Gemini', error);
+      alert('Hubo un error interpretando el documento con IA.');
     }
   }
 
   onCapturePhoto() {
-    // Simular apertura de cámara y procesado
-    this.state = 'processing';
-    setTimeout(() => {
-      this.processExtractedText('foto de póliza vida capturada modelo 2024');
-    }, 4000);
-  }
-
-  private processExtractedText(rawString: string) {
-    const extractedData = {
-      name: rawString.includes('nombre') ? 'Juan Pérez (Extraído de PDF)' : 'Juan Pérez García',
-      email: 'juan.perez@example.com',
-      phone: '5512345678',
-      address: 'Lomas de Chapultepec, CDMX',
-      policyNumber: 'POL-' + Math.floor(100000 + Math.random() * 900000),
-      concept: rawString.includes('auto') ? 'Seguro de Auto' : 'Seguro de Vida',
-      agentCode: 'AG-7788',
-      startDate: '01/01/2024',
-      endDate: '01/01/2025'
-    };
-
-    this.wizardService.updateState({
-      client: {
-        name: extractedData.name,
-        email: extractedData.email,
-        phone: extractedData.phone,
-        address: extractedData.address
-      },
-      policy: {
-        data: extractedData
-      }
-    });
-
-    this.state = 'done';
-    setTimeout(() => {
-      this.nextStep.emit();
-    }, 1000);
+    // Simular flujo de captura (en una app real usaría Capacitor/Cordova o MediaDevices)
+    // Para la demo, lanzamos un archivo mock o simplemente disparamos el servicio con un delay
+    alert('Función de cámara disponible en versión móvil. Simulando carga...');
+    // Se podría disparar triggerFileInput() como fallback
+    this.triggerFileInput();
   }
 
   onRemove(event: any) {
-    this.state = 'idle';
+    this.geminiService.reset();
   }
 
+  @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
+
   triggerFileInput() {
-    // Keep for Capture Photo or fallback, but primarily use dropzone
+    this.fileInput.nativeElement.accept = '.pdf,.jpg,.jpeg,.png';
+    this.fileInput.nativeElement.click();
+  }
+
+  onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.onSelect({ addedFiles: [input.files[0]] });
+      input.value = '';
+    }
   }
 }

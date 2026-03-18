@@ -1,10 +1,8 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatCardModule } from '@angular/material/card';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { FormsModule } from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon';
+import { MatSlideToggleModule, MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { WizardService } from '../../../../../core/services/wizard.service';
 
 @Component({
@@ -12,11 +10,9 @@ import { WizardService } from '../../../../../core/services/wizard.service';
   standalone: true,
   imports: [
     CommonModule,
-    MatCardModule,
-    MatButtonModule,
+    FormsModule,
     MatIconModule,
-    MatSlideToggleModule,
-    FormsModule
+    MatSlideToggleModule
   ],
   templateUrl: './step6-notificaciones.component.html',
   styleUrls: ['./step6-notificaciones.component.scss']
@@ -24,13 +20,13 @@ import { WizardService } from '../../../../../core/services/wizard.service';
 export class Step6NotificacionesComponent {
   @Output() nextStep = new EventEmitter<void>();
 
+  private wizardService = inject(WizardService);
   state = this.wizardService.state;
 
-  constructor(private wizardService: WizardService) { }
-
-  toggleNotification(key: string, event: any) {
+  toggleNotification(key: string, event: MatSlideToggleChange) {
+    const checked = event.checked;
     const currentNotifications = { ...this.state().notifications };
-    currentNotifications[key] = { active: event.checked };
+    currentNotifications[key] = { ...currentNotifications[key], active: checked };
     this.wizardService.updateState({ notifications: currentNotifications });
   }
 

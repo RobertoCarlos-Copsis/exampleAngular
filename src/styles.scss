@@ -1,10 +1,13 @@
-@import 'bootstrap/dist/css/bootstrap.min.css';
+/* Custom Figma Layout Engine (No Bootstrap) */
 @import '@angular/material/prebuilt-themes/indigo-pink.css';
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 
 // ── Figma Design Tokens ──────────────────────────────────
 :root {
+    /* Header/Footer background fallback */
+    --figma-bg-app: #f1f5f9;
+
     /* Primary Colors */
     --figma-blue-600: #2563eb;
     --figma-blue-700: #1d4ed8;
@@ -38,43 +41,310 @@
 }
 
 /* Base Styles */
-html, body { 
-    height: 100%; 
-    margin: 0; 
+html,
+body {
+    height: 100%;
+    margin: 0;
     padding: 0;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Outfit', sans-serif;
     font-size: 16px;
     color: var(--figma-gray-900);
-    background-color: var(--figma-gray-50);
+    background-color: #f1f5f9 !important;
+    background-image: radial-gradient(circle at top right, #e0e7ff 0%, transparent 40%), 
+                      radial-gradient(circle at bottom left, #fce7f3 0%, transparent 40%) !important;
+    background-attachment: fixed !important;
     min-height: 100vh;
 }
 
-/* QuattroCRM Compatibility (Remapped to Figma Tokens) */
-.fs-10x { font-size: 0.625rem !important; }
-.fs-12x { font-size: 0.75rem !important; }
-.fs-14x { font-size: 0.875rem !important; }
-.fs-16x { font-size: 1rem !important; }
-.fs-18x { font-size: 1.125rem !important; }
-.fs-20x { font-size: 1.25rem !important; }
-.fs-24x { font-size: 1.5rem !important; }
-.fs-32x { font-size: 2rem !important; }
+.bg-light-figma {
+    background-color: var(--figma-gray-50) !important;
+}
 
-/* Spacing Helpers */
-.mt-10px { margin-top: 10px !important; }
-.mb-10px { margin-bottom: 10px !important; }
-.mb-20px { margin-bottom: 20px !important; }
-.p-20px { padding: 20px !important; }
-.p-32px { padding: 32px !important; }
+/* Layout Containers (Anti-Stretch - Widened to match 1005 reference) */
+/* ── Figma Layout Engine ────────────────────────────────── */
+.figma-container {
+    max-width: 1200px !important;
+    width: 100% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    box-sizing: border-box;
+    display: block !important; /* Specific block for margin auto */
+}
 
-/* Layout Utilities */
+/* 900px centered container for Steps (Synced with React StepContainer) */
+.step-container {
+    max-width: 900px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    width: 100% !important;
+    text-align: center;
+}
+
+.dashboard-container {
+    max-width: 1200px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    width: 100% !important;
+}
+
+.figma-row {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    margin-left: -1rem !important;
+    margin-right: -1rem !important;
+    &.justify-center, &.justify-content-center { justify-content: center !important; }
+    &.align-center, &.align-items-center { align-items: center !important; }
+    &.gap-3 { gap: 1rem !important; }
+    &.gap-4 { gap: 1.5rem !important; }
+}
+
+.figma-col-4 {
+    flex: 0 0 auto !important;
+    width: 33.333333% !important;
+    padding: 0.75rem !important;
+    box-sizing: border-box;
+}
+
+.figma-col-3 {
+    flex: 0 0 auto !important;
+    width: 25% !important;
+    padding: 0.75rem !important;
+    box-sizing: border-box;
+}
+
+.figma-col-6 {
+    flex: 0 0 auto !important;
+    width: 50% !important;
+    padding: 0.75rem !important;
+    box-sizing: border-box;
+}
+
+.figma-col-7 {
+    flex: 0 0 auto !important;
+    width: 58.333333% !important;
+    padding: 0.75rem !important;
+    box-sizing: border-box;
+}
+
+.figma-col-5 {
+    flex: 0 0 auto !important;
+    width: 41.666667% !important;
+    padding: 0.75rem !important;
+    box-sizing: border-box;
+}
+
+.figma-col-8 {
+    flex: 0 0 auto !important;
+    width: 66.666667% !important;
+    padding: 0.75rem !important;
+    box-sizing: border-box;
+}
+
+.figma-col-12 {
+    flex: 0 0 auto !important;
+    width: 100% !important;
+    padding: 0.75rem !important;
+    box-sizing: border-box;
+}
+
+/* Flex Utilities */
+.d-flex { display: flex !important; }
+.flex-column { flex-direction: column !important; }
+.align-items-center, .vertical-center { align-items: center !important; }
+.justify-content-center { justify-content: center !important; }
+.justify-content-between { justify-content: space-between !important; }
+.gap-2 { gap: 0.5rem !important; }
+.gap-3 { gap: 1rem !important; }
+.gap-4 { gap: 1.5rem !important; }
+.ms-2 { margin-left: 0.5rem !important; }
+.ms-3 { margin-left: 1rem !important; }
+.ms-auto { margin-left: auto !important; }
+.me-auto { margin-right: auto !important; }
+.mx-auto { margin-left: auto !important; margin-right: auto !important; }
+.mt-2 { margin-top: 0.5rem !important; }
+.mt-3 { margin-top: 1rem !important; }
+.mt-4 { margin-top: 1.5rem !important; }
+.mt-5 { margin-top: 3rem !important; }
+.mb-2 { margin-bottom: 0.5rem !important; }
+.mb-3 { margin-bottom: 1rem !important; }
+.mb-4 { margin-bottom: 1.5rem !important; }
+.mb-5 { margin-bottom: 3rem !important; }
+.p-4 { padding: 1.5rem !important; }
+.p-5 { padding: 3rem !important; }
+.py-2 { padding-top: 0.5rem !important; padding-bottom: 0.5rem !important; }
+.py-5 { padding-top: 3rem !important; padding-bottom: 3rem !important; }
+.px-4 { padding-left: 1.5rem !important; padding-right: 1.5rem !important; }
+.text-center { text-align: center !important; }
+.text-end { text-align: right !important; }
 .w-100 { width: 100% !important; }
 .h-100 { height: 100% !important; }
-.vertical-center { display: flex; align-items: center; }
-.text-center { text-align: center; }
-.flex-1 { flex: 1; }
+.pe-4 { padding-right: 1.5rem !important; }
+
+/* Responsive Display */
+.d-none { display: none !important; }
+@media (min-width: 768px) {
+    .d-md-block { display: block !important; }
+    .d-md-flex { display: flex !important; }
+}
+
+/* QuattroCRM Compatibility (Remapped to Figma Tokens) */
+.fs-10x {
+    font-size: 0.625rem !important;
+}
+
+.fs-12x {
+    font-size: 0.75rem !important;
+}
+
+.fs-14x {
+    font-size: 0.875rem !important;
+}
+
+.fs-16x {
+    font-size: 1rem !important;
+}
+
+.fs-18x {
+    font-size: 1.125rem !important;
+}
+
+.fs-20x {
+    font-size: 1.25rem !important;
+}
+
+.fs-24x {
+    font-size: 1.5rem !important;
+}
+
+.fs-32x {
+    font-size: 2rem !important;
+}
+
+/* Spacing Helpers */
+.mt-10px {
+    margin-top: 10px !important;
+}
+
+.mb-10px {
+    margin-bottom: 10px !important;
+}
+
+.mb-20px {
+    margin-bottom: 20px !important;
+}
+
+.mb-32px {
+    margin-bottom: 32px !important;
+}
+
+.p-20px {
+    padding: 20px !important;
+}
+
+.p-32px {
+    padding: 32px !important;
+}
+
+.px-32px {
+    padding-left: 32px !important;
+    padding-right: 32px !important;
+}
+
+/* ── Figma Utility Boosters ───────────────────────────── */
+.text-figma-blue-600 {
+    color: var(--figma-blue-600) !important;
+}
+
+.text-figma-blue-700 {
+    color: var(--figma-blue-700) !important;
+}
+
+.text-figma-gray-400 {
+    color: var(--figma-gray-400) !important;
+}
+
+.text-figma-gray-600 {
+    color: var(--figma-gray-600) !important;
+}
+
+.text-figma-gray-900 {
+    color: var(--figma-gray-900) !important;
+}
+
+.text-figma-green-600 {
+    color: var(--figma-green-600) !important;
+}
+
+.text-figma-amber-500 {
+    color: var(--figma-amber-500) !important;
+}
+
+.text-figma-purple-600 {
+    color: var(--figma-purple-600) !important;
+}
+
+.bg-figma-blue-50 {
+    background-color: var(--figma-blue-50) !important;
+}
+
+.bg-figma-green-50 {
+    background-color: var(--figma-green-50) !important;
+}
+
+.bg-figma-gray-50 {
+    background-color: var(--figma-gray-50) !important;
+}
+
+.bg-figma-yellow-50 {
+    background-color: var(--figma-yellow-50) !important;
+}
+
+.bg-figma-purple-50 {
+    background-color: var(--figma-purple-50) !important;
+}
+
+.font-400 {
+    font-weight: 400 !important;
+}
+
+.font-500 {
+    font-weight: 500 !important;
+}
+
+.font-600 {
+    font-weight: 600 !important;
+}
+
+.font-700 {
+    font-weight: 700 !important;
+}
+
+.font-800 {
+    font-weight: 800 !important;
+}
+
+.rounded-12 {
+    border-radius: var(--figma-radius-xl) !important;
+}
+
+/* Semantic Utilities (Already defined in Flex section) */
+.flex-1 {
+    flex: 1;
+}
+
+.d-block {
+    display: block !important;
+}
+
+.gap-2 {
+    gap: 0.5rem !important;
+}
 
 /* Premium Components */
-.mat-card {
+.mat-card,
+.figma-card {
     border-radius: var(--figma-radius-xl) !important;
     background: white !important;
     border: 1px solid var(--figma-gray-200) !important;
@@ -82,12 +352,10 @@ html, body {
     transition: all 0.2s ease;
 }
 
-.mat-card.hoverable:hover {
-    box-shadow: var(--figma-shadow-lg) !important;
-    transform: translateY(-2px);
-}
-
 .btn-primary-blue {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
     background-color: var(--figma-blue-600) !important;
     color: white !important;
     border: none !important;
@@ -96,35 +364,210 @@ html, body {
     font-weight: 600 !important;
     transition: all 0.2s ease !important;
     box-shadow: var(--figma-shadow-sm) !important;
+    gap: 0.5rem !important;
+
+    &:hover {
+        background-color: var(--figma-blue-700) !important;
+        box-shadow: var(--figma-shadow-md) !important;
+    }
 }
 
-.btn-primary-blue:hover {
-    background-color: var(--figma-blue-700) !important;
-    box-shadow: var(--figma-shadow-md) !important;
+.btn-purple-figma {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background-color: #5d5bf0 !important; /* Blueish purple from 1005 reference */
+    color: white !important;
+    border: none !important;
+    border-radius: var(--figma-radius-xl) !important;
+    padding: 0.75rem 2rem !important;
+    font-weight: 600 !important;
+    transition: all 0.2s ease !important;
+    gap: 0.5rem !important;
+
+    &:hover {
+        background-color: #4a48c0 !important;
+    }
+}
+
+.btn-orange-figma {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background-color: #f7a21b !important; /* Orange from 1005 reference */
+    color: white !important;
+    border: none !important;
+    border-radius: var(--figma-radius-xl) !important;
+    padding: 0.75rem 2rem !important;
+    font-weight: 600 !important;
+    transition: all 0.2s ease !important;
+    gap: 0.5rem !important;
+
+    &:hover {
+        background-color: #e59316 !important;
+    }
 }
 
 .btn-success-figma {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
     background-color: var(--figma-green-600) !important;
     color: white !important;
     border: none !important;
     border-radius: var(--figma-radius-xl) !important;
     padding: 0.75rem 2rem !important;
     font-weight: 600 !important;
+    gap: 0.5rem !important;
+}
+
+/* React-Style Wizard Components (Parity with EjemploReact) */
+.info-card {
+    background: white !important;
+    border-radius: 1rem !important;
+    padding: 1.5rem !important;
+    border: 1px solid var(--figma-gray-200) !important;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05) !important;
+    text-align: left;
+    height: 100%;
+    transition: transform 0.2s ease;
+
+    &.client { border-left: 4px solid #3b82f6 !important; background: #f0f7ff !important; }
+    &.policy { border-left: 4px solid #10b981 !important; background: #f0fdf4 !important; }
+    &.validity { border-left: 4px solid #a855f7 !important; background: #faf5ff !important; }
+    &.receipts { border-left: 4px solid #f59e0b !important; background: #fffbeb !important; }
+
+    .card-header {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-bottom: 1.5rem;
+
+        h3 {
+            font-size: 1rem !important;
+            font-weight: 700 !important;
+            color: #1a202c !important;
+            margin: 0 !important;
+        }
+
+        .icon-box {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            mat-icon { font-size: 20px; width: 20px; height: 20px; }
+
+            &.blue { background: #3b82f6; }
+            &.green { background: #10b981; }
+            &.purple { background: #a855f7; }
+            &.yellow { background: #f59e0b; }
+        }
+    }
+}
+
+.data-item {
+    margin-bottom: 1rem;
+    background: rgba(255, 255, 255, 0.6);
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+
+    label {
+        display: block;
+        font-size: 0.75rem !important;
+        color: #6b7280 !important;
+        margin-bottom: 0.25rem;
+        text-transform: uppercase;
+        letter-spacing: 0.025em;
+        font-weight: 600;
+    }
+
+    p {
+        font-size: 1rem !important;
+        font-weight: 700 !important;
+        color: #111827 !important;
+        margin: 0 !important;
+    }
+}
+
+.grid-cards {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+}
+
+.summary-text {
+    color: #6b7280;
+    font-size: 1rem;
+    margin-bottom: 2.5rem;
+    text-align: center;
+}
+
+/* Step 3 Specific Parity */
+.completion-container {
+    max-width: 600px !important;
+    margin: 0 auto;
+}
+
+.commission-summary {
+    background: #fffbeb !important;
+    border: 1px solid #fef3c7 !important;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-top: 2rem;
+
+    h3 {
+        font-size: 0.9375rem !important;
+        color: #1f2937 !important;
+        margin-bottom: 1rem !important;
+    }
+
+    .summary-row {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.875rem;
+        color: #4b5563;
+        margin-bottom: 0.5rem;
+
+        &.total {
+            border-top: 1px solid #fde68a;
+            margin-top: 0.5rem;
+            padding-top: 0.75rem;
+            color: #111827;
+            font-weight: 800;
+            font-size: 1rem;
+        }
+
+        strong { color: #166534; }
+    }
 }
 
 /* Animations */
-.animation-fade-in {
+.animation-fade-in,
+.fade-in {
     animation: fadeIn 0.3s ease-out forwards;
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(8px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* Stepper Customization */
 .mat-horizontal-content-container {
-    padding: 1rem !important;
+    padding: 0 !important;
+    display: block !important; /* Changed from flex to avoid shrinking children */
+    background: transparent !important;
+    width: 100% !important;
 }
 
 @media (min-width: 768px) {
@@ -137,17 +580,180 @@ html, body {
     pointer-events: none !important;
 }
 
-.mat-step-icon {
-    background-color: var(--figma-gray-200) !important;
-    color: var(--figma-gray-600) !important;
-}
-
 .mat-step-icon-selected {
     background-color: var(--figma-blue-600) !important;
-    color: white !important;
 }
 
-.mat-step-icon-state-done {
-    background-color: var(--figma-green-600) !important;
+.active .step-label {
+    color: var(--figma-blue-600);
+    font-weight: 600;
+}
+
+/* ── App Layout ────────────────────────────────────────── */
+.app-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background: #eef2f6;
+    /* Fondo exterior suave */
+}
+
+.wizard-main {
+    flex: 1;
+    padding: 2rem 0 4rem; /* Synced with React */
+    display: block !important;
+    width: 100%;
+    min-height: 100%;
+}
+
+.wizard-card-wrapper {
+    /* Removed global background/shadow/padding to allow steps to handle their own cards (React-style) */
+    width: 100%;
+    display: block !important;
+}
+
+.figma-card {
+    background: white !important;
+    border-radius: 1.5rem !important;
+    padding: 1.5rem !important;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01) !important;
+    border: 1px solid #e2e8f0 !important;
+    margin-bottom: 2rem;
+}
+
+.header-brand {
+    background: linear-gradient(90deg, #1e1b4b 0%, #312e81 100%) !important;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
     color: white !important;
+    padding: 1rem 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+.header-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.logo-box {
+    width: 38px;
+    height: 38px;
+    background: var(--figma-blue-600);
+    color: white;
+    font-weight: 900;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(37, 99, 235, 0.3);
+}
+
+/* ── Custom Stepper Indicator ─────────────────────────── */
+.custom-stepper {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+    position: relative;
+    padding: 0 0.5rem;
+    width: 100%;
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 20px;
+        left: 2rem;
+        right: 2rem;
+        height: 2px;
+        background: var(--figma-gray-200);
+        z-index: 0;
+    }
+}
+
+.step-item {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: default;
+
+    .step-circle {
+        width: 44px;
+        height: 44px;
+        background: white;
+        border: 2px solid var(--figma-gray-200);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 800;
+        color: var(--figma-gray-400);
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    .step-label {
+        font-size: 0.65rem;
+        font-weight: 700;
+        color: var(--figma-gray-400);
+        margin-top: 4px;
+        text-transform: uppercase;
+        letter-spacing: 0.02em;
+        text-align: center;
+        transition: all 0.3s ease;
+    }
+
+    &.active {
+        .step-circle {
+            border-color: var(--figma-blue-600);
+            background: var(--figma-blue-50);
+            color: var(--figma-blue-600);
+            transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(37, 99, 235, 0.2);
+        }
+
+        .step-label {
+            color: var(--figma-blue-600);
+            font-weight: 800;
+        }
+    }
+
+    &.completed {
+        .step-circle {
+            background: var(--figma-green-600);
+            border-color: var(--figma-green-600);
+            color: white;
+        }
+
+        .step-label {
+            color: var(--figma-green-600);
+        }
+    }
+}
+
+/* ── Footer ─────────────────────────────────────────────── */
+.app-footer {
+    background: #0f172a;
+    color: white;
+    padding: 4rem 0;
+    margin-top: auto;
+    text-align: center;
+}
+
+.btn-demo {
+    background: white;
+    color: #0f172a;
+    border: none;
+    padding: 0.8rem 2.5rem;
+    border-radius: 50px;
+    font-weight: 700;
+    transition: all 0.3s ease;
+
+    &:hover {
+        background: var(--figma-blue-50);
+        transform: translateY(-2px);
+    }
 }

@@ -1,9 +1,6 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatCardModule } from '@angular/material/card';
-import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { WizardService } from '../../../../../core/services/wizard.service';
 
 @Component({
@@ -11,10 +8,7 @@ import { WizardService } from '../../../../../core/services/wizard.service';
   standalone: true,
   imports: [
     CommonModule,
-    MatCardModule,
-    MatButtonModule,
-    MatIconModule,
-    MatSnackBarModule
+    MatIconModule
   ],
   templateUrl: './step5-poliza.component.html',
   styleUrls: ['./step5-poliza.component.scss']
@@ -22,22 +16,12 @@ import { WizardService } from '../../../../../core/services/wizard.service';
 export class Step5PolizaComponent {
   @Output() nextStep = new EventEmitter<void>();
 
+  private wizardService = inject(WizardService);
   state = this.wizardService.state;
+  selectedMethod: string | null = null;
 
-  constructor(
-    private snackBar: MatSnackBar,
-    private wizardService: WizardService
-  ) { }
-
-  diasRestantes = 365; // Simulación para la UI
-
-  onDeliveryOption(option: string) {
-    this.snackBar.open(`Opción seleccionada: ${option}. Enlace generado.`, 'Cerrar', {
-      duration: 3000,
-      panelClass: ['success-snackbar'],
-      horizontalPosition: 'center',
-      verticalPosition: 'bottom'
-    });
+  onMethodSelect(method: string) {
+    this.selectedMethod = method;
   }
 
   onContinue() {

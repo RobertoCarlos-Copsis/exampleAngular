@@ -1,79 +1,82 @@
-<div class="step-container animation-fade-in max-w-4xl mx-auto">
-    
+<div class="step-container animation-fade-in py-4 completion-container">
+
     <!-- Header Section -->
-    <div class="text-center mb-32px">
-        <h1 class="fs-32x font-700 text-figma-gray-900">Paso 3: Completa los Datos</h1>
-        <p class="fs-18x text-figma-gray-600 mt-10px">Valida la información de contacto y configura la comisión para esta póliza.</p>
+    <div class="text-center mb-4">
+        <h1 class="step-title" style="font-size: 2.25rem !important; font-weight: 800; color: #111827;">Paso 3:
+            Completar Datos Faltantes</h1>
+        <p class="summary-text">
+            Algunos datos no están en la carátula. Por favor complétalos para activar todas las funcionalidades.
+        </p>
     </div>
 
-    <form [formGroup]="completarForm" class="mx-auto" style="max-width: 540px;">
-        
-        <!-- Contact Information -->
-        <div class="mb-20px">
-            <label class="fs-14x font-600 text-figma-gray-600 mb-10px d-block">Correo Electrónico</label>
-            <div class="figma-input-wrapper">
-                <mat-icon class="input-icon">mail</mat-icon>
-                <input type="email" class="figma-input" formControlName="email" placeholder="ejemplo@correo.com">
+    <div class="info-card p-32px mb-32px" [formGroup]="completarForm">
+        <!-- Email -->
+        <div class="data-item mb-4" style="background: transparent; padding: 0;">
+            <label class="font-600 text-figma-gray-600 mb-2 d-flex align-items-center gap-2">
+                <mat-icon class="fs-18x text-figma-blue-600">mail</mat-icon>
+                Correo Electrónico del Cliente <span class="text-danger">*</span>
+            </label>
+            <input type="email" formControlName="email" class="form-control figma-input"
+                placeholder="ejemplo@correo.com">
+            <div *ngIf="completarForm.get('email')?.invalid && completarForm.get('email')?.touched"
+                class="text-danger fs-12x mt-1">
+                Ingrese un email válido.
             </div>
-            <div *ngIf="completarForm.get('email')?.touched && completarForm.get('email')?.invalid" class="text-danger fs-12x mt-1">
-                <span *ngIf="completarForm.get('email')?.hasError('required')">El correo es requerido.</span>
-                <span *ngIf="completarForm.get('email')?.hasError('email')">Formato inválido.</span>
-            </div>
+            <p class="fs-12x text-figma-gray-400 mt-2">Necesario para enviar póliza y notificaciones por correo</p>
         </div>
 
-        <div class="mb-32px">
-            <label class="fs-14x font-600 text-figma-gray-600 mb-10px d-block">Número de Celular</label>
-            <div class="figma-input-wrapper">
-                <mat-icon class="input-icon">smartphone</mat-icon>
-                <input type="tel" class="figma-input" formControlName="telefono" placeholder="10 dígitos" maxlength="10">
+        <!-- Phone -->
+        <div class="data-item mb-4" style="background: transparent; padding: 0;">
+            <label class="font-600 text-figma-gray-600 mb-2 d-flex align-items-center gap-2">
+                <mat-icon class="fs-18x text-figma-blue-600">smartphone</mat-icon>
+                Número de Celular <span class="text-danger">*</span>
+            </label>
+            <input type="tel" formControlName="telefono" class="form-control figma-input" placeholder="5512345678"
+                (input)="handlePhoneInput($event)">
+            <div *ngIf="completarForm.get('telefono')?.invalid && completarForm.get('telefono')?.touched"
+                class="text-danger fs-12x mt-1">
+                Ingrese un número a 10 dígitos.
             </div>
-            <div *ngIf="completarForm.get('telefono')?.touched && completarForm.get('telefono')?.invalid" class="text-danger fs-12x mt-1">
-                <span *ngIf="completarForm.get('telefono')?.hasError('required')">El celular es requerido.</span>
-                <span *ngIf="completarForm.get('telefono')?.hasError('pattern')">Debe tener 10 números.</span>
-            </div>
+            <p class="fs-12x text-figma-gray-400 mt-2">Necesario para enviar SMS y mensajes de WhatsApp</p>
         </div>
 
-        <!-- Commission Configuration -->
-        <div class="figma-card mb-32px p-20px">
-            <div class="d-flex justify-content-between align-items-center mb-20px">
-                <span class="fs-16x font-700">Porcentaje de Comisión</span>
-                <span class="pct-pill">{{ comisionPorcentaje }}%</span>
-            </div>
-
-            <div class="slider-container mb-10px">
-                <input type="range" min="0" max="40" step="1" 
-                       [(ngModel)]="comisionPorcentaje" 
-                       [ngModelOptions]="{standalone: true}" 
-                       (input)="updateComision($event)"
-                       class="figma-range-slider">
-            </div>
-            
-            <div class="d-flex justify-content-between text-figma-gray-400 fs-12x mb-20px">
-                <span>0%</span>
-                <span>20%</span>
-                <span>40%</span>
-            </div>
-
-            <!-- Commission Summary (Yellow Box) -->
-            <div class="figma-summary-box">
-                <div class="summary-row">
-                    <span class="fs-14x text-figma-gray-600">Total Primas ({{ state().receipts.length }} recibos)</span>
-                    <span class="fs-14x font-600">{{ totalPrima | currency:'MXN' }}</span>
-                </div>
-                <div class="summary-row mt-10px highlight">
-                    <span class="fs-16x font-700">Comisión Estimada</span>
-                    <span class="fs-20x font-800 text-figma-blue-600">{{ comisionCalculada | currency:'MXN' }}</span>
+        <!-- Commission Slider -->
+        <div class="data-item mb-4" style="background: transparent; padding: 0;">
+            <label class="font-600 text-figma-gray-600 mb-2 d-flex align-items-center gap-2">
+                <mat-icon class="fs-18x text-figma-blue-600">percentage</mat-icon>
+                Porcentaje de Comisión
+            </label>
+            <div class="d-flex align-items-center gap-3 mt-2">
+                <input type="range" class="figma-range-slider flex-grow-1" min="0" max="100"
+                    [value]="comisionPorcentaje" (input)="updateComision($event)">
+                <div
+                    style="background: #fef9c3; border: 1px solid #fde047; padding: 0.5rem 1rem; border-radius: 8px; font-weight: 700; color: #854d0e;">
+                    {{ comisionPorcentaje }}%
                 </div>
             </div>
+            <p class="fs-12x text-figma-gray-400 mt-2">Porcentaje de comisión que recibes por esta póliza</p>
         </div>
 
-        <!-- Submit Button -->
-        <div class="text-center">
-            <button class="btn-primary-blue w-100 vertical-center justify-content-center gap-2" type="button" (click)="onSave()">
-                <span>Guardar y Continuar</span>
-                <mat-icon class="fs-20x">arrow_forward</mat-icon>
-            </button>
+        <!-- Commission Summary Box -->
+        <div class="commission-summary mt-4">
+            <h3>Comisiones calculadas:</h3>
+            <div class="summary-rows">
+                <div *ngFor="let r of state().receipts; let i = index" class="summary-row">
+                    <span>Recibo {{ i + 1 }}/{{ state().receipts.length }}:</span>
+                    <strong>{{ (r.prima * (comisionPorcentaje / 100)) | currency:'MXN' }}</strong>
+                </div>
+                <div class="summary-row total">
+                    <span>Total Comisión:</span>
+                    <strong>{{ comisionCalculada | currency:'MXN' }}</strong>
+                </div>
+            </div>
         </div>
 
-    </form>
+        <button class="btn-primary-blue mt-4 w-100" (click)="onSave()" [disabled]="completarForm.invalid"
+            style="height: 52px;">
+            <mat-icon>save</mat-icon>
+            <span>Guardar y Continuar</span>
+        </button>
+    </div>
+
 </div>

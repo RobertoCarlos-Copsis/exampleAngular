@@ -1,46 +1,91 @@
-<div class="step-container animation-fade-in max-w-4xl mx-auto">
-    
+<div class="step-container animation-fade-in py-4 delivery-container">
+
     <!-- Header Section -->
-    <div class="text-center mb-32px">
-        <h1 class="fs-32x font-700 text-figma-gray-900">Paso 5: Entrega y Renovación</h1>
-        <p class="fs-18x text-figma-gray-600 mt-10px">Selecciona cómo deseas compartir esta póliza con tu cliente y configura su renovación.</p>
+    <div class="text-center mb-4">
+        <h1 class="step-title" style="font-size: 2.25rem !important; font-weight: 800; color: #111827;">Paso 5: Entrega
+            y Renovación</h1>
+        <p class="summary-text">Configura cómo se entregará la póliza al cliente y activa alertas de renovación.</p>
     </div>
 
-    <!-- Gradient Cards Grid -->
-    <div class="delivery-grid mb-32px">
-        <!-- Email Card -->
-        <div class="gradient-card bg-blue-grad" (click)="onDeliveryOption('Email')">
-            <div class="card-icon">
-                <mat-icon>mail</mat-icon>
+    <!-- Policy Preview Section -->
+    <div class="policy-preview-section fade-in mb-32px">
+        <div class="policy-doc-card">
+            <div class="doc-header">
+                <div class="insurer-logo-mock">
+                    <mat-icon style="color: #4f46e5; font-size: 32px; width: 32px; height: 32px;">shield</mat-icon>
+                    <span>{{ state().policy.data.insurer || 'ASEGURADORA QUATTRO' }}</span>
+                </div>
+                <div class="doc-status-badge">DOCUMENTO LISTO</div>
             </div>
-            <h3 class="fs-20x font-700">Enviar por Email</h3>
-            <p class="fs-14x opacity-80 mt-10px">Se enviará una landing page interactiva con todos los datos.</p>
-        </div>
 
-        <!-- Download Card -->
-        <div class="gradient-card bg-purple-grad" (click)="onDeliveryOption('WhatsApp')">
-            <div class="card-icon">
-                <mat-icon>picture_as_pdf</mat-icon>
-            </div>
-            <h3 class="fs-20x font-700">Descargar PDF</h3>
-            <p class="fs-14x opacity-80 mt-10px">Descarga la carátula de la póliza digitalizada en PDF.</p>
-        </div>
+            <div class="doc-body">
+                <div class="doc-main-info">
+                    <div class="doc-field">
+                        <label>Número de Póliza</label>
+                        <strong>{{ state().policy.data.policyNumber || '—' }}</strong>
+                    </div>
+                    <div class="doc-field">
+                        <label>Tipo de Seguro</label>
+                        <p>{{ state().policy.data.concept || '—' }}</p>
+                    </div>
+                </div>
 
-        <!-- Renewal Card -->
-        <div class="gradient-card bg-orange-grad" (click)="onDeliveryOption('Renovación')">
-            <div class="card-icon">
-                <mat-icon>event_repeat</mat-icon>
+                <div class="doc-sep"></div>
+
+                <div class="doc-footer-info">
+                    <div class="doc-field">
+                        <label>Asegurado / Contratante</label>
+                        <strong>{{ state().client.name || '—' }}</strong>
+                    </div>
+                    <div class="doc-dates">
+                        <div class="doc-field">
+                            <label>Desde</label>
+                            <span>{{ state().policy.data.startDate || '—' }}</span>
+                        </div>
+                        <div class="doc-field">
+                            <label>Hasta</label>
+                            <span>{{ state().policy.data.endDate || '—' }}</span>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <h3 class="fs-20x font-700">Configurar Renovación</h3>
-            <p class="fs-14x opacity-80 mt-10px">Agenda un recordatorio automático 30 días antes del vencimiento.</p>
         </div>
     </div>
 
-    <!-- Navigation -->
-    <div class="text-center">
-        <button class="btn-primary-blue mx-auto vertical-center justify-content-center gap-2 px-32px" (click)="onContinue()">
-            <span>Configurar Notificaciones Automatizadas</span>
-            <mat-icon class="fs-20x">settings_suggest</mat-icon>
+    <!-- Delivery Actions Card -->
+    <div class="delivery-card info-card p-32px mb-32px">
+        <h3 class="section-title mb-4" style="font-size: 1.25rem; font-weight: 800; color: #111827;">Acciones de Entrega
+            y Renovación</h3>
+
+        <div class="delivery-grid">
+            <div class="d-card email" [class.active]="selectedMethod === 'TuPoliza'"
+                (click)="onMethodSelect('TuPoliza')">
+                <div class="card-check" *ngIf="selectedMethod === 'TuPoliza'"><mat-icon>check_box</mat-icon></div>
+                <div class="d-icon-box"><mat-icon>mail</mat-icon></div>
+                <h4>TuPoliza</h4>
+                <p>Envío por correo con landing</p>
+            </div>
+
+            <div class="d-card app" [class.active]="selectedMethod === 'App'" (click)="onMethodSelect('App')">
+                <div class="card-check" *ngIf="selectedMethod === 'App'"><mat-icon>check_box</mat-icon></div>
+                <div class="d-icon-box"><mat-icon>phone_android</mat-icon></div>
+                <h4>MiPoliza App</h4>
+                <p>Compartir vía app móvil</p>
+            </div>
+
+            <div class="d-card renewal" [class.active]="selectedMethod === 'Renovacion'"
+                (click)="onMethodSelect('Renovacion')">
+                <div class="card-check" *ngIf="selectedMethod === 'Renovacion'"><mat-icon>check_box</mat-icon></div>
+                <div class="d-icon-box"><mat-icon>sync</mat-icon></div>
+                <h4>Renovación</h4>
+                <p>Recordatorio de vencimiento</p>
+            </div>
+        </div>
+
+        <button class="btn-primary-blue mt-4 w-100" (click)="onContinue()" style="height: 52px;">
+            <mat-icon>{{ selectedMethod ? 'check_circle' : 'arrow_forward' }}</mat-icon>
+            <span>{{ selectedMethod ? 'Confirmar y Continuar' : 'Continuar sin Seleccionar' }}</span>
         </button>
     </div>
+
 </div>

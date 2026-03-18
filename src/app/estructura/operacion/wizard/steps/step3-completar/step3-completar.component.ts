@@ -1,9 +1,8 @@
-import { Component, Output, EventEmitter, OnInit } from '@angular/core';
-import { CommonModule, DecimalPipe } from '@angular/common';
+import { Component, Output, EventEmitter, OnInit, inject } from '@angular/core';
+import { CommonModule, DecimalPipe, CurrencyPipe } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
-import { MatSliderModule } from '@angular/material/slider';
-import { WizardService, WizardState } from '../../../../../core/services/wizard.service';
+import { WizardService } from '../../../../../core/services/wizard.service';
 
 @Component({
   selector: 'app-step3-completar',
@@ -13,8 +12,8 @@ import { WizardService, WizardState } from '../../../../../core/services/wizard.
     FormsModule,
     ReactiveFormsModule,
     DecimalPipe,
-    MatIconModule,
-    MatSliderModule
+    CurrencyPipe,
+    MatIconModule
   ],
   templateUrl: './step3-completar.component.html',
   styleUrls: ['./step3-completar.component.scss']
@@ -22,23 +21,22 @@ import { WizardService, WizardState } from '../../../../../core/services/wizard.
 export class Step3CompletarComponent implements OnInit {
   @Output() nextStep = new EventEmitter<void>();
 
-  completarForm: FormGroup;
-  state = this.wizardService.state;
+  private fb = inject(FormBuilder);
+  private wizardService = inject(WizardService);
   
-  comisionPorcentaje = 0;
+  completarForm: FormGroup = this.fb.group({
+    email: ['', [Validators.required, Validators.email]],
+    telefono: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]]
+  });
 
-  constructor(private fb: FormBuilder, private wizardService: WizardService) {
-    this.completarForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      telefono: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]]
-    });
-  }
+  state = this.wizardService.state;
+  comisionPorcentaje = 0;
 
   ngOnInit(): void {
     const s = this.state();
     this.completarForm.patchValue({
-      email: s.client.email,
-      telefono: s.client.phone
+      email: s.client.email || '',
+      telefono: s.client.phone || ''
     });
     this.comisionPorcentaje = s.commissionPercentage || 0;
   }
@@ -51,9 +49,18 @@ export class Step3CompletarComponent implements OnInit {
     return (this.totalPrima * this.comisionPorcentaje) / 100;
   }
 
+  handlePhoneInput(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const value = input.value.replace(/\D/g, '').slice(0, 10);
+    this.completarForm.patchValue({ telefono: value }, { emitEvent: false });
+  }
+
   updateComision(event: any) {
     const val = Number(event.target.value);
-    this.wizardService.updateState({ commissionPercentage: val });
+    if (val >= 0 && val <= 100) {
+      this.comisionPorcentaje = val;
+      this.wizardService.updateState({ commissionPercentage: val });
+    }
   }
 
   onSave() {
@@ -63,7 +70,8 @@ export class Step3CompletarComponent implements OnInit {
           ...this.state().client,
           email: this.completarForm.value.email,
           phone: this.completarForm.value.telefono
-        }
+        },
+        commissionPercentage: this.comisionPorcentaje
       });
       this.wizardService.nextStep();
       this.nextStep.emit();

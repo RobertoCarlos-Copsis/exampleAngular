@@ -1,85 +1,101 @@
-.max-w-4xl { max-width: 896px; }
-.mx-auto { margin-left: auto; margin-right: auto; }
-.mb-0 { margin-bottom: 0px !important; }
-.mb-15px { margin-bottom: 15px; }
-.mb-20px { margin-bottom: 20px; }
-.mb-32px { margin-bottom: 32px; }
-.p-20px { padding: 20px; }
-.p-32px { padding: 32px; }
-.px-32px { padding-left: 32px; padding-right: 32px; }
+// Step 7 Dashboard Styles
+.dashboard-container {
+    max-width: 1200px !important;
+    margin: 0 auto;
+}
 
 .kpi-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 16px;
-}
-
-@media (max-width: 992px) {
-    .kpi-grid { grid-template-columns: repeat(2, 1fr); }
-}
-
-@media (max-width: 576px) {
-    .kpi-grid { grid-template-columns: 1fr; }
+    gap: 1.5rem;
 }
 
 .kpi-card {
-    border-radius: var(--figma-radius-xl);
-    padding: 20px;
+    background: white;
+    border-radius: 16px;
+    padding: 1.5rem;
     display: flex;
     align-items: center;
-    gap: 16px;
-    border: 1px solid rgba(0,0,0,0.05);
+    gap: 1.25rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    border: 1px solid #f1f5f9;
 
     .kpi-icon {
         width: 48px;
         height: 48px;
         border-radius: 12px;
-        background: white;
         display: flex;
         align-items: center;
         justify-content: center;
-        box-shadow: var(--figma-shadow-sm);
         mat-icon { font-size: 24px; width: 24px; height: 24px; }
+        
+        &.blue { background: #eff6ff; color: #2563eb; }
+        &.purple { background: #f5f3ff; color: #7c3aed; }
+        &.yellow { background: #fffbeb; color: #d97706; }
+        &.green { background: #f0fdf4; color: #16a34a; }
     }
 
-    .kpi-data {
+    .kpi-info {
         display: flex;
         flex-direction: column;
+        .v { font-size: 1.5rem; font-weight: 800; color: #1e293b; line-height: 1; margin-bottom: 4px; }
+        .l { font-size: 0.75rem; color: #64748b; font-weight: 600; text-transform: uppercase; }
     }
-
-    &.bg-blue-50 { background: var(--figma-blue-50); }
-    &.bg-purple-50 { background: var(--figma-purple-50); }
-    &.bg-yellow-50 { background: var(--figma-yellow-50); }
-    &.bg-green-50 { background: var(--figma-green-50); }
 }
 
-.figma-card {
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 1.5rem;
+}
+
+.dashboard-card {
     background: white;
-    border-radius: var(--figma-radius-xl);
-    border: 1px solid var(--figma-gray-200);
-    box-shadow: var(--figma-shadow-sm);
+    border-radius: 20px;
+    padding: 2rem;
+    border: 1px solid #f1f5f9;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.04);
 }
 
-.checklist-item {
+.card-p-header {
+    margin-bottom: 2rem;
+    h3 { font-size: 1.125rem; font-weight: 800; color: #1e293b; margin: 0; }
+    p { font-size: 0.875rem; color: #64748b; margin: 0; }
+}
+
+.checklist-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    .c-item {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: #334155;
+        
+        &.done {
+            mat-icon { color: #10b981; font-size: 20px; width: 20px; height: 20px; }
+        }
+    }
+}
+
+.success-banner {
+    background: #f0fdf4;
+    border: 1px solid #dcfce7;
+    border-radius: 12px;
+    padding: 1rem;
     display: flex;
     align-items: center;
-    gap: 12px;
-    margin-bottom: 16px;
-
-    .check-icon {
-        color: var(--figma-green-600);
-        font-size: 20px;
-        width: 20px;
-        height: 20px;
-    }
+    gap: 0.75rem;
+    color: #166534;
+    font-size: 0.8125rem;
+    font-weight: 700;
 }
 
-.summary-card {
-    .summary-header {
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    }
-}
-
-.btn-primary-blue {
-    min-width: 280px;
+@media (max-width: 1024px) {
+    .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+    .dashboard-grid { grid-template-columns: 1fr; }
 }

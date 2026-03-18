@@ -1,62 +1,100 @@
-.max-w-4xl { max-width: 896px; }
-.mx-auto { margin-left: auto; margin-right: auto; }
-.mt-10px { margin-top: 10px; }
-.mb-32px { margin-bottom: 32px; }
-.px-32px { padding-left: 32px; padding-right: 32px; }
+// Step 5 Styles - Policy Doc Preview & Delivery Grid
+.policy-doc-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+    overflow: hidden;
+    max-width: 600px;
+    margin: 0 auto;
+    border: 1px solid #e2e8f0;
+}
+
+.doc-header {
+    background: #f8fafc;
+    padding: 1.5rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #eff6ff;
+}
+
+.insurer-logo-mock {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    span { font-weight: 800; color: #1e293b; font-size: 1.125rem; }
+}
+
+.doc-status-badge {
+    background: #dcfce7;
+    color: #15803d;
+    font-size: 0.75rem;
+    font-weight: 800;
+    padding: 4px 12px;
+    border-radius: 50px;
+}
+
+.doc-body { padding: 2.5rem; }
+
+.doc-main-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+}
+
+.doc-field {
+    label { display: block; font-size: 0.75rem; color: #94a3b8; font-weight: 600; text-transform: uppercase; margin-bottom: 0.25rem; }
+    strong { font-size: 1.125rem; color: #1e293b; }
+    p, span { font-size: 1rem; color: #334155; font-weight: 700; }
+}
+
+.doc-sep { height: 1px; background: #f1f5f9; margin: 2rem 0; position: relative; }
+
+.doc-footer-info {
+    .doc-dates { display: flex; gap: 3rem; margin-top: 1.5rem; }
+}
 
 .delivery-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
+    gap: 1.5rem;
 }
 
-@media (max-width: 992px) {
-    .delivery-grid {
-        grid-template-columns: 1fr;
-    }
-}
-
-.gradient-card {
-    border-radius: var(--figma-radius-xl);
-    padding: 40px 24px;
-    color: white;
+.d-card {
+    background: #f8fafc;
+    border: 1.5px solid transparent;
+    border-radius: 16px;
+    padding: 1.5rem;
     text-align: center;
     cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    box-shadow: var(--figma-shadow-md);
+    transition: all 0.3s ease;
+    position: relative;
 
-    &:hover {
-        transform: translateY(-8px);
-        box-shadow: var(--figma-shadow-lg);
+    &:hover { background: white; border-color: #e2e8f0; transform: translateY(-3px); }
+    &.active {
+        background: white;
+        border-color: var(--figma-blue-600);
+        box-shadow: 0 8px 20px rgba(37, 99, 235, 0.1);
     }
 
-    .card-icon {
-        width: 64px;
-        height: 64px;
-        background: rgba(255, 255, 255, 0.2);
-        backdrop-filter: blur(8px);
-        border-radius: 16px;
+    .card-check { position: absolute; top: 12px; right: 12px; color: var(--figma-blue-600); }
+    .d-icon-box {
+        width: 56px;
+        height: 56px;
+        border-radius: 14px;
+        background: white;
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-bottom: 24px;
-        mat-icon { font-size: 32px; width: 32px; height: 32px; }
+        margin: 0 auto 1.25rem;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.04);
+        mat-icon { font-size: 28px; width: 28px; height: 28px; }
     }
 
-    .opacity-80 { opacity: 0.8; }
-}
+    h4 { font-size: 1rem; font-weight: 800; color: #1e293b; margin-bottom: 0.35rem; }
+    p { font-size: 0.75rem; color: #64748b; margin: 0; line-height: 1.4; }
 
-.bg-blue-grad {
-    background: linear-gradient(135deg, #3b82f6, #2563eb);
-}
-
-.bg-purple-grad {
-    background: linear-gradient(135deg, #a855f7, #9333ea);
-}
-
-.bg-orange-grad {
-    background: linear-gradient(135deg, #f97316, #ea580c);
+    &.email .d-icon-box { color: #2563eb; }
+    &.app .d-icon-box { color: #7c3aed; }
+    &.renewal .d-icon-box { color: #f97316; }
 }

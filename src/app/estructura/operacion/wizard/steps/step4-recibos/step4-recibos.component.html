@@ -1,68 +1,76 @@
-<div class="step-container animation-fade-in max-w-4xl mx-auto">
+<div class="step-container animation-fade-in py-4">
     
     <!-- Header Section -->
-    <div class="text-center mb-32px">
-        <h1 class="fs-32x font-700 text-figma-gray-900">Paso 4: Gestión de Recibos</h1>
-        <p class="fs-18x text-figma-gray-600 mt-10px">Gestiona y realiza acciones de cobro para tus recibos programados.</p>
+    <div class="text-center mb-4">
+        <h1 class="step-title" style="font-size: 2.25rem !important; font-weight: 800; color: #111827;">Paso 4: Gestión de Recibos</h1>
+        <p class="summary-text">Gestiona los pagos y comunicaciones de los recibos detectados.</p>
     </div>
 
-    <!-- Horizontal Receipt List -->
-    <div class="receipts-carousel-wrapper mb-32px">
-        <div class="receipts-carousel">
+    <div class="receipts-layout">
+        <!-- Sidebar: Receipt List -->
+        <div class="receipt-sidebar">
             <div *ngFor="let r of state().receipts; let i = index" 
-                 class="receipt-card-mini" 
-                 [class.active]="i === activeIndex"
+                 class="receipt-item-card" 
+                 [class.active]="activeIndex === i"
                  (click)="selectReceipt(i)">
-                <div class="d-flex justify-content-between align-items-start mb-2">
-                    <span class="fs-14x font-700">Recibo {{ r.id }}</span>
-                    <span class="status-dot" [class.paid]="r.estado === 'Pagado'"></span>
+                <div class="receipt-info">
+                    <span class="r-period">{{ r.periodo }}</span>
+                    <span class="r-amount">{{ r.prima | currency:'MXN' }}</span>
                 </div>
-                <div class="fs-16x font-800 text-figma-blue-600">{{ r.prima | currency:'USD' }}</div>
-                <div class="fs-10x font-600 text-figma-gray-400 mt-1">Vence: {{ r.vencimiento }}</div>
+                <div class="r-status" [class.paid]="r.estado === 'Pagado'">
+                    {{ r.estado }}
+                </div>
+                <mat-icon class="chevron">chevron_right</mat-icon>
+            </div>
+        </div>
+
+        <!-- Actions Panel -->
+        <div class="actions-panel">
+            <div class="panel-header">
+                <h3 class="panel-title">Acciones para Recibo {{ activeIndex + 1 }}</h3>
+            </div>
+
+            <div class="actions-grid">
+                <div class="action-card email" (click)="onActionClick('Email')">
+                    <div class="action-icon"><mat-icon>mail</mat-icon></div>
+                    <h4>Enviar Email</h4>
+                    <p>Envío de liga de pago por correo</p>
+                </div>
+                <div class="action-card sms" (click)="onActionClick('SMS')">
+                    <div class="action-icon"><mat-icon>smartphone</mat-icon></div>
+                    <h4>Enviar SMS</h4>
+                    <p>Recordatorio rápido al celular</p>
+                </div>
+                <div class="action-card whatsapp" (click)="onActionClick('WhatsApp')">
+                    <div class="action-icon"><mat-icon>chat</mat-icon></div>
+                    <h4>WhatsApp</h4>
+                    <p>Comunicación directa y oficial</p>
+                </div>
+                <div class="action-card log" (click)="onActionClick('Bitácora')">
+                    <div class="action-icon"><mat-icon>history_edu</mat-icon></div>
+                    <h4>Bitácora</h4>
+                    <p>Ver historial de este recibo</p>
+                </div>
+            </div>
+
+            <div class="status-toggle-box">
+                <p>¿Este recibo ya fue liquidado?</p>
+                <button class="btn w-100" 
+                        [class.btn-success]="reciboActual.estado === 'Pagado'"
+                        [class.btn-primary]="reciboActual.estado !== 'Pagado'"
+                        (click)="togglePaid(activeIndex)">
+                    {{ reciboActual.estado === 'Pagado' ? 'Pagado ✓' : 'Marcar como Pagado' }}
+                </button>
             </div>
         </div>
     </div>
 
-    <!-- Active Receipt Summary -->
-    <div class="figma-card active-receipt-details mb-32px p-24px">
-        <div class="d-flex justify-content-between align-items-center mb-24px">
-            <div class="vertical-center gap-3">
-                <div class="receipt-icon-box">
-                    <mat-icon>receipt_long</mat-icon>
-                </div>
-                <div>
-                    <h3 class="fs-20x font-700 mb-0">Detalle del Recibo {{ reciboActual.id }}</h3>
-                    <span class="fs-12x text-figma-gray-600">Estado: <strong [class.text-success]="reciboActual.estado === 'Pagado'">{{ reciboActual.estado }}</strong></span>
-                </div>
-            </div>
-            <div class="text-end">
-                <span class="fs-24x font-800 text-figma-blue-600">{{ reciboActual.prima | currency:'USD' }}</span>
-                <p class="fs-12x text-figma-gray-400 mb-0">Importe Total con IVA</p>
-            </div>
-        </div>
-
-        <!-- Action Grid Below Active Receipt -->
-        <div class="action-buttons-grid">
-            <button class="figma-action-btn btn-border-blue" (click)="onActionClick('Recordatorio Enviado')">
-                <div class="icon-circle"><mat-icon>notifications_active</mat-icon></div>
-                <span class="fs-14x font-600">Recordatorio</span>
-            </button>
-            <button class="figma-action-btn btn-border-green" (click)="onActionClick('WhatsApp Enviado')">
-                <div class="icon-circle"><mat-icon>chat_bubble</mat-icon></div>
-                <span class="fs-14x font-600">SMS/WhatsApp</span>
-            </button>
-            <button class="figma-action-btn btn-border-purple" (click)="onActionClick('Nota en Bitácora')">
-                <div class="icon-circle"><mat-icon>history_edu</mat-icon></div>
-                <span class="fs-14x font-600">Bitácora</span>
-            </button>
-        </div>
-    </div>
-
-    <!-- Navigation -->
-    <div class="text-center">
-        <button class="btn-primary-blue mx-auto vertical-center justify-content-center gap-2" (click)="onContinue()">
-            <span>Continuar a Entrega</span>
-            <mat-icon class="fs-20x">arrow_forward</mat-icon>
+    <!-- Final Actions -->
+    <div class="d-flex justify-content-center mt-5">
+        <button class="btn-primary-blue fs-16x font-700 px-32px" (click)="onContinue()">
+            <span>Continuar al Siguiente Paso</span>
+            <mat-icon>arrow_forward_ios</mat-icon>
         </button>
     </div>
+
 </div>

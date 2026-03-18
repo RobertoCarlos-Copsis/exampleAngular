@@ -1,9 +1,6 @@
-import { Component, Output, EventEmitter, computed } from '@angular/core';
-import { CommonModule, DecimalPipe } from '@angular/common';
-import { MatCardModule } from '@angular/material/card';
-import { MatButtonModule } from '@angular/material/button';
+import { Component, Output, EventEmitter, computed, inject } from '@angular/core';
+import { CommonModule, DecimalPipe, CurrencyPipe } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import {
   ApexNonAxisChartSeries,
@@ -38,11 +35,10 @@ export type ChartOptions = {
   standalone: true,
   imports: [
     CommonModule,
-    MatCardModule,
-    MatButtonModule,
-    MatIconModule,
     DecimalPipe,
-    NgApexchartsModule
+    CurrencyPipe,
+    NgApexchartsModule,
+    MatIconModule
   ],
   templateUrl: './step7-estadisticas.component.html',
   styleUrls: ['./step7-estadisticas.component.scss']
@@ -50,16 +46,15 @@ export type ChartOptions = {
 export class Step7EstadisticasComponent {
   @Output() resetWizard = new EventEmitter<void>();
 
+  private wizardService = inject(WizardService);
   state = this.wizardService.state;
-
-  constructor(private wizardService: WizardService) {}
 
   get totalPrima() {
     return this.state().receipts.reduce((acc: number, r: any) => acc + (r.prima || 0), 0);
   }
 
   get totalComision() {
-    return (this.totalPrima * this.state().commissionPercentage) / 100;
+    return (this.totalPrima * (this.state().commissionPercentage || 0)) / 100;
   }
 
   get numRecibos() {
@@ -72,7 +67,7 @@ export class Step7EstadisticasComponent {
 
   // Configuración de la Gráfica de Pastel (Distribución)
   public pieChart = computed<Partial<ChartOptions>>(() => {
-    const total = this.totalPrima;
+    const total = this.totalPrima || 1000;
     const neta = total * 0.8;
     const impuestos = total * 0.16;
     const derechos = total * 0.04;
@@ -81,74 +76,54 @@ export class Step7EstadisticasComponent {
       series: [neta, impuestos, derechos],
       chart: {
         width: "100%",
-        type: "pie"
+        type: "pie",
+        fontFamily: 'Inter, sans-serif'
       },
       labels: ["Prima Neta", "Impuestos", "Derechos"],
       colors: ['#2563EB', '#9333EA', '#F59E0B'],
-      legend: {
-        position: 'bottom'
-      },
+      legend: { position: 'bottom' },
+      dataLabels: { enabled: true },
       responsive: [
         {
           breakpoint: 480,
           options: {
-            chart: {
-              width: 200
-            },
-            legend: {
-              position: "bottom"
-            }
+            chart: { width: 200 },
+            legend: { position: "bottom" }
           }
         }
       ]
     };
   });
 
-  // Configuración de la Gráfica de Barras (Comisiones vs Proyectado)
+  // Configuración de la Gráfica de Barras (Comisiones)
   public barChart = computed<Partial<ChartOptions>>(() => {
-    const actual = this.totalComision;
-    const proyectado = actual * 1.4;
+    const actual = this.totalComision || 500;
+    const proyectado = actual * 1.5;
 
     return {
-      series: [
-        {
-          name: "Comisiones (MXN)",
-          data: [actual, proyectado]
-        }
-      ],
+      series: [{ name: "MXN", data: [actual, proyectado] }],
       chart: {
         type: "bar",
-        height: 350,
-        toolbar: {
-          show: false
-        }
+        height: 300,
+        toolbar: { show: false },
+        fontFamily: 'Inter, sans-serif'
       },
       plotOptions: {
         bar: {
           horizontal: false,
-          columnWidth: "55%",
-          borderRadius: 8
+          columnWidth: "45%",
+          borderRadius: 6
         }
       },
-      dataLabels: {
-        enabled: false
-      },
-      xaxis: {
-        categories: ["Actual", "Proyectado"]
-      },
-      yaxis: {
-        title: {
-          text: "MXN"
-        }
-      },
+      dataLabels: { enabled: false },
+      xaxis: { categories: ["Actual", "Proyectado"] },
       colors: ['#16A34A', '#D1FAE5'],
-      fill: {
-        opacity: 1
-      }
+      fill: { opacity: 1 }
     };
   });
 
   onProbarOtra() {
+    this.wizardService.resetState();
     this.resetWizard.emit();
   }
 }
