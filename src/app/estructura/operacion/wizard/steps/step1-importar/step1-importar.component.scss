@@ -12,23 +12,14 @@
         background: var(--figma-gray-50);
     }
 
-    &.processing {
-        border-style: solid;
-        border-color: var(--figma-blue-600);
-        cursor: wait;
-    }
-
-    &.success {
-        border-style: solid;
-        border-color: var(--figma-green-600);
-    }
+    &.processing { border-style: solid; border-color: var(--figma-blue-600); cursor: wait; }
+    &.success { border-style: solid; border-color: var(--figma-green-600); }
 }
 
 .orb-container {
     display: flex;
     justify-content: center;
     gap: -12px;
-
     .orb {
         width: 56px;
         height: 56px;
@@ -38,21 +29,9 @@
         justify-content: center;
         color: white;
         box-shadow: var(--figma-shadow-md);
-
-        mat-icon {
-            font-size: 28px;
-            width: 28px;
-            height: 28px;
-        }
-
-        &.blue {
-            background: var(--figma-blue-600);
-        }
-
-        &.purple {
-            background: var(--figma-purple-600);
-            margin-left: -15px;
-        }
+        mat-icon { font-size: 28px; width: 28px; height: 28px; }
+        &.blue { background: var(--figma-blue-600); }
+        &.purple { background: var(--figma-purple-600); margin-left: -15px; }
     }
 }
 
@@ -92,7 +71,6 @@
     background: var(--figma-gray-200);
     border-radius: 3px;
     overflow: hidden;
-
     .progress-fill {
         height: 100%;
         background: var(--figma-blue-600);
@@ -109,20 +87,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
-
-    mat-icon {
-        font-size: 40px;
-        width: 40px;
-        height: 40px;
-    }
+    mat-icon { font-size: 40px; width: 40px; height: 40px; }
 }
 
 @keyframes scan {
-    0% {
-        top: 0%;
-    }
-
-    100% {
-        top: 100%;
-    }
+    0% { top: 0%; }
+    100% { top: 100%; }
 }

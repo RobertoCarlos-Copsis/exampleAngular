@@ -1,9 +1,8 @@
 <div class="step-container animation-fade-in py-4 delivery-container">
-
+    
     <!-- Header Section -->
     <div class="text-center mb-4">
-        <h1 class="step-title" style="font-size: 2.25rem !important; font-weight: 800; color: #111827;">Paso 5: Entrega
-            y Renovación</h1>
+        <h1 class="step-title" style="font-size: 2.25rem !important; font-weight: 800; color: #111827;">Paso 5: Entrega y Renovación</h1>
         <p class="summary-text">Configura cómo se entregará la póliza al cliente y activa alertas de renovación.</p>
     </div>
 
@@ -54,12 +53,10 @@
 
     <!-- Delivery Actions Card -->
     <div class="delivery-card info-card p-32px mb-32px">
-        <h3 class="section-title mb-4" style="font-size: 1.25rem; font-weight: 800; color: #111827;">Acciones de Entrega
-            y Renovación</h3>
+        <h3 class="section-title mb-4" style="font-size: 1.25rem; font-weight: 800; color: #111827;">Acciones de Entrega y Renovación</h3>
 
         <div class="delivery-grid">
-            <div class="d-card email" [class.active]="selectedMethod === 'TuPoliza'"
-                (click)="onMethodSelect('TuPoliza')">
+            <div class="d-card email" [class.active]="selectedMethod === 'TuPoliza'" (click)="onMethodSelect('TuPoliza')">
                 <div class="card-check" *ngIf="selectedMethod === 'TuPoliza'"><mat-icon>check_box</mat-icon></div>
                 <div class="d-icon-box"><mat-icon>mail</mat-icon></div>
                 <h4>TuPoliza</h4>
@@ -73,8 +70,7 @@
                 <p>Compartir vía app móvil</p>
             </div>
 
-            <div class="d-card renewal" [class.active]="selectedMethod === 'Renovacion'"
-                (click)="onMethodSelect('Renovacion')">
+            <div class="d-card renewal" [class.active]="selectedMethod === 'Renovacion'" (click)="onMethodSelect('Renovacion')">
                 <div class="card-check" *ngIf="selectedMethod === 'Renovacion'"><mat-icon>check_box</mat-icon></div>
                 <div class="d-icon-box"><mat-icon>sync</mat-icon></div>
                 <h4>Renovación</h4>

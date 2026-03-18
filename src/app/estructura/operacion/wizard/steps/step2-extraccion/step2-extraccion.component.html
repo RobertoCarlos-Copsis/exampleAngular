@@ -1,9 +1,8 @@
 <div class="step-container animation-fade-in py-4">
-
+    
     <!-- Header Section -->
     <div class="text-center mb-3">
-        <h1 class="step-title" style="font-size: 2.25rem !important; font-weight: 800; color: #111827;">Paso 2: IA
-            Extrae Información</h1>
+        <h1 class="step-title" style="font-size: 2.25rem !important; font-weight: 800; color: #111827;">Paso 2: IA Extrae Información</h1>
         <p class="summary-text">
             Nuestra IA ha leído y extraído los siguientes datos.
             <span style="color: #4f46e5; font-weight: 600;">Revisa la información antes de continuar.</span>
@@ -66,18 +65,16 @@
                 <div class="icon-box yellow"><mat-icon>account_balance_wallet</mat-icon></div>
                 <h3>Recibos ({{ state().receipts.length || 0 }} encontrados)</h3>
             </div>
-            <div class="receipt-mini-list scroll-figma"
-                style="max-height: 120px; overflow-y: auto; display: flex; flex-direction: column; gap: 0.75rem;">
-                <div *ngFor="let r of state().receipts; let i = index"
-                    style="display: flex; justify-content: space-between; align-items: center; background: rgba(255, 255, 255, 0.6); padding: 0.8rem 1rem; border-radius: 8px;">
+            <div class="receipt-mini-list scroll-figma" style="max-height: 120px; overflow-y: auto; display: flex; flex-direction: column; gap: 0.75rem;">
+                <div *ngFor="let r of state().receipts; let i = index" 
+                     style="display: flex; justify-content: space-between; align-items: center; background: rgba(255, 255, 255, 0.6); padding: 0.8rem 1rem; border-radius: 8px;">
                     <div style="display: flex; flex-direction: column;">
                         <span style="font-size: 0.875rem; color: #4b5563; font-weight: 500;">Pago {{ i + 1 }}</span>
                         <small style="font-size: 0.75rem; color: #9ca3af;">{{ r.periodo }}</small>
                     </div>
                     <strong style="font-size: 1rem; color: #111827;">{{ r.prima | currency:'MXN' }}</strong>
                 </div>
-                <p *ngIf="!state().receipts.length" style="color: #9ca3af; font-size: 0.875rem; text-align: center;">No
-                    se detectaron recibos.</p>
+                <p *ngIf="!state().receipts.length" style="color: #9ca3af; font-size: 0.875rem; text-align: center;">No se detectaron recibos.</p>
             </div>
         </div>
     </div>
