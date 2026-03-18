@@ -1,16 +1,16 @@
 // Step 4 Layout Styles - Parity with React Sidebar Design
-.receipts-layout {
-    display: flex;
-    gap: 2rem;
-    align-items: flex-start;
-}
-
 .receipt-sidebar {
     width: 320px;
     display: flex;
     flex-direction: column;
     gap: 1rem;
     flex-shrink: 0;
+    background: white;
+    border-radius: 1.5rem;
+    padding: 1rem;
+    border: 1px solid #e2e8f0;
+    overflow-y: auto;
+    max-height: 500px;
 }
 
 .receipt-item-card {

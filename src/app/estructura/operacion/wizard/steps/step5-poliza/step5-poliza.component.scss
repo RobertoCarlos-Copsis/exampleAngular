@@ -54,10 +54,9 @@
     .doc-dates { display: flex; gap: 3rem; margin-top: 1.5rem; }
 }
 
-.delivery-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.5rem;
+.delivery-card {
+    border-radius: 1.5rem;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
 }
 
 .d-card {

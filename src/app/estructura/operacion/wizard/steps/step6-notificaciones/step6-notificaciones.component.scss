@@ -6,13 +6,12 @@
 }
 
 .notif-item {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-    padding: 1.25rem 2rem;
-    border-radius: 12px;
-    border: 1px solid transparent;
+    background: white;
+    border: 1px solid #e2e8f0;
     transition: all 0.2s ease;
+    text-align: left;
+    height: auto;
+    width: 100%;
 
     .notif-icon {
         width: 48px;

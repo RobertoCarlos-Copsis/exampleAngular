@@ -21,9 +21,14 @@
 
             <!-- Stepper Indicator Container (Synced 1000px with React) -->
             <div class="custom-stepper" style="max-width: 1000px; margin: 0 auto 4rem auto;">
+                <div class="stepper-progress-track">
+                    <div class="stepper-progress-fill" [style.width.%]="(stepper.selectedIndex / (stepSummaries.length - 1)) * 100"></div>
+                </div>
                 <div class="step-item" *ngFor="let step of stepSummaries; let i = index"
                     [class.active]="stepper.selectedIndex === i"
-                    [class.completed]="completedSteps[i] || stepper.selectedIndex > i">
+                    [class.completed]="completedSteps[i] || stepper.selectedIndex > i"
+                    (click)="i < stepper.selectedIndex || completedSteps[i] ? stepper.selectedIndex = i : null"
+                    style="cursor: pointer;">
                     <div class="step-circle">{{ i + 1 }}</div>
                     <span class="step-label">{{ step }}</span>
                 </div>

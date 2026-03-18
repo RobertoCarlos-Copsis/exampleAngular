@@ -38,57 +38,63 @@
         </div>
     </div>
 
-    <!-- Main Dashboard Grid -->
-    <div class="dashboard-grid mb-5">
-        <!-- Main Chart Card -->
-        <div class="dashboard-card chart-card">
-            <div class="card-p-header">
-                <h3>Proyección de Ingresos</h3>
-                <p>Estimación de comisiones por mes</p>
-            </div>
-            <div class="chart-wrapper">
-                <apx-chart
-                    [series]="barChart().series!"
-                    [chart]="barChart().chart!"
-                    [xaxis]="barChart().xaxis!"
-                    [colors]="barChart().colors!"
-                    [plotOptions]="barChart().plotOptions!"
-                ></apx-chart>
+    <!-- Main Dashboard Container (Bootstrap 1200px) -->
+    <div class="row g-4 mb-4">
+        <!-- Chart Section (Left) -->
+        <div class="col-lg-8">
+            <div class="figma-card h-100 p-4">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div>
+                        <h3 class="fs-18x font-800 text-figma-gray-900 mb-1">Rendimiento de Cartera</h3>
+                        <p class="fs-14x text-figma-gray-400">Distribución de primas analizadas por ramo</p>
+                    </div>
+                    <div class="badge-premium">En Tiempo Real</div>
+                </div>
+                <div id="chart" class="mt-2" style="min-height: 350px;">
+                    <apx-chart [series]="barChart().series!" [chart]="barChart().chart!"
+                        [xaxis]="barChart().xaxis!" [plotOptions]="barChart().plotOptions!"
+                        [colors]="barChart().colors!" [dataLabels]="barChart().dataLabels!">
+                    </apx-chart>
+                </div>
             </div>
         </div>
 
-        <!-- Checklist Card -->
-        <div class="dashboard-card checklist-card">
-            <div class="card-p-header">
-                <h3>Estatus del Proceso</h3>
-                <p>Acciones completadas hoy</p>
-            </div>
-            <div class="checklist-list">
-                <div class="c-item done">
-                    <mat-icon>check_circle</mat-icon>
-                    <span>Lectura de documentos IA</span>
+        <!-- Checklist Section (Right) -->
+        <div class="col-lg-4">
+            <div class="figma-card h-100 p-4">
+                <div class="mb-4">
+                    <h3 class="fs-18x font-800 text-figma-gray-900 mb-1">Checklist de Cierre</h3>
+                    <p class="fs-14x text-figma-gray-400">Estado de la digitalización</p>
                 </div>
-                <div class="c-item done">
-                    <mat-icon>check_circle</mat-icon>
-                    <span>Cálculo de comisiones</span>
+                <div class="checklist-items">
+                    <div class="check-item d-flex align-items-center gap-3 p-3 mb-3" style="background: #f0fdf4; border: 1px solid #dcfce7; border-radius: 12px;">
+                        <mat-icon class="text-figma-green-600">check_circle</mat-icon>
+                        <div>
+                            <p class="fs-14x font-700 text-figma-gray-900 mb-0">PDF Procesado</p>
+                            <small class="text-figma-green-600">Correcto</small>
+                        </div>
+                    </div>
+                    <div class="check-item d-flex align-items-center gap-3 p-3 mb-3" style="background: #f0fdf4; border: 1px solid #dcfce7; border-radius: 12px;">
+                        <mat-icon class="text-figma-green-600">check_circle</mat-icon>
+                        <div>
+                            <p class="fs-14x font-700 text-figma-gray-900 mb-0">Recibos Vinculados</p>
+                            <small class="text-figma-green-600">{{ state().receipts.length }} detectados</small>
+                        </div>
+                    </div>
+                    <div class="check-item d-flex align-items-center gap-3 p-3" style="background: #eff6ff; border: 1px solid #dbeafe; border-radius: 12px;">
+                        <mat-icon class="text-figma-blue-600">info</mat-icon>
+                        <div>
+                            <p class="fs-14x font-700 text-figma-gray-900 mb-0">Notificaciones</p>
+                            <small class="text-figma-blue-600">Configuradas</small>
+                        </div>
+                    </div>
                 </div>
-                <div class="c-item done">
-                    <mat-icon>check_circle</mat-icon>
-                    <span>Alta de cliente en CRM</span>
+                <div class="mt-4 pt-2">
+                    <button class="btn-purple-figma w-100" style="padding: 12px !important;">
+                        <mat-icon>download</mat-icon>
+                        <span>Descargar Reporte</span>
+                    </button>
                 </div>
-                <div class="c-item done">
-                    <mat-icon>check_circle</mat-icon>
-                    <span>Landing de bienvenida generada</span>
-                </div>
-                <div class="c-item done">
-                    <mat-icon>check_circle</mat-icon>
-                    <span>Alertas automáticas activas</span>
-                </div>
-            </div>
-            
-            <div class="success-banner mt-auto">
-                <mat-icon>verified_user</mat-icon>
-                <span>Sistema 100% Protegido</span>
             </div>
         </div>
     </div>

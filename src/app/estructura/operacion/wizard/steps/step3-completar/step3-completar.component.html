@@ -8,67 +8,71 @@
         </p>
     </div>
 
-    <div class="info-card p-32px mb-32px" [formGroup]="completarForm">
-        <!-- Email -->
-        <div class="data-item mb-4" style="background: transparent; padding: 0;">
-            <label class="font-600 text-figma-gray-600 mb-2 d-flex align-items-center gap-2">
-                <mat-icon class="fs-18x text-figma-blue-600">mail</mat-icon>
-                Correo Electrónico del Cliente <span class="text-danger">*</span>
-            </label>
-            <input type="email" formControlName="email" class="form-control figma-input" placeholder="ejemplo@correo.com">
-            <div *ngIf="completarForm.get('email')?.invalid && completarForm.get('email')?.touched" class="text-danger fs-12x mt-1">
-                Ingrese un email válido.
-            </div>
-            <p class="fs-12x text-figma-gray-400 mt-2">Necesario para enviar póliza y notificaciones por correo</p>
-        </div>
-
-        <!-- Phone -->
-        <div class="data-item mb-4" style="background: transparent; padding: 0;">
-            <label class="font-600 text-figma-gray-600 mb-2 d-flex align-items-center gap-2">
-                <mat-icon class="fs-18x text-figma-blue-600">smartphone</mat-icon>
-                Número de Celular <span class="text-danger">*</span>
-            </label>
-            <input type="tel" formControlName="telefono" class="form-control figma-input" placeholder="5512345678" (input)="handlePhoneInput($event)">
-            <div *ngIf="completarForm.get('telefono')?.invalid && completarForm.get('telefono')?.touched" class="text-danger fs-12x mt-1">
-                Ingrese un número a 10 dígitos.
-            </div>
-            <p class="fs-12x text-figma-gray-400 mt-2">Necesario para enviar SMS y mensajes de WhatsApp</p>
-        </div>
-
-        <!-- Commission Slider -->
-        <div class="data-item mb-4" style="background: transparent; padding: 0;">
-            <label class="font-600 text-figma-gray-600 mb-2 d-flex align-items-center gap-2">
-                <mat-icon class="fs-18x text-figma-blue-600">percentage</mat-icon>
-                Porcentaje de Comisión
-            </label>
-            <div class="d-flex align-items-center gap-3 mt-2">
-                <input type="range" class="figma-range-slider flex-grow-1" min="0" max="100" [value]="comisionPorcentaje" (input)="updateComision($event)">
-                <div style="background: #fef9c3; border: 1px solid #fde047; padding: 0.5rem 1rem; border-radius: 8px; font-weight: 700; color: #854d0e;">
-                    {{ comisionPorcentaje }}%
+    <div class="row justify-content-center text-start">
+        <div class="col-lg-7">
+            <div class="info-card p-32px mb-32px" [formGroup]="completarForm">
+                <!-- Email -->
+                <div class="mb-4">
+                    <label class="form-label font-600 text-figma-gray-600 mb-2 d-flex align-items-center gap-2">
+                        <mat-icon class="fs-18x text-figma-blue-600">mail</mat-icon>
+                        Correo Electrónico del Cliente <span class="text-danger">*</span>
+                    </label>
+                    <input type="email" formControlName="email" class="form-control figma-input" placeholder="ejemplo@correo.com">
+                    <div *ngIf="completarForm.get('email')?.invalid && completarForm.get('email')?.touched" class="text-danger fs-12x mt-1">
+                        Ingrese un email válido.
+                    </div>
+                    <p class="fs-12x text-figma-gray-400 mt-2">Necesario para enviar póliza y notificaciones por correo</p>
                 </div>
-            </div>
-            <p class="fs-12x text-figma-gray-400 mt-2">Porcentaje de comisión que recibes por esta póliza</p>
-        </div>
 
-        <!-- Commission Summary Box -->
-        <div class="commission-summary mt-4">
-            <h3>Comisiones calculadas:</h3>
-            <div class="summary-rows">
-                <div *ngFor="let r of state().receipts; let i = index" class="summary-row">
-                    <span>Recibo {{ i + 1 }}/{{ state().receipts.length }}:</span>
-                    <strong>{{ (r.prima * (comisionPorcentaje / 100)) | currency:'MXN' }}</strong>
+                <!-- Phone -->
+                <div class="mb-4">
+                    <label class="form-label font-600 text-figma-gray-600 mb-2 d-flex align-items-center gap-2">
+                        <mat-icon class="fs-18x text-figma-blue-600">smartphone</mat-icon>
+                        Número de Celular <span class="text-danger">*</span>
+                    </label>
+                    <input type="tel" formControlName="telefono" class="form-control figma-input" placeholder="5512345678" (input)="handlePhoneInput($event)">
+                    <div *ngIf="completarForm.get('telefono')?.invalid && completarForm.get('telefono')?.touched" class="text-danger fs-12x mt-1">
+                        Ingrese un número a 10 dígitos.
+                    </div>
+                    <p class="fs-12x text-figma-gray-400 mt-2">Necesario para enviar SMS y mensajes de WhatsApp</p>
                 </div>
-                <div class="summary-row total">
-                    <span>Total Comisión:</span>
-                    <strong>{{ comisionCalculada | currency:'MXN' }}</strong>
+
+                <!-- Commission Slider -->
+                <div class="mb-4">
+                    <label class="form-label font-600 text-figma-gray-600 mb-2 d-flex align-items-center gap-2">
+                        <mat-icon class="fs-18x text-figma-blue-600">percentage</mat-icon>
+                        Porcentaje de Comisión
+                    </label>
+                    <div class="d-flex align-items-center gap-3 mt-2">
+                        <input type="range" class="form-range flex-grow-1" min="0" max="100" [value]="comisionPorcentaje" (input)="updateComision($event)">
+                        <div style="background: #fef9c3; border: 1px solid #fde047; padding: 0.5rem 1rem; border-radius: 8px; font-weight: 700; color: #854d0e;">
+                            {{ comisionPorcentaje }}%
+                        </div>
+                    </div>
+                    <p class="fs-12x text-figma-gray-400 mt-2">Porcentaje de comisión que recibes por esta póliza</p>
                 </div>
+
+                <!-- Commission Summary Box -->
+                <div class="commission-summary mt-4">
+                    <h3 class="fs-16x font-700 mb-3">Comisiones calculadas:</h3>
+                    <div class="summary-rows">
+                        <div *ngFor="let r of state().receipts; let i = index" class="summary-row">
+                            <span>Recibo {{ i + 1 }}/{{ state().receipts.length }}:</span>
+                            <strong>{{ (r.prima * (comisionPorcentaje / 100)) | currency:'MXN' }}</strong>
+                        </div>
+                        <div class="summary-row total">
+                            <span>Total Comisión:</span>
+                            <strong>{{ comisionCalculada | currency:'MXN' }}</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn-primary-blue mt-4 w-100" (click)="onSave()" [disabled]="completarForm.invalid" style="height: 52px;">
+                    <mat-icon>save</mat-icon>
+                    <span>Guardar y Continuar</span>
+                </button>
             </div>
         </div>
-
-        <button class="btn-primary-blue mt-4 w-100" (click)="onSave()" [disabled]="completarForm.invalid" style="height: 52px;">
-            <mat-icon>save</mat-icon>
-            <span>Guardar y Continuar</span>
-        </button>
     </div>
 
 </div>

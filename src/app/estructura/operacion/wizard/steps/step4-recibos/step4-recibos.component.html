@@ -6,61 +6,73 @@
         <p class="summary-text">Gestiona los pagos y comunicaciones de los recibos detectados.</p>
     </div>
 
-    <div class="receipts-layout">
+    <div class="row g-4 text-start">
         <!-- Sidebar: Receipt List -->
-        <div class="receipt-sidebar">
-            <div *ngFor="let r of state().receipts; let i = index" 
-                 class="receipt-item-card" 
-                 [class.active]="activeIndex === i"
-                 (click)="selectReceipt(i)">
-                <div class="receipt-info">
-                    <span class="r-period">{{ r.periodo }}</span>
-                    <span class="r-amount">{{ r.prima | currency:'MXN' }}</span>
+        <div class="col-md-4">
+            <div class="receipt-sidebar h-100">
+                <div *ngFor="let r of state().receipts; let i = index" 
+                     class="receipt-item-card" 
+                     [class.active]="activeIndex === i"
+                     (click)="selectReceipt(i)">
+                    <div class="receipt-info">
+                        <span class="r-period">{{ r.periodo }}</span>
+                        <span class="r-amount">{{ r.prima | currency:'MXN' }}</span>
+                    </div>
+                    <div class="r-status" [class.paid]="r.estado === 'Pagado'">
+                        {{ r.estado }}
+                    </div>
+                    <mat-icon class="chevron">chevron_right</mat-icon>
                 </div>
-                <div class="r-status" [class.paid]="r.estado === 'Pagado'">
-                    {{ r.estado }}
-                </div>
-                <mat-icon class="chevron">chevron_right</mat-icon>
             </div>
         </div>
 
         <!-- Actions Panel -->
-        <div class="actions-panel">
-            <div class="panel-header">
-                <h3 class="panel-title">Acciones para Recibo {{ activeIndex + 1 }}</h3>
-            </div>
+        <div class="col-md-8">
+            <div class="actions-panel h-100 p-4">
+                <div class="panel-header mb-4">
+                    <h3 class="panel-title fs-20x font-800 text-figma-gray-900">Acciones para Recibo {{ activeIndex + 1 }}</h3>
+                </div>
 
-            <div class="actions-grid">
-                <div class="action-card email" (click)="onActionClick('Email')">
-                    <div class="action-icon"><mat-icon>mail</mat-icon></div>
-                    <h4>Enviar Email</h4>
-                    <p>Envío de liga de pago por correo</p>
+                <div class="row g-3 mb-4">
+                    <div class="col-sm-6">
+                        <div class="action-card email w-100 h-100" (click)="onActionClick('Email')">
+                            <div class="action-icon"><mat-icon>mail</mat-icon></div>
+                            <h4>Enviar Email</h4>
+                            <p>Envío de liga de pago por correo</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="action-card sms w-100 h-100" (click)="onActionClick('SMS')">
+                            <div class="action-icon"><mat-icon>smartphone</mat-icon></div>
+                            <h4>Enviar SMS</h4>
+                            <p>Recordatorio rápido al celular</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="action-card whatsapp w-100 h-100" (click)="onActionClick('WhatsApp')">
+                            <div class="action-icon"><mat-icon>chat</mat-icon></div>
+                            <h4>WhatsApp</h4>
+                            <p>Comunicación directa y oficial</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="action-card log w-100 h-100" (click)="onActionClick('Bitácora')">
+                            <div class="action-icon"><mat-icon>history_edu</mat-icon></div>
+                            <h4>Bitácora</h4>
+                            <p>Ver historial de este recibo</p>
+                        </div>
+                    </div>
                 </div>
-                <div class="action-card sms" (click)="onActionClick('SMS')">
-                    <div class="action-icon"><mat-icon>smartphone</mat-icon></div>
-                    <h4>Enviar SMS</h4>
-                    <p>Recordatorio rápido al celular</p>
-                </div>
-                <div class="action-card whatsapp" (click)="onActionClick('WhatsApp')">
-                    <div class="action-icon"><mat-icon>chat</mat-icon></div>
-                    <h4>WhatsApp</h4>
-                    <p>Comunicación directa y oficial</p>
-                </div>
-                <div class="action-card log" (click)="onActionClick('Bitácora')">
-                    <div class="action-icon"><mat-icon>history_edu</mat-icon></div>
-                    <h4>Bitácora</h4>
-                    <p>Ver historial de este recibo</p>
-                </div>
-            </div>
 
-            <div class="status-toggle-box">
-                <p>¿Este recibo ya fue liquidado?</p>
-                <button class="btn w-100" 
-                        [class.btn-success]="reciboActual.estado === 'Pagado'"
-                        [class.btn-primary]="reciboActual.estado !== 'Pagado'"
-                        (click)="togglePaid(activeIndex)">
-                    {{ reciboActual.estado === 'Pagado' ? 'Pagado ✓' : 'Marcar como Pagado' }}
-                </button>
+                <div class="status-toggle-box p-4 rounded-12 bg-light-figma">
+                    <p class="fs-14x text-figma-gray-600 mb-3">¿Este recibo ya fue liquidado?</p>
+                    <button class="btn w-100 py-2 font-700" 
+                            [class.btn-success]="reciboActual.estado === 'Pagado'"
+                            [class.btn-primary]="reciboActual.estado !== 'Pagado'"
+                            (click)="togglePaid(activeIndex)">
+                        {{ reciboActual.estado === 'Pagado' ? 'Pagado ✓' : 'Marcar como Pagado' }}
+                    </button>
+                </div>
             </div>
         </div>
     </div>

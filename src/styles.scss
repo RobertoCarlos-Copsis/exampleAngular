@@ -1,4 +1,5 @@
-/* Custom Figma Layout Engine (No Bootstrap) */
+/* Premium Bootstrap 5 Integration & Figma Layout Engine */
+@import "bootstrap/scss/bootstrap";
 @import '@angular/material/prebuilt-themes/indigo-pink.css';
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
@@ -60,33 +61,21 @@ body {
     background-color: var(--figma-gray-50) !important;
 }
 
-/* Layout Containers (Anti-Stretch - Widened to match 1005 reference) */
-/* ── Figma Layout Engine ────────────────────────────────── */
+/* Layout Containers (Using Bootstrap compat) */
 .figma-container {
+    @extend .container;
     max-width: 1200px !important;
-    width: 100% !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
-    box-sizing: border-box;
-    display: block !important; /* Specific block for margin auto */
 }
 
-/* 900px centered container for Steps (Synced with React StepContainer) */
 .step-container {
+    @extend .container;
     max-width: 900px !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
-    width: 100% !important;
     text-align: center;
 }
 
 .dashboard-container {
+    @extend .container;
     max-width: 1200px !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
-    width: 100% !important;
 }
 
 .figma-row {
@@ -495,7 +484,7 @@ body {
 .grid-cards {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 1.5rem;
+    gap: 2rem;
 }
 
 .summary-text {
@@ -622,12 +611,16 @@ body {
 }
 
 .header-brand {
-    background: linear-gradient(90deg, #1e1b4b 0%, #312e81 100%) !important;
-    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+    background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%) !important;
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     color: white !important;
-    padding: 1rem 0;
+    padding: 0.75rem 0;
     width: 100%;
+    position: sticky;
+    top: 0;
     z-index: 1000;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
 .header-container {
@@ -654,20 +647,27 @@ body {
 .custom-stepper {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 2rem;
+    margin-bottom: 3rem;
     position: relative;
-    padding: 0 0.5rem;
+    padding: 0 1rem;
     width: 100%;
 
-    &::before {
-        content: '';
+    .stepper-progress-track {
         position: absolute;
-        top: 20px;
-        left: 2rem;
-        right: 2rem;
-        height: 2px;
-        background: var(--figma-gray-200);
+        top: 22px;
+        left: 3rem;
+        right: 3rem;
+        height: 4px;
+        background: #e2e8f0;
+        border-radius: 2px;
         z-index: 0;
+        overflow: hidden;
+
+        .stepper-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #2563eb 0%, #9333ea 100%);
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
     }
 }
 
@@ -684,15 +684,16 @@ body {
         width: 44px;
         height: 44px;
         background: white;
-        border: 2px solid var(--figma-gray-200);
+        border: 2px solid #e2e8f0;
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
         font-weight: 800;
-        color: var(--figma-gray-400);
-        transition: all 0.3s ease;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        font-size: 1.1rem;
+        color: #94a3b8;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     }
 
     .step-label {

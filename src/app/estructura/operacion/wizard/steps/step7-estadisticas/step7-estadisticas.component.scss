@@ -43,18 +43,16 @@
     }
 }
 
-.dashboard-grid {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 1.5rem;
-}
-
-.dashboard-card {
-    background: white;
-    border-radius: 20px;
-    padding: 2rem;
-    border: 1px solid #f1f5f9;
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.04);
+.badge-premium {
+    background: #eff6ff;
+    color: #2563eb;
+    padding: 6px 14px;
+    border-radius: 40px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    border: 1px solid #dbeafe;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
 }
 
 .card-p-header {

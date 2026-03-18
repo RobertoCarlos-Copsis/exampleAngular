@@ -6,64 +6,68 @@
         <p class="summary-text">Personaliza las alertas que se activarán automáticamente para esta póliza.</p>
     </div>
 
-    <div class="notif-list">
-        <!-- Cobranza -->
-        <div class="notif-item cobranza">
-            <div class="notif-icon"><mat-icon>payments</mat-icon></div>
-            <div class="notif-details">
-                <h4>Cobranza (CxC)</h4>
-                <p>Recordatorios automáticos de pago 15, 7 y 3 días antes del vencimiento</p>
-            </div>
-            <div class="notif-toggle">
-                <mat-slide-toggle [checked]="state().notifications.cobranza.active" (change)="toggleNotification('cobranza', $event)"></mat-slide-toggle>
-            </div>
-        </div>
+    <div class="row justify-content-center text-start px-3">
+        <div class="col-lg-9">
+            <div class="notif-list d-flex flex-column gap-3">
+                <!-- Cobranza -->
+                <div class="notif-item cobranza p-3 rounded-12 d-flex align-items-center gap-3">
+                    <div class="notif-icon"><mat-icon>payments</mat-icon></div>
+                    <div class="notif-details flex-grow-1">
+                        <h4 class="mb-1">Cobranza (CxC)</h4>
+                        <p class="mb-0">Recordatorios automáticos de pago 15, 7 y 3 días antes del vencimiento</p>
+                    </div>
+                    <div class="notif-toggle">
+                        <mat-slide-toggle [checked]="state().notifications.cobranza.active" (change)="toggleNotification('cobranza', $event)"></mat-slide-toggle>
+                    </div>
+                </div>
 
-        <!-- Renovación -->
-        <div class="notif-item renovacion">
-            <div class="notif-icon"><mat-icon>rotate_right</mat-icon></div>
-            <div class="notif-details">
-                <h4>Renovaciones</h4>
-                <p>Alertas de renovación 60, 30 y 15 días antes del vencimiento</p>
-            </div>
-            <div class="notif-toggle">
-                <mat-slide-toggle [checked]="state().notifications.renovacion.active" (change)="toggleNotification('renovacion', $event)"></mat-slide-toggle>
-            </div>
-        </div>
+                <!-- Renovación -->
+                <div class="notif-item renovacion p-3 rounded-12 d-flex align-items-center gap-3">
+                    <div class="notif-icon"><mat-icon>rotate_right</mat-icon></div>
+                    <div class="notif-details flex-grow-1">
+                        <h4 class="mb-1">Renovaciones</h4>
+                        <p class="mb-0">Alertas de renovación 60, 30 y 15 días antes del vencimiento</p>
+                    </div>
+                    <div class="notif-toggle">
+                        <mat-slide-toggle [checked]="state().notifications.renovacion.active" (change)="toggleNotification('renovacion', $event)"></mat-slide-toggle>
+                    </div>
+                </div>
 
-        <!-- Siniestros -->
-        <div class="notif-item siniestros">
-            <div class="notif-icon"><mat-icon>warning</mat-icon></div>
-            <div class="notif-details">
-                <h4>Siniestros</h4>
-                <p>Actualizaciones sobre siniestros registrados y su seguimiento</p>
-            </div>
-            <div class="notif-toggle">
-                <mat-slide-toggle [checked]="state().notifications.siniestros.active" (change)="toggleNotification('siniestros', $event)"></mat-slide-toggle>
-            </div>
-        </div>
+                <!-- Siniestros -->
+                <div class="notif-item siniestros p-3 rounded-12 d-flex align-items-center gap-3">
+                    <div class="notif-icon"><mat-icon>warning</mat-icon></div>
+                    <div class="notif-details flex-grow-1">
+                        <h4 class="mb-1">Siniestros</h4>
+                        <p class="mb-0">Actualizaciones sobre siniestros registrados y su seguimiento</p>
+                    </div>
+                    <div class="notif-toggle">
+                        <mat-slide-toggle [checked]="state().notifications.siniestros.active" (change)="toggleNotification('siniestros', $event)"></mat-slide-toggle>
+                    </div>
+                </div>
 
-        <!-- Comisiones -->
-        <div class="notif-item comisiones">
-            <div class="notif-icon"><mat-icon>percent</mat-icon></div>
-            <div class="notif-details">
-                <h4>Comisiones</h4>
-                <p>Avisos cuando se registren nuevos pagos de comisiones</p>
-            </div>
-            <div class="notif-toggle">
-                <mat-slide-toggle [checked]="state().notifications.comisiones.active" (change)="toggleNotification('comisiones', $event)"></mat-slide-toggle>
-            </div>
-        </div>
+                <!-- Comisiones -->
+                <div class="notif-item comisiones p-3 rounded-12 d-flex align-items-center gap-3">
+                    <div class="notif-icon"><mat-icon>percent</mat-icon></div>
+                    <div class="notif-details flex-grow-1">
+                        <h4 class="mb-1">Comisiones</h4>
+                        <p class="mb-0">Avisos cuando se registren nuevos pagos de comisiones</p>
+                    </div>
+                    <div class="notif-toggle">
+                        <mat-slide-toggle [checked]="state().notifications.comisiones.active" (change)="toggleNotification('comisiones', $event)"></mat-slide-toggle>
+                    </div>
+                </div>
 
-        <!-- Generales -->
-        <div class="notif-item generales">
-            <div class="notif-icon"><mat-icon>notifications</mat-icon></div>
-            <div class="notif-details">
-                <h4>Notificaciones Generales</h4>
-                <p>Actualizaciones del sistema y novedades de la plataforma</p>
-            </div>
-            <div class="notif-toggle">
-                <mat-slide-toggle [checked]="state().notifications.generales.active" (change)="toggleNotification('generales', $event)"></mat-slide-toggle>
+                <!-- Generales -->
+                <div class="notif-item generales p-3 rounded-12 d-flex align-items-center gap-3">
+                    <div class="notif-icon"><mat-icon>notifications</mat-icon></div>
+                    <div class="notif-details flex-grow-1">
+                        <h4 class="mb-1">Notificaciones Generales</h4>
+                        <p class="mb-0">Actualizaciones del sistema y novedades de la plataforma</p>
+                    </div>
+                    <div class="notif-toggle">
+                        <mat-slide-toggle [checked]="state().notifications.generales.active" (change)="toggleNotification('generales', $event)"></mat-slide-toggle>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

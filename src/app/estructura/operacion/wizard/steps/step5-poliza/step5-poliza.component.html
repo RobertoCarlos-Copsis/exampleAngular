@@ -55,26 +55,32 @@
     <div class="delivery-card info-card p-32px mb-32px">
         <h3 class="section-title mb-4" style="font-size: 1.25rem; font-weight: 800; color: #111827;">Acciones de Entrega y Renovación</h3>
 
-        <div class="delivery-grid">
-            <div class="d-card email" [class.active]="selectedMethod === 'TuPoliza'" (click)="onMethodSelect('TuPoliza')">
-                <div class="card-check" *ngIf="selectedMethod === 'TuPoliza'"><mat-icon>check_box</mat-icon></div>
-                <div class="d-icon-box"><mat-icon>mail</mat-icon></div>
-                <h4>TuPoliza</h4>
-                <p>Envío por correo con landing</p>
+        <div class="row g-3">
+            <div class="col-md-4">
+                <div class="d-card email h-100 w-100" [class.active]="selectedMethod === 'TuPoliza'" (click)="onMethodSelect('TuPoliza')">
+                    <div class="card-check" *ngIf="selectedMethod === 'TuPoliza'"><mat-icon>check_box</mat-icon></div>
+                    <div class="d-icon-box"><mat-icon>mail</mat-icon></div>
+                    <h4>TuPoliza</h4>
+                    <p>Envío por correo con landing</p>
+                </div>
             </div>
 
-            <div class="d-card app" [class.active]="selectedMethod === 'App'" (click)="onMethodSelect('App')">
-                <div class="card-check" *ngIf="selectedMethod === 'App'"><mat-icon>check_box</mat-icon></div>
-                <div class="d-icon-box"><mat-icon>phone_android</mat-icon></div>
-                <h4>MiPoliza App</h4>
-                <p>Compartir vía app móvil</p>
+            <div class="col-md-4">
+                <div class="d-card app h-100 w-100" [class.active]="selectedMethod === 'App'" (click)="onMethodSelect('App')">
+                    <div class="card-check" *ngIf="selectedMethod === 'App'"><mat-icon>check_box</mat-icon></div>
+                    <div class="d-icon-box"><mat-icon>phone_android</mat-icon></div>
+                    <h4>MiPoliza App</h4>
+                    <p>Compartir vía app móvil</p>
+                </div>
             </div>
 
-            <div class="d-card renewal" [class.active]="selectedMethod === 'Renovacion'" (click)="onMethodSelect('Renovacion')">
-                <div class="card-check" *ngIf="selectedMethod === 'Renovacion'"><mat-icon>check_box</mat-icon></div>
-                <div class="d-icon-box"><mat-icon>sync</mat-icon></div>
-                <h4>Renovación</h4>
-                <p>Recordatorio de vencimiento</p>
+            <div class="col-md-4">
+                <div class="d-card renewal h-100 w-100" [class.active]="selectedMethod === 'Renovacion'" (click)="onMethodSelect('Renovacion')">
+                    <div class="card-check" *ngIf="selectedMethod === 'Renovacion'"><mat-icon>check_box</mat-icon></div>
+                    <div class="d-icon-box"><mat-icon>sync</mat-icon></div>
+                    <h4>Renovación</h4>
+                    <p>Recordatorio de vencimiento</p>
+                </div>
             </div>
         </div>
 
