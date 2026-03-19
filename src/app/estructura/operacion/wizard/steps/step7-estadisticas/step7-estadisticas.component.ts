@@ -15,6 +15,7 @@ import {
   ApexPlotOptions
 } from "ng-apexcharts";
 import { WizardService } from '../../../../../core/services/wizard.service';
+import { GeminiExtractionService } from '../../../../../core/services/gemini-extraction.service';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries | ApexNonAxisChartSeries;
@@ -47,6 +48,7 @@ export class Step7EstadisticasComponent {
   @Output() resetWizard = new EventEmitter<void>();
 
   private wizardService = inject(WizardService);
+  private geminiService = inject(GeminiExtractionService);
   state = this.wizardService.state;
 
   get totalPrima() {
@@ -123,6 +125,7 @@ export class Step7EstadisticasComponent {
   });
 
   onProbarOtra() {
+    this.geminiService.reset();
     this.wizardService.resetState();
     this.resetWizard.emit();
   }

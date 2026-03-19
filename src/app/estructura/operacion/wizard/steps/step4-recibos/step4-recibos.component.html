@@ -77,6 +77,103 @@
         </div>
     </div>
 
+    <!-- Modals / Overlays -->
+    <div class="modal-backdrop-figma" *ngIf="activeDialog || showBitacora" (click)="closeDialog(); closeBitacora()"></div>
+
+    <!-- Action Modal (Email, SMS, WhatsApp) -->
+    <div class="action-modal-figma" *ngIf="activeDialog">
+        <div class="modal-header-figma">
+            <div class="d-flex align-items-center gap-3">
+                <div class="icon-box-figma" [ngClass]="activeDialog.type.toLowerCase()">
+                    <mat-icon>{{ activeDialog.icon }}</mat-icon>
+                </div>
+                <div>
+                    <h3 class="m-0 fs-18x font-800">{{ activeDialog.title }}</h3>
+                    <p class="m-0 fs-12x text-figma-gray-400">{{ activeDialog.subtitle }}</p>
+                </div>
+            </div>
+            <button class="btn-close-figma" (click)="closeDialog()"><mat-icon>close</mat-icon></button>
+        </div>
+
+        <div class="modal-body-figma py-4" *ngIf="!actionSuccess">
+            <!-- Email Fields -->
+            <div *ngIf="activeDialog.type === 'Email'" class="mb-3">
+                <div class="input-group-figma mb-2">
+                    <label>Para:</label>
+                    <input type="text" [value]="state().client.email" readonly>
+                </div>
+                <div class="input-group-figma">
+                    <label>Asunto:</label>
+                    <input type="text" [value]="'Recordatorio de Pago - Póliza ' + state().policy.data.policyNumber" readonly>
+                </div>
+            </div>
+
+            <!-- Phone Field for SMS/WhatsApp -->
+            <div *ngIf="activeDialog.type !== 'Email'" class="input-group-figma mb-3">
+                <label>Número:</label>
+                <input type="text" [value]="state().client.phone" readonly>
+            </div>
+
+            <!-- Message Body -->
+            <div class="input-group-figma">
+                <label>Mensaje:</label>
+                <textarea rows="6" [(ngModel)]="actionText"></textarea>
+            </div>
+        </div>
+
+        <!-- Success State -->
+        <div class="modal-body-figma py-5 text-center" *ngIf="actionSuccess">
+            <div class="success-icon-anim mb-4">
+                <mat-icon>check_circle</mat-icon>
+            </div>
+            <h4 class="font-800 mb-2">{{ actionSuccess.message }}</h4>
+            <p class="text-figma-gray-400 fs-14x">La bitácora del recibo ha sido actualizada.</p>
+        </div>
+
+        <div class="modal-footer-figma mt-2" *ngIf="!actionSuccess">
+            <button class="btn-figma-secondary w-100" (click)="closeDialog()" [disabled]="isSending">Cancelar</button>
+            <button class="btn-figma-primary w-100" (click)="confirmAction()" [disabled]="isSending || !isFormValid">
+                <span *ngIf="!isSending">Confirmar y Enviar</span>
+                <span *ngIf="isSending" class="spinner-border spinner-border-sm me-2"></span>
+                <span *ngIf="isSending">Enviando...</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Bitácora Modal -->
+    <div class="action-modal-figma bitacora-modal" *ngIf="showBitacora">
+        <div class="modal-header-figma">
+            <div class="d-flex align-items-center gap-3">
+                <div class="icon-box-figma log">
+                    <mat-icon>history_edu</mat-icon>
+                </div>
+                <div>
+                    <h3 class="m-0 fs-18x font-800">Bitácora de Seguimiento</h3>
+                    <p class="m-0 fs-12x text-figma-gray-400">Recibo {{ activeIndex + 1 }} - Historial completo</p>
+                </div>
+            </div>
+            <button class="btn-close-figma" (click)="closeBitacora()"><mat-icon>close</mat-icon></button>
+        </div>
+
+        <div class="modal-body-figma py-4">
+            <div class="timeline-figma">
+                <div class="timeline-item" *ngFor="let item of bitacoraItems">
+                    <div class="timeline-icon" [ngClass]="item.color">
+                        <mat-icon>{{ item.icon }}</mat-icon>
+                    </div>
+                    <div class="timeline-content">
+                        <span class="t-date">{{ item.fecha }}</span>
+                        <p class="t-event">{{ item.evento }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-footer-figma mt-3">
+            <button class="btn-figma-secondary w-100" (click)="closeBitacora()">Cerrar Historia</button>
+        </div>
+    </div>
+
     <!-- Final Actions -->
     <div class="d-flex justify-content-center mt-5">
         <button class="btn-primary-blue fs-16x font-700 px-32px" (click)="onContinue()">

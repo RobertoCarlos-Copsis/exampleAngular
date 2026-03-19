@@ -41,26 +41,49 @@
     <!-- Main Dashboard Container (Bootstrap 1200px) -->
     <div class="row g-4 mb-4">
         <!-- Chart Section (Left) -->
-        <div class="col-lg-8">
-            <div class="figma-card h-100 p-4">
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <div>
-                        <h3 class="fs-18x font-800 text-figma-gray-900 mb-1">Rendimiento de Cartera</h3>
-                        <p class="fs-14x text-figma-gray-400">Distribución de primas analizadas por ramo</p>
+        <div class="col-lg-9">
+            <div class="row g-4">
+                <!-- Bar Chart -->
+                <div class="col-md-7">
+                    <div class="figma-card h-100 p-4">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <div>
+                                <h3 class="fs-18x font-800 text-figma-gray-900 mb-1">Rendimiento de Cartera</h3>
+                                <p class="fs-14x text-figma-gray-400">Comisiones proyectadas vs actuales</p>
+                            </div>
+                        </div>
+                        <div id="bar-chart" class="mt-2" style="min-height: 300px;">
+                            <apx-chart [series]="barChart().series!" [chart]="barChart().chart!"
+                                [xaxis]="barChart().xaxis!" [plotOptions]="barChart().plotOptions!"
+                                [colors]="barChart().colors!" [dataLabels]="barChart().dataLabels!">
+                            </apx-chart>
+                        </div>
                     </div>
-                    <div class="badge-premium">En Tiempo Real</div>
                 </div>
-                <div id="chart" class="mt-2" style="min-height: 350px;">
-                    <apx-chart [series]="barChart().series!" [chart]="barChart().chart!"
-                        [xaxis]="barChart().xaxis!" [plotOptions]="barChart().plotOptions!"
-                        [colors]="barChart().colors!" [dataLabels]="barChart().dataLabels!">
-                    </apx-chart>
+
+                <!-- Pie Chart -->
+                <div class="col-md-5">
+                    <div class="figma-card h-100 p-4">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <div>
+                                <h3 class="fs-18x font-800 text-figma-gray-1000 mb-1">Distribución de Prima</h3>
+                                <p class="fs-14x text-figma-gray-400">Desglose porcentual</p>
+                            </div>
+                        </div>
+                        <div id="pie-chart" class="mt-2" style="min-height: 300px; display: flex; align-items: center; justify-content: center;">
+                            <apx-chart [series]="pieChart().series!" [chart]="pieChart().chart!"
+                                [labels]="pieChart().labels!" [colors]="pieChart().colors!" 
+                                [legend]="pieChart().legend!" [responsive]="pieChart().responsive!"
+                                [dataLabels]="pieChart().dataLabels!">
+                            </apx-chart>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
         <!-- Checklist Section (Right) -->
-        <div class="col-lg-4">
+        <div class="col-lg-3">
             <div class="figma-card h-100 p-4">
                 <div class="mb-4">
                     <h3 class="fs-18x font-800 text-figma-gray-900 mb-1">Checklist de Cierre</h3>
