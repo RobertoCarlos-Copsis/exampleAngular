@@ -2,7 +2,7 @@ export interface FileUploadResult {
     fileName: string;
     fileSize: number;
     mimeType: string;
-    uploadDate: string; // Formateada con moment.js
+    uploadDate: string; // ISO string format
     originalFile: File;
 }
 

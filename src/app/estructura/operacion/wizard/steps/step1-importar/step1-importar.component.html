@@ -72,28 +72,37 @@
     <div class="row justify-content-center g-4 mt-4 text-start">
         <div class="col-md-4">
             <div class="figma-card p-4 d-flex align-items-center gap-3 border-0 bg-white h-100" style="background: white !important;">
-                <mat-icon class="text-figma-blue-600 fs-24x">picture_as_pdf</mat-icon>
-                <div>
-                    <span class="d-block fs-16x font-700 text-figma-gray-900">Formatos PDF</span>
-                    <small class="text-figma-gray-400">Lectura instantánea</small>
+                <mat-icon *ngIf="state !== 'processing'" class="text-figma-blue-600 fs-24x">picture_as_pdf</mat-icon>
+                <div *ngIf="state === 'processing'" class="skeleton" style="width: 24px; height: 24px;"></div>
+                <div class="flex-grow-1">
+                    <span *ngIf="state !== 'processing'" class="d-block fs-16x font-700 text-figma-gray-900">Formatos PDF</span>
+                    <div *ngIf="state === 'processing'" class="skeleton mb-1" style="width: 80%; height: 18px;"></div>
+                    <small *ngIf="state !== 'processing'" class="text-figma-gray-400">Lectura instantánea</small>
+                    <div *ngIf="state === 'processing'" class="skeleton" style="width: 50%; height: 12px;"></div>
                 </div>
             </div>
         </div>
         <div class="col-md-4">
             <div class="figma-card p-4 d-flex align-items-center gap-3 border-0 bg-white h-100" style="background: white !important;">
-                <mat-icon class="text-figma-amber-500 fs-24x">stay_primary_portrait</mat-icon>
-                <div>
-                    <span class="d-block fs-16x font-700 text-figma-gray-900">Mobile Ready</span>
-                    <small class="text-figma-gray-400">Optimizado para fotos</small>
+                <mat-icon *ngIf="state !== 'processing'" class="text-figma-amber-500 fs-24x">stay_primary_portrait</mat-icon>
+                <div *ngIf="state === 'processing'" class="skeleton" style="width: 24px; height: 24px;"></div>
+                <div class="flex-grow-1">
+                    <span *ngIf="state !== 'processing'" class="d-block fs-16x font-700 text-figma-gray-900">Mobile Ready</span>
+                    <div *ngIf="state === 'processing'" class="skeleton mb-1" style="width: 70%; height: 18px;"></div>
+                    <small *ngIf="state !== 'processing'" class="text-figma-gray-400">Optimizado para fotos</small>
+                    <div *ngIf="state === 'processing'" class="skeleton" style="width: 40%; height: 12px;"></div>
                 </div>
             </div>
         </div>
         <div class="col-md-4">
             <div class="figma-card p-4 d-flex align-items-center gap-3 border-0 bg-figma-green-50 h-100" style="background: #f0fdf4 !important; border: 1px solid #dcfce7 !important; border-radius: 12px;">
-                <mat-icon class="text-figma-green-600 fs-24x">task_alt</mat-icon>
-                <div>
-                    <span class="d-block fs-16x font-700 text-figma-green-600">OCR Inteligente</span>
-                    <small class="text-figma-green-600">Extracción precisa</small>
+                <mat-icon *ngIf="state !== 'processing'" class="text-figma-green-600 fs-24x">task_alt</mat-icon>
+                <div *ngIf="state === 'processing'" class="skeleton" style="width: 24px; height: 24px;"></div>
+                <div class="flex-grow-1">
+                    <span *ngIf="state !== 'processing'" class="d-block fs-16x font-700 text-figma-green-600">OCR Inteligente</span>
+                    <div *ngIf="state === 'processing'" class="skeleton mb-1" style="width: 90%; height: 18px;"></div>
+                    <small *ngIf="state !== 'processing'" class="text-figma-green-600">Extracción precisa</small>
+                    <div *ngIf="state === 'processing'" class="skeleton" style="width: 60%; height: 12px;"></div>
                 </div>
             </div>
         </div>

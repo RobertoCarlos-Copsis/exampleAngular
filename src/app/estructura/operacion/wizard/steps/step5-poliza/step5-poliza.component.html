@@ -2,8 +2,8 @@
     
     <!-- Header Section -->
     <div class="text-center mb-4">
-        <h1 class="step-title" style="font-size: 2.25rem !important; font-weight: 800; color: #111827;">Paso 5: Entrega y Renovación</h1>
-        <p class="summary-text">Configura cómo se entregará la póliza al cliente y activa alertas de renovación.</p>
+        <h1 id="lbTituloPaso5" name="lbTituloPaso5" class="step-title" style="font-size: 2.25rem !important; font-weight: 800; color: #111827;">Paso 5: Entrega y Renovación</h1>
+        <p id="spResumenPaso5" name="spResumenPaso5" class="summary-text">Configura cómo se entregará la póliza al cliente y activa alertas de renovación.</p>
     </div>
 
     <!-- Policy Preview Section -->
@@ -12,20 +12,20 @@
             <div class="doc-header">
                 <div class="insurer-logo-mock">
                     <mat-icon style="color: #4f46e5; font-size: 32px; width: 32px; height: 32px;">shield</mat-icon>
-                    <span>{{ state().policy.data.insurer || 'ASEGURADORA QUATTRO' }}</span>
+                    <span id="txAseguradora" name="txAseguradora">{{ state().policy.data.aseguradora || 'ASEGURADORA QUATTRO' }}</span>
                 </div>
-                <div class="doc-status-badge">DOCUMENTO LISTO</div>
+                <div id="lbDocStatus" name="lbDocStatus" class="doc-status-badge">DOCUMENTO LISTO</div>
             </div>
 
             <div class="doc-body">
                 <div class="doc-main-info">
                     <div class="doc-field">
-                        <label>Número de Póliza</label>
-                        <strong>{{ state().policy.data.policyNumber || '—' }}</strong>
+                        <label id="lbNumeroPolizaLabel" name="lbNumeroPolizaLabel">Número de Póliza</label>
+                        <strong id="txNumeroPoliza" name="txNumeroPoliza">{{ state().policy.data.policyNumber || '—' }}</strong>
                     </div>
                     <div class="doc-field">
-                        <label>Tipo de Seguro</label>
-                        <p>{{ state().policy.data.concept || '—' }}</p>
+                        <label id="lbTipoSeguroLabel" name="lbTipoSeguroLabel">Tipo de Seguro</label>
+                        <p id="txTipoSeguro" name="txTipoSeguro">{{ state().policy.data.concept || '—' }}</p>
                     </div>
                 </div>
 
@@ -33,17 +33,17 @@
 
                 <div class="doc-footer-info">
                     <div class="doc-field">
-                        <label>Asegurado / Contratante</label>
-                        <strong>{{ state().client.name || '—' }}</strong>
+                        <label id="lbAseguradoLabel" name="lbAseguradoLabel">Asegurado / Contratante</label>
+                        <strong id="txAseguradoNombre" name="txAseguradoNombre">{{ state().client.name || '—' }}</strong>
                     </div>
                     <div class="doc-dates">
                         <div class="doc-field">
-                            <label>Desde</label>
-                            <span>{{ state().policy.data.startDate || '—' }}</span>
+                            <label id="lbDesdeLabel" name="lbDesdeLabel">Desde</label>
+                            <span id="txFechaDesde" name="txFechaDesde">{{ state().policy.data.startDate || '—' }}</span>
                         </div>
                         <div class="doc-field">
-                            <label>Hasta</label>
-                            <span>{{ state().policy.data.endDate || '—' }}</span>
+                            <label id="lbHastaLabel" name="lbHastaLabel">Hasta</label>
+                            <span id="txFechaHasta" name="txFechaHasta">{{ state().policy.data.endDate || '—' }}</span>
                         </div>
                     </div>
                 </div>
@@ -53,40 +53,40 @@
 
     <!-- Delivery Actions Card -->
     <div class="delivery-card info-card p-32px mb-32px">
-        <h3 class="section-title mb-4" style="font-size: 1.25rem; font-weight: 800; color: #111827;">Acciones de Entrega y Renovación</h3>
+        <h3 id="lbAccionesEntrega" name="lbAccionesEntrega" class="section-title mb-4" style="font-size: 1.25rem; font-weight: 800; color: #111827;">Acciones de Entrega y Renovación</h3>
 
         <div class="row g-3">
             <div class="col-md-4">
-                <div class="d-card email h-100 w-100" [class.active]="selectedMethod === 'TuPoliza'" (click)="onMethodSelect('TuPoliza')">
+                <div id="btnMetodoTuPoliza" name="btnMetodoTuPoliza" class="d-card email h-100 w-100" [class.active]="selectedMethod === 'TuPoliza'" (click)="onMethodSelect('TuPoliza')">
                     <div class="card-check" *ngIf="selectedMethod === 'TuPoliza'"><mat-icon>check_box</mat-icon></div>
                     <div class="d-icon-box"><mat-icon>mail</mat-icon></div>
-                    <h4>TuPoliza</h4>
-                    <p>Envío por correo con landing</p>
+                    <h4 id="lbTuPoliza" name="lbTuPoliza">TuPoliza</h4>
+                    <p id="spTuPolizaDesc" name="spTuPolizaDesc">Envío por correo con landing</p>
                 </div>
             </div>
 
             <div class="col-md-4">
-                <div class="d-card app h-100 w-100" [class.active]="selectedMethod === 'App'" (click)="onMethodSelect('App')">
+                <div id="btnMetodoApp" name="btnMetodoApp" class="d-card app h-100 w-100" [class.active]="selectedMethod === 'App'" (click)="onMethodSelect('App')">
                     <div class="card-check" *ngIf="selectedMethod === 'App'"><mat-icon>check_box</mat-icon></div>
                     <div class="d-icon-box"><mat-icon>phone_android</mat-icon></div>
-                    <h4>MiPoliza App</h4>
-                    <p>Compartir vía app móvil</p>
+                    <h4 id="lbMiPolizaApp" name="lbMiPolizaApp">MiPoliza App</h4>
+                    <p id="spMiPolizaAppDesc" name="spMiPolizaAppDesc">Compartir vía app móvil</p>
                 </div>
             </div>
 
             <div class="col-md-4">
-                <div class="d-card renewal h-100 w-100" [class.active]="selectedMethod === 'Renovacion'" (click)="onMethodSelect('Renovacion')">
+                <div id="btnMetodoRenovacion" name="btnMetodoRenovacion" class="d-card renewal h-100 w-100" [class.active]="selectedMethod === 'Renovacion'" (click)="onMethodSelect('Renovacion')">
                     <div class="card-check" *ngIf="selectedMethod === 'Renovacion'"><mat-icon>check_box</mat-icon></div>
                     <div class="d-icon-box"><mat-icon>sync</mat-icon></div>
-                    <h4>Renovación</h4>
-                    <p>Recordatorio de vencimiento</p>
+                    <h4 id="lbRenovacion" name="lbRenovacion">Renovación</h4>
+                    <p id="spRenovacionDesc" name="spRenovacionDesc">Recordatorio de vencimiento</p>
                 </div>
             </div>
         </div>
 
-        <button class="btn-primary-blue mt-4 w-100" (click)="onContinue()" style="height: 52px;">
+        <button id="btnConfirmarPaso5" name="btnConfirmarPaso5" class="btn-primary-blue mt-4 w-100" (click)="onContinue()" style="height: 52px;">
             <mat-icon>{{ selectedMethod ? 'check_circle' : 'arrow_forward' }}</mat-icon>
-            <span>{{ selectedMethod ? 'Confirmar y Continuar' : 'Continuar sin Seleccionar' }}</span>
+            <span id="spConfirmarPaso5" name="spConfirmarPaso5">{{ selectedMethod ? 'Confirmar y Continuar' : 'Continuar sin Seleccionar' }}</span>
         </button>
     </div>
 

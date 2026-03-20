@@ -1,6 +1,7 @@
 import { Injectable, signal, computed } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
+import { DatosPolizaExtraidos, ReciboExtraido } from '../models/wizard.model';
 
 // ── Configuración API (basado en importador-qcrm) ──────────────────────────
 const GEMINI_API_CONFIG = {
@@ -10,48 +11,6 @@ const GEMINI_API_CONFIG = {
   modelo: 0
 };
 
-// ── Interfaces ────────────────────────────────────────────────────────────
-export interface DatosPolizaExtraidos {
-  cliente: {
-    nombreCompleto: string;
-    rfc: string;
-    direccion: string;
-    codigoPostal: string;
-    telefono: string;
-    email: string;
-  };
-  poliza: {
-    numeroPoliza: string;
-    tipoPoliza: string;
-    aseguradora: string;
-    claveAgente: string;
-    formaPago: string;
-    moneda: string;
-  };
-  vigencia: {
-    fechaEmision: string;
-    vigenciaDesde: string;
-    vigenciaHasta: string;
-  };
-  importe: {
-    primaNeta: number;
-    derechoPoliza: number;
-    recargoPago: number;
-    iva: number;
-    primaTotal: number;
-    porcentajeComision: number;
-  };
-  recibos: ReciboExtraido[];
-}
-
-export interface ReciboExtraido {
-  numero: number;
-  fechaInicio: string;
-  fechaFin: string;
-  primaNeta: number;
-  iva: number;
-  primaTotal: number;
-}
 
 const DATOS_VACIOS: DatosPolizaExtraidos = {
   cliente: { nombreCompleto: '', rfc: '', direccion: '', codigoPostal: '', telefono: '', email: '' },

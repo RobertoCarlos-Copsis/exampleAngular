@@ -2,8 +2,8 @@
     
     <!-- Header Section -->
     <div class="text-center mb-4">
-        <h1 class="step-title" style="font-size: 2.25rem !important; font-weight: 800; color: #111827;">Paso 4: Gestión de Recibos</h1>
-        <p class="summary-text">Gestiona los pagos y comunicaciones de los recibos detectados.</p>
+        <h1 id="lbTituloPaso4" name="lbTituloPaso4" class="step-title" style="font-size: 2.25rem !important; font-weight: 800; color: #111827;">Paso 4: Gestión de Recibos</h1>
+        <p id="spResumenPaso4" name="spResumenPaso4" class="summary-text">Gestiona los pagos y comunicaciones de los recibos detectados.</p>
     </div>
 
     <div class="row g-4 text-start">
@@ -11,15 +11,16 @@
         <div class="col-md-4">
             <div class="receipt-sidebar h-100">
                 <div *ngFor="let r of state().receipts; let i = index" 
+                     [attr.id]="'btnReciboItem' + i" [attr.name]="'btnReciboItem' + i"
                      class="receipt-item-card" 
                      [class.active]="activeIndex === i"
                      (click)="selectReceipt(i)">
                     <div class="receipt-info">
-                        <span class="r-period">{{ r.periodo }}</span>
-                        <span class="r-amount">{{ r.prima | currency:'MXN' }}</span>
+                        <span [attr.id]="'txPeriodo' + i" [attr.name]="'txPeriodo' + i" class="r-period">{{ r.periodo }}</span>
+                        <span [attr.id]="'txPrima' + i" [attr.name]="'txPrima' + i" class="r-amount">{{ r.prima | currency:'MXN' }}</span>
                     </div>
-                    <div class="r-status" [class.paid]="r.estado === 'Pagado'">
-                        {{ r.estado }}
+                    <div [attr.id]="'txEstado' + i" [attr.name]="'txEstado' + i" class="r-status" [class.paid]="r.status === 'Pagado'">
+                        {{ r.status }}
                     </div>
                     <mat-icon class="chevron">chevron_right</mat-icon>
                 </div>
@@ -30,47 +31,47 @@
         <div class="col-md-8">
             <div class="actions-panel h-100 p-4">
                 <div class="panel-header mb-4">
-                    <h3 class="panel-title fs-20x font-800 text-figma-gray-900">Acciones para Recibo {{ activeIndex + 1 }}</h3>
+                    <h3 id="lbAccionesRecibo" name="lbAccionesRecibo" class="panel-title fs-20x font-800 text-figma-gray-900">Acciones para Recibo {{ activeIndex + 1 }}</h3>
                 </div>
 
                 <div class="row g-3 mb-4">
                     <div class="col-sm-6">
-                        <div class="action-card email w-100 h-100" (click)="onActionClick('Email')">
+                        <div id="btnEnviarEmail" name="btnEnviarEmail" class="action-card email w-100 h-100" (click)="onActionClick('Email')">
                             <div class="action-icon"><mat-icon>mail</mat-icon></div>
-                            <h4>Enviar Email</h4>
-                            <p>Envío de liga de pago por correo</p>
+                            <h4 id="lbEnviarEmail" name="lbEnviarEmail">Enviar Email</h4>
+                            <p id="spEnviarEmail" name="spEnviarEmail">Envío de liga de pago por correo</p>
                         </div>
                     </div>
                     <div class="col-sm-6">
-                        <div class="action-card sms w-100 h-100" (click)="onActionClick('SMS')">
+                        <div id="btnEnviarSMS" name="btnEnviarSMS" class="action-card sms w-100 h-100" (click)="onActionClick('SMS')">
                             <div class="action-icon"><mat-icon>smartphone</mat-icon></div>
-                            <h4>Enviar SMS</h4>
-                            <p>Recordatorio rápido al celular</p>
+                            <h4 id="lbEnviarSMS" name="lbEnviarSMS">Enviar SMS</h4>
+                            <p id="spEnviarSMS" name="spEnviarSMS">Recordatorio rápido al celular</p>
                         </div>
                     </div>
                     <div class="col-sm-6">
-                        <div class="action-card whatsapp w-100 h-100" (click)="onActionClick('WhatsApp')">
+                        <div id="btnWhatsApp" name="btnWhatsApp" class="action-card whatsapp w-100 h-100" (click)="onActionClick('WhatsApp')">
                             <div class="action-icon"><mat-icon>chat</mat-icon></div>
-                            <h4>WhatsApp</h4>
-                            <p>Comunicación directa y oficial</p>
+                            <h4 id="lbWhatsApp" name="lbWhatsApp">WhatsApp</h4>
+                            <p id="spWhatsApp" name="spWhatsApp">Comunicación directa y oficial</p>
                         </div>
                     </div>
                     <div class="col-sm-6">
-                        <div class="action-card log w-100 h-100" (click)="onActionClick('Bitácora')">
+                        <div id="btnBitacora" name="btnBitacora" class="action-card log w-100 h-100" (click)="onActionClick('Bitácora')">
                             <div class="action-icon"><mat-icon>history_edu</mat-icon></div>
-                            <h4>Bitácora</h4>
-                            <p>Ver historial de este recibo</p>
+                            <h4 id="lbBitacora" name="lbBitacora">Bitácora</h4>
+                            <p id="spBitacora" name="spBitacora">Ver historial de este recibo</p>
                         </div>
                     </div>
                 </div>
 
                 <div class="status-toggle-box p-4 rounded-12 bg-light-figma">
-                    <p class="fs-14x text-figma-gray-600 mb-3">¿Este recibo ya fue liquidado?</p>
-                    <button class="btn w-100 py-2 font-700" 
-                            [class.btn-success]="reciboActual.estado === 'Pagado'"
-                            [class.btn-primary]="reciboActual.estado !== 'Pagado'"
+                    <p id="lbPreguntaLiquidado" name="lbPreguntaLiquidado" class="fs-14x text-figma-gray-600 mb-3">¿Este recibo ya fue liquidado?</p>
+                    <button id="btnToggleLiquidado" name="btnToggleLiquidado" class="btn w-100 py-2 font-700" 
+                            [class.btn-success]="reciboActual.status === 'Pagado'"
+                            [class.btn-primary]="reciboActual.status !== 'Pagado'"
                             (click)="togglePaid(activeIndex)">
-                        {{ reciboActual.estado === 'Pagado' ? 'Pagado ✓' : 'Marcar como Pagado' }}
+                        {{ reciboActual.status === 'Pagado' ? 'Pagado ✓' : 'Marcar como Pagado' }}
                     </button>
                 </div>
             </div>
@@ -88,36 +89,36 @@
                     <mat-icon>{{ activeDialog.icon }}</mat-icon>
                 </div>
                 <div>
-                    <h3 class="m-0 fs-18x font-800">{{ activeDialog.title }}</h3>
-                    <p class="m-0 fs-12x text-figma-gray-400">{{ activeDialog.subtitle }}</p>
+                    <h3 id="lbDialogTitle" name="lbDialogTitle" class="m-0 fs-18x font-800">{{ activeDialog.title }}</h3>
+                    <p id="spDialogSubtitle" name="spDialogSubtitle" class="m-0 fs-12x text-figma-gray-400">{{ activeDialog.subtitle }}</p>
                 </div>
             </div>
-            <button class="btn-close-figma" (click)="closeDialog()"><mat-icon>close</mat-icon></button>
+            <button id="btnDialogClose" name="btnDialogClose" class="btn-close-figma" (click)="closeDialog()"><mat-icon>close</mat-icon></button>
         </div>
 
         <div class="modal-body-figma py-4" *ngIf="!actionSuccess">
             <!-- Email Fields -->
             <div *ngIf="activeDialog.type === 'Email'" class="mb-3">
                 <div class="input-group-figma mb-2">
-                    <label>Para:</label>
-                    <input type="text" [value]="state().client.email" readonly>
+                    <label id="lbPara" name="lbPara">Para:</label>
+                    <input id="txParaEmail" name="txParaEmail" type="text" [value]="state().client.email" readonly>
                 </div>
                 <div class="input-group-figma">
-                    <label>Asunto:</label>
-                    <input type="text" [value]="'Recordatorio de Pago - Póliza ' + state().policy.data.policyNumber" readonly>
+                    <label id="lbAsunto" name="lbAsunto">Asunto:</label>
+                    <input id="txAsuntoEmail" name="txAsuntoEmail" type="text" [value]="'Recordatorio de Pago - Póliza ' + state().policy.data.policyNumber" readonly>
                 </div>
             </div>
 
             <!-- Phone Field for SMS/WhatsApp -->
             <div *ngIf="activeDialog.type !== 'Email'" class="input-group-figma mb-3">
-                <label>Número:</label>
-                <input type="text" [value]="state().client.phone" readonly>
+                <label id="lbNumero" name="lbNumero">Número:</label>
+                <input id="txNumeroTel" name="txNumeroTel" type="text" [value]="state().client.phone" readonly>
             </div>
 
             <!-- Message Body -->
             <div class="input-group-figma">
-                <label>Mensaje:</label>
-                <textarea rows="6" [(ngModel)]="actionText"></textarea>
+                <label id="lbMensaje" name="lbMensaje">Mensaje:</label>
+                <textarea id="txaMensajeCuerpo" name="txaMensajeCuerpo" rows="6" [(ngModel)]="actionText"></textarea>
             </div>
         </div>
 
@@ -126,16 +127,16 @@
             <div class="success-icon-anim mb-4">
                 <mat-icon>check_circle</mat-icon>
             </div>
-            <h4 class="font-800 mb-2">{{ actionSuccess.message }}</h4>
-            <p class="text-figma-gray-400 fs-14x">La bitácora del recibo ha sido actualizada.</p>
+            <h4 id="lbSuccessTitle" name="lbSuccessTitle" class="font-800 mb-2">{{ actionSuccess.message }}</h4>
+            <p id="spSuccessMsg" name="spSuccessMsg" class="text-figma-gray-400 fs-14x">La bitácora del recibo ha sido actualizada.</p>
         </div>
 
         <div class="modal-footer-figma mt-2" *ngIf="!actionSuccess">
-            <button class="btn-figma-secondary w-100" (click)="closeDialog()" [disabled]="isSending">Cancelar</button>
-            <button class="btn-figma-primary w-100" (click)="confirmAction()" [disabled]="isSending || !isFormValid">
-                <span *ngIf="!isSending">Confirmar y Enviar</span>
+            <button id="btnCancelarAccion" name="btnCancelarAccion" class="btn-figma-secondary w-100" (click)="closeDialog()" [disabled]="isSending">Cancelar</button>
+            <button id="btnConfirmarEnviar" name="btnConfirmarEnviar" class="btn-figma-primary w-100" (click)="confirmAction()" [disabled]="isSending || !isFormValid">
+                <span id="spConfirmarEnviar" name="spConfirmarEnviar" *ngIf="!isSending">Confirmar y Enviar</span>
                 <span *ngIf="isSending" class="spinner-border spinner-border-sm me-2"></span>
-                <span *ngIf="isSending">Enviando...</span>
+                <span id="spEnviando" name="spEnviando" *ngIf="isSending">Enviando...</span>
             </button>
         </div>
     </div>
@@ -148,36 +149,36 @@
                     <mat-icon>history_edu</mat-icon>
                 </div>
                 <div>
-                    <h3 class="m-0 fs-18x font-800">Bitácora de Seguimiento</h3>
-                    <p class="m-0 fs-12x text-figma-gray-400">Recibo {{ activeIndex + 1 }} - Historial completo</p>
+                    <h3 id="lbBitacoraTitle" name="lbBitacoraTitle" class="m-0 fs-18x font-800">Bitácora de Seguimiento</h3>
+                    <p id="spBitacoraSubtitle" name="spBitacoraSubtitle" class="m-0 fs-12x text-figma-gray-400">Recibo {{ activeIndex + 1 }} - Historial completo</p>
                 </div>
             </div>
-            <button class="btn-close-figma" (click)="closeBitacora()"><mat-icon>close</mat-icon></button>
+            <button id="btnBitacoraClose" name="btnBitacoraClose" class="btn-close-figma" (click)="closeBitacora()"><mat-icon>close</mat-icon></button>
         </div>
 
         <div class="modal-body-figma py-4">
             <div class="timeline-figma">
-                <div class="timeline-item" *ngFor="let item of bitacoraItems">
+                <div class="timeline-item" *ngFor="let item of bitacoraItems; let j = index">
                     <div class="timeline-icon" [ngClass]="item.color">
                         <mat-icon>{{ item.icon }}</mat-icon>
                     </div>
                     <div class="timeline-content">
-                        <span class="t-date">{{ item.fecha }}</span>
-                        <p class="t-event">{{ item.evento }}</p>
+                        <span [attr.id]="'txBitacoraFecha' + j" [attr.name]="'txBitacoraFecha' + j" class="t-date">{{ item.fecha }}</span>
+                        <p [attr.id]="'txBitacoraEvento' + j" [attr.name]="'txBitacoraEvento' + j" class="t-event">{{ item.evento }}</p>
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="modal-footer-figma mt-3">
-            <button class="btn-figma-secondary w-100" (click)="closeBitacora()">Cerrar Historia</button>
+            <button id="btnCerrarBitacora" name="btnCerrarBitacora" class="btn-figma-secondary w-100" (click)="closeBitacora()">Cerrar Historia</button>
         </div>
     </div>
 
     <!-- Final Actions -->
     <div class="d-flex justify-content-center mt-5">
-        <button class="btn-primary-blue fs-16x font-700 px-32px" (click)="onContinue()">
-            <span>Continuar al Siguiente Paso</span>
+        <button id="btnContinuarPaso5" name="btnContinuarPaso5" class="btn-primary-blue fs-16x font-700 px-32px" (click)="onContinue()">
+            <span id="spContinuarPaso5" name="spContinuarPaso5">Continuar al Siguiente Paso</span>
             <mat-icon>arrow_forward_ios</mat-icon>
         </button>
     </div>

@@ -1,6 +1,7 @@
 import { Component, Output, EventEmitter, ViewChild, ElementRef, inject } from '@angular/core';
 import { WizardService } from '../../../../../core/services/wizard.service';
 import { GeminiExtractionService } from '../../../../../core/services/gemini-extraction.service';
+import { ReciboExtraido } from '../../../../../core/models/wizard.model';
 
 /** Estados posibles de la demo de importación */
 type UploadState = 'idle' | 'processing' | 'done';
@@ -57,19 +58,26 @@ export class Step1ImportarComponent {
           data: {
             policyNumber: datos.poliza.numeroPoliza,
             concept: datos.poliza.tipoPoliza,
+            aseguradora: datos.poliza.aseguradora,
             agentCode: datos.poliza.claveAgente,
+            formaPago: datos.poliza.formaPago,
+            moneda: datos.poliza.moneda || 'MXN',
             startDate: datos.vigencia.vigenciaDesde,
             endDate: datos.vigencia.vigenciaHasta,
             extractedData: datos // Guardar objeto completo para pasos posteriores
           }
         },
-        receipts: datos.recibos.map(r => ({
+        receipts: datos.recibos.map((r: ReciboExtraido) => ({
           id: r.numero,
           prima: r.primaTotal,
           periodo: `${r.fechaInicio} al ${r.fechaFin}`,
+          vencimiento: r.fechaFin,
           status: 'Pendiente'
         }))
       });
+
+      // Registrar en el historial de extracciones
+      this.wizardService.addExtractionToHistory(datos);
 
       // Avanzar automáticamente después de un breve delay para mostrar el estado "done"
       setTimeout(() => {

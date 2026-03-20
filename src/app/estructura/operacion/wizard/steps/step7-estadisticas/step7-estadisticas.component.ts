@@ -16,6 +16,7 @@ import {
 } from "ng-apexcharts";
 import { WizardService } from '../../../../../core/services/wizard.service';
 import { GeminiExtractionService } from '../../../../../core/services/gemini-extraction.service';
+import { Receipt } from '../../../../../core/models/wizard.model';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries | ApexNonAxisChartSeries;
@@ -44,7 +45,7 @@ export class Step7EstadisticasComponent {
   state = this.wizardService.state;
 
   get totalPrima() {
-    return this.state().receipts.reduce((acc: number, r: any) => acc + (r.prima || 0), 0);
+    return this.state().receipts.reduce((acc: number, r: Receipt) => acc + (r.prima || 0), 0);
   }
 
   get totalComision() {
@@ -56,7 +57,7 @@ export class Step7EstadisticasComponent {
   }
 
   get numAlertas() {
-    return Object.values(this.state().notifications).filter((n: any) => n.active).length;
+    return Object.values(this.state().notifications).filter((n: { active: boolean }) => n.active).length;
   }
 
   // Configuración de la Gráfica de Pastel (Distribución)

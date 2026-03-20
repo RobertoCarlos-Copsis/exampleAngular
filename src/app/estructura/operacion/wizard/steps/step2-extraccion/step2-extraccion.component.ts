@@ -26,7 +26,7 @@ export class Step2ExtraccionComponent {
           id: r.numero,
           periodo: `Recibo ${r.numero}`,
           prima: r.primaTotal,
-          estado: 'Pendiente',
+          status: 'Pendiente',
           vencimiento: r.fechaInicio
         }))
       });

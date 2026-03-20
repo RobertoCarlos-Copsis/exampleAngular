@@ -2,8 +2,8 @@
     
     <!-- Header Section -->
     <div class="text-center mb-5">
-        <h1 class="step-title" style="font-size: 2.25rem !important; font-weight: 800; color: #111827;">¡Operación Exitosa!</h1>
-        <p class="summary-text" style="font-size: 1.125rem;">La póliza ha sido procesada y el sistema de seguimiento está en marcha.</p>
+        <h1 id="lbTituloFinal" name="lbTituloFinal" class="step-title" style="font-size: 2.25rem !important; font-weight: 800; color: #111827;">¡Operación Exitosa!</h1>
+        <p id="spResumenFinal" name="spResumenFinal" class="summary-text" style="font-size: 1.125rem;">La póliza ha sido procesada y el sistema de seguimiento está en marcha.</p>
     </div>
 
     <!-- KPI Grid -->
@@ -11,29 +11,29 @@
         <div class="kpi-card">
             <div class="kpi-icon blue"><mat-icon>verified</mat-icon></div>
             <div class="kpi-info">
-                <span class="v">1</span>
-                <span class="l">Póliza Emitida</span>
+                <span id="txPolizaEmitida" name="txPolizaEmitida" class="v">1</span>
+                <span id="lbPolizaEmitidaLabel" name="lbPolizaEmitidaLabel" class="l">Póliza Emitida</span>
             </div>
         </div>
         <div class="kpi-card">
             <div class="kpi-icon purple"><mat-icon>contact_mail</mat-icon></div>
             <div class="kpi-info">
-                <span class="v">1</span>
-                <span class="l">Cliente Nuevo</span>
+                <span id="txClienteNuevo" name="txClienteNuevo" class="v">1</span>
+                <span id="lbClienteNuevoLabel" name="lbClienteNuevoLabel" class="l">Cliente Nuevo</span>
             </div>
         </div>
         <div class="kpi-card">
             <div class="kpi-icon yellow"><mat-icon>receipt_long</mat-icon></div>
             <div class="kpi-info">
-                <span class="v">{{ numRecibos }}</span>
-                <span class="l">Recibos</span>
+                <span id="txNumRecibos" name="txNumRecibos" class="v">{{ numRecibos }}</span>
+                <span id="lbRecibosLabel" name="lbRecibosLabel" class="l">Recibos</span>
             </div>
         </div>
         <div class="kpi-card">
             <div class="kpi-icon green"><mat-icon>payments</mat-icon></div>
             <div class="kpi-info">
-                <span class="v" style="font-size: 1.25rem;">{{ totalComision | currency:'MXN' }}</span>
-                <span class="l">Comisiones</span>
+                <span id="txTotalComision" name="txTotalComision" class="v" style="font-size: 1.25rem;">{{ totalComision | currency:'MXN' }}</span>
+                <span id="lbComisionesLabel" name="lbComisionesLabel" class="l">Comisiones</span>
             </div>
         </div>
     </div>
@@ -48,8 +48,8 @@
                     <div class="figma-card h-100 p-4">
                         <div class="d-flex justify-content-between align-items-center mb-4">
                             <div>
-                                <h3 class="fs-18x font-800 text-figma-gray-900 mb-1">Rendimiento de Cartera</h3>
-                                <p class="fs-14x text-figma-gray-400">Comisiones proyectadas vs actuales</p>
+                                <h3 id="lbRendimientoCartera" name="lbRendimientoCartera" class="fs-18x font-800 text-figma-gray-900 mb-1">Rendimiento de Cartera</h3>
+                                <p id="spRendimientoDesc" name="spRendimientoDesc" class="fs-14x text-figma-gray-400">Comisiones proyectadas vs actuales</p>
                             </div>
                         </div>
                         <div id="bar-chart" class="mt-2" style="min-height: 300px;">
@@ -66,8 +66,8 @@
                     <div class="figma-card h-100 p-4">
                         <div class="d-flex justify-content-between align-items-center mb-4">
                             <div>
-                                <h3 class="fs-18x font-800 text-figma-gray-1000 mb-1">Distribución de Prima</h3>
-                                <p class="fs-14x text-figma-gray-400">Desglose porcentual</p>
+                                <h3 id="lbDistribucionPrima" name="lbDistribucionPrima" class="fs-18x font-800 text-figma-gray-1000 mb-1">Distribución de Prima</h3>
+                                <p id="spDistribucionDesc" name="spDistribucionDesc" class="fs-14x text-figma-gray-400">Desglose porcentual</p>
                             </div>
                         </div>
                         <div id="pie-chart" class="mt-2" style="min-height: 300px; display: flex; align-items: center; justify-content: center;">
@@ -86,47 +86,106 @@
         <div class="col-lg-3">
             <div class="figma-card h-100 p-4">
                 <div class="mb-4">
-                    <h3 class="fs-18x font-800 text-figma-gray-900 mb-1">Checklist de Cierre</h3>
-                    <p class="fs-14x text-figma-gray-400">Estado de la digitalización</p>
+                    <h3 id="lbChecklistCierre" name="lbChecklistCierre" class="fs-18x font-800 text-figma-gray-900 mb-1">Checklist de Cierre</h3>
+                    <p id="spChecklistDesc" name="spChecklistDesc" class="fs-14x text-figma-gray-400">Estado de la digitalización</p>
                 </div>
                 <div class="checklist-items">
                     <div class="check-item d-flex align-items-center gap-3 p-3 mb-3" style="background: #f0fdf4; border: 1px solid #dcfce7; border-radius: 12px;">
                         <mat-icon class="text-figma-green-600">check_circle</mat-icon>
                         <div>
-                            <p class="fs-14x font-700 text-figma-gray-900 mb-0">PDF Procesado</p>
-                            <small class="text-figma-green-600">Correcto</small>
+                            <p id="txChecklistPdf" name="txChecklistPdf" class="fs-14x font-700 text-figma-gray-900 mb-0">PDF Procesado</p>
+                            <small id="spChecklistPdfEstado" name="spChecklistPdfEstado" class="text-figma-green-600">Correcto</small>
                         </div>
                     </div>
                     <div class="check-item d-flex align-items-center gap-3 p-3 mb-3" style="background: #f0fdf4; border: 1px solid #dcfce7; border-radius: 12px;">
                         <mat-icon class="text-figma-green-600">check_circle</mat-icon>
                         <div>
-                            <p class="fs-14x font-700 text-figma-gray-900 mb-0">Recibos Vinculados</p>
-                            <small class="text-figma-green-600">{{ state().receipts.length }} detectados</small>
+                            <p id="txChecklistRecibos" name="txChecklistRecibos" class="fs-14x font-700 text-figma-gray-900 mb-0">Recibos Vinculados</p>
+                            <small id="spChecklistRecibosCount" name="spChecklistRecibosCount" class="text-figma-green-600">{{ state().receipts.length }} detectados</small>
                         </div>
                     </div>
                     <div class="check-item d-flex align-items-center gap-3 p-3" style="background: #eff6ff; border: 1px solid #dbeafe; border-radius: 12px;">
                         <mat-icon class="text-figma-blue-600">info</mat-icon>
                         <div>
-                            <p class="fs-14x font-700 text-figma-gray-900 mb-0">Notificaciones</p>
-                            <small class="text-figma-blue-600">Configuradas</small>
+                            <p id="txChecklistNotif" name="txChecklistNotif" class="fs-14x font-700 text-figma-gray-900 mb-0">Notificaciones</p>
+                            <small id="spChecklistNotifEstado" name="spChecklistNotifEstado" class="text-figma-blue-600">Configuradas</small>
                         </div>
                     </div>
                 </div>
                 <div class="mt-4 pt-2">
-                    <button class="btn-purple-figma w-100" style="padding: 12px !important;">
+                    <button id="btnDescargarReporte" name="btnDescargarReporte" class="btn-purple-figma w-100" style="padding: 12px !important;">
                         <mat-icon>download</mat-icon>
-                        <span>Descargar Reporte</span>
+                        <span id="spDescargarReporte" name="spDescargarReporte">Descargar Reporte</span>
                     </button>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- AI Extraction History -->
+    <div class="row mt-5">
+        <div class="col-12">
+            <div class="figma-card p-4">
+                <div class="d-flex align-items-center gap-3 mb-4">
+                    <div class="icon-box-figma" style="background: #e0f2fe; color: #0369a1; padding: 10px; border-radius: 10px;">
+                        <mat-icon>history</mat-icon>
+                    </div>
+                    <div>
+                        <h3 id="lbHistorialIA" name="lbHistorialIA" class="fs-18x font-800 text-figma-gray-900 mb-1">Historial de Extracciones IA</h3>
+                        <p id="spHistorialIADesc" name="spHistorialIADesc" class="fs-14x text-figma-gray-400">Registro de auditoría de los documentos procesados en esta sesión</p>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th class="fs-12x font-700 text-figma-gray-400 px-4">FECHA / HORA</th>
+                                <th class="fs-12x font-700 text-figma-gray-400">DOCUMENTO</th>
+                                <th class="fs-12x font-700 text-figma-gray-400">RESULTADO</th>
+                                <th class="fs-12x font-700 text-figma-gray-400 text-end px-4">ACCIONES</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of state().extractionHistory || []; let i = index">
+                                <td class="px-4">
+                                    <span [attr.id]="'txHistorialFecha' + i" [attr.name]="'txHistorialFecha' + i" class="fs-14x font-600 text-figma-gray-900 d-block">{{ item.timestamp | date:'short' }}</span>
+                                    <small class="text-figma-gray-400">Extracción exitosa</small>
+                                </td>
+                                <td>
+                                    <div class="d-flex align-items-center gap-2">
+                                        <mat-icon class="text-figma-blue-600">description</mat-icon>
+                                        <span [attr.id]="'txHistorialDoc' + i" [attr.name]="'txHistorialDoc' + i" class="fs-14x font-600">Póliza Extraída</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="badge bg-figma-green-50 text-figma-green-600 border border-success-subtle px-3 py-2 rounded-pill fs-12x">
+                                        {{ numRecibos }} recibos detectados
+                                    </span>
+                                </td>
+                                <td class="text-end px-4">
+                                    <button class="btn btn-sm btn-outline-figma-blue" style="border-radius: 8px;">
+                                        Ver Data
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr *ngIf="!state().extractionHistory?.length">
+                                <td colspan="4" class="text-center py-5 text-figma-gray-400 fs-14x">
+                                    No hay extracciones registradas en esta sesión.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Final Action -->
-    <div class="d-flex justify-content-center pb-5">
-        <button class="btn-primary-blue px-32px" (click)="onProbarOtra()" style="width: 350px; height: 56px;">
+    <div class="d-flex justify-content-center pb-5 mt-5">
+        <button id="btnProcesarNueva" name="btnProcesarNueva" class="btn-primary-blue px-32px" (click)="onProbarOtra()" style="width: 350px; height: 56px;">
             <mat-icon>add_circle</mat-icon>
-            <span>Procesar Nueva Póliza</span>
+            <span id="spProcesarNueva" name="spProcesarNueva">Procesar Nueva Póliza</span>
         </button>
     </div>
 

@@ -703,6 +703,10 @@ body {
     animation: fadeIn 0.3s ease-out forwards;
 }
 
+.animation-fade-in-up {
+    animation: fadeInUp 0.5s ease-out forwards;
+}
+
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -712,6 +716,39 @@ body {
     to {
         opacity: 1;
         transform: translateY(0);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Skeleton Screens */
+.skeleton {
+    background: #f1f5f9;
+    background: linear-gradient(
+        110deg,
+        #f1f5f9 8%,
+        #e2e8f0 18%,
+        #f1f5f9 33%
+    );
+    background-size: 200% 100%;
+    animation: 1.5s shine linear infinite;
+    border-radius: 8px;
+    display: inline-block;
+}
+
+@keyframes shine {
+    to {
+        background-position-x: -200%;
     }
 }
 

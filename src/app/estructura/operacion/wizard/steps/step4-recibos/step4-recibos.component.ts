@@ -1,5 +1,6 @@
 import { Component, Output, EventEmitter, OnInit, inject } from '@angular/core';
 import { WizardService } from '../../../../../core/services/wizard.service';
+import { Receipt } from '../../../../../core/models/wizard.model';
 
 @Component({
   selector: 'app-step4-recibos',
@@ -27,8 +28,8 @@ export class Step4RecibosComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  get reciboActual() {
-    return this.state().receipts[this.activeIndex] || { id: 0, estado: 'Pendiente', vencimiento: '15/04/2025', prima: 0 };
+  get reciboActual(): Receipt {
+    return this.state().receipts[this.activeIndex] || { id: 0, status: 'Pendiente', vencimiento: '15/04/2025', prima: 0, periodo: '' };
   }
 
   selectReceipt(index: number) {
@@ -108,16 +109,16 @@ export class Step4RecibosComponent implements OnInit {
   togglePaid(index: number) {
     const receipts = [...this.state().receipts];
     const r = { ...receipts[index] };
-    r.estado = r.estado === 'Pagado' ? 'Pendiente' : 'Pagado';
+    r.status = r.status === 'Pagado' ? 'Pendiente' : 'Pagado';
     receipts[index] = r;
     this.wizardService.updateState({ receipts });
 
     // Agregar a la bitácora
     this.bitacoraItems.unshift({
       fecha: 'Hace un momento',
-      evento: `Estado cambiado a: ${r.estado}`,
-      icon: r.estado === 'Pagado' ? 'check_circle' : 'pending',
-      color: r.estado === 'Pagado' ? 'green' : 'yellow'
+      evento: `Estado cambiado a: ${r.status}`,
+      icon: r.status === 'Pagado' ? 'check_circle' : 'pending',
+      color: r.status === 'Pagado' ? 'green' : 'yellow'
     });
   }
 

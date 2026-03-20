@@ -2,8 +2,8 @@
     
     <!-- Header Section -->
     <div class="text-center mb-4">
-        <h1 class="step-title" style="font-size: 2.25rem !important; font-weight: 800; color: #111827;">Paso 6: Notificaciones Automáticas</h1>
-        <p class="summary-text">Personaliza las alertas que se activarán automáticamente para esta póliza.</p>
+        <h1 id="lbTituloPaso6" name="lbTituloPaso6" class="step-title" style="font-size: 2.25rem !important; font-weight: 800; color: #111827;">Paso 6: Notificaciones Automáticas</h1>
+        <p id="spResumenPaso6" name="spResumenPaso6" class="summary-text">Personaliza las alertas que se activarán automáticamente para esta póliza.</p>
     </div>
 
     <div class="row justify-content-center text-start px-3">
@@ -13,11 +13,11 @@
                 <div class="notif-item cobranza p-3 rounded-12 d-flex align-items-center gap-3">
                     <div class="notif-icon"><mat-icon>payments</mat-icon></div>
                     <div class="notif-details flex-grow-1">
-                        <h4 class="mb-1">Cobranza (CxC)</h4>
-                        <p class="mb-0">Recordatorios automáticos de pago 15, 7 y 3 días antes del vencimiento</p>
+                        <h4 id="txCobranzaTitulo" name="txCobranzaTitulo" class="mb-1">Cobranza (CxC)</h4>
+                        <p id="spCobranzaDesc" name="spCobranzaDesc" class="mb-0">Recordatorios automáticos de pago 15, 7 y 3 días antes del vencimiento</p>
                     </div>
                     <div class="notif-toggle">
-                        <mat-slide-toggle [checked]="state().notifications.cobranza.active" (change)="toggleNotification('cobranza', $event)"></mat-slide-toggle>
+                        <mat-slide-toggle id="btnToggleCobranza" name="btnToggleCobranza" [checked]="state().notifications.cobranza.active" (change)="toggleNotification('cobranza', $event)"></mat-slide-toggle>
                     </div>
                 </div>
 
@@ -25,11 +25,11 @@
                 <div class="notif-item renovacion p-3 rounded-12 d-flex align-items-center gap-3">
                     <div class="notif-icon"><mat-icon>rotate_right</mat-icon></div>
                     <div class="notif-details flex-grow-1">
-                        <h4 class="mb-1">Renovaciones</h4>
-                        <p class="mb-0">Alertas de renovación 60, 30 y 15 días antes del vencimiento</p>
+                        <h4 id="txRenovacionTitulo" name="txRenovacionTitulo" class="mb-1">Renovaciones</h4>
+                        <p id="spRenovacionDesc" name="spRenovacionDesc" class="mb-0">Alertas de renovación 60, 30 y 15 días antes del vencimiento</p>
                     </div>
                     <div class="notif-toggle">
-                        <mat-slide-toggle [checked]="state().notifications.renovacion.active" (change)="toggleNotification('renovacion', $event)"></mat-slide-toggle>
+                        <mat-slide-toggle id="btnToggleRenovacion" name="btnToggleRenovacion" [checked]="state().notifications.renovacion.active" (change)="toggleNotification('renovacion', $event)"></mat-slide-toggle>
                     </div>
                 </div>
 
@@ -37,11 +37,11 @@
                 <div class="notif-item siniestros p-3 rounded-12 d-flex align-items-center gap-3">
                     <div class="notif-icon"><mat-icon>warning</mat-icon></div>
                     <div class="notif-details flex-grow-1">
-                        <h4 class="mb-1">Siniestros</h4>
-                        <p class="mb-0">Actualizaciones sobre siniestros registrados y su seguimiento</p>
+                        <h4 id="txSiniestrosTitulo" name="txSiniestrosTitulo" class="mb-1">Siniestros</h4>
+                        <p id="spSiniestrosDesc" name="spSiniestrosDesc" class="mb-0">Actualizaciones sobre siniestros registrados y su seguimiento</p>
                     </div>
                     <div class="notif-toggle">
-                        <mat-slide-toggle [checked]="state().notifications.siniestros.active" (change)="toggleNotification('siniestros', $event)"></mat-slide-toggle>
+                        <mat-slide-toggle id="btnToggleSiniestros" name="btnToggleSiniestros" [checked]="state().notifications.siniestros.active" (change)="toggleNotification('siniestros', $event)"></mat-slide-toggle>
                     </div>
                 </div>
 
@@ -49,11 +49,11 @@
                 <div class="notif-item comisiones p-3 rounded-12 d-flex align-items-center gap-3">
                     <div class="notif-icon"><mat-icon>percent</mat-icon></div>
                     <div class="notif-details flex-grow-1">
-                        <h4 class="mb-1">Comisiones</h4>
-                        <p class="mb-0">Avisos cuando se registren nuevos pagos de comisiones</p>
+                        <h4 id="txComisionesTitulo" name="txComisionesTitulo" class="mb-1">Comisiones</h4>
+                        <p id="spComisionesDesc" name="spComisionesDesc" class="mb-0">Avisos cuando se registren nuevos pagos de comisiones</p>
                     </div>
                     <div class="notif-toggle">
-                        <mat-slide-toggle [checked]="state().notifications.comisiones.active" (change)="toggleNotification('comisiones', $event)"></mat-slide-toggle>
+                        <mat-slide-toggle id="btnToggleComisiones" name="btnToggleComisiones" [checked]="state().notifications.comisiones.active" (change)="toggleNotification('comisiones', $event)"></mat-slide-toggle>
                     </div>
                 </div>
 
@@ -61,11 +61,11 @@
                 <div class="notif-item generales p-3 rounded-12 d-flex align-items-center gap-3">
                     <div class="notif-icon"><mat-icon>notifications</mat-icon></div>
                     <div class="notif-details flex-grow-1">
-                        <h4 class="mb-1">Notificaciones Generales</h4>
-                        <p class="mb-0">Actualizaciones del sistema y novedades de la plataforma</p>
+                        <h4 id="txGeneralesTitulo" name="txGeneralesTitulo" class="mb-1">Notificaciones Generales</h4>
+                        <p id="spGeneralesDesc" name="spGeneralesDesc" class="mb-0">Actualizaciones del sistema y novedades de la plataforma</p>
                     </div>
                     <div class="notif-toggle">
-                        <mat-slide-toggle [checked]="state().notifications.generales.active" (change)="toggleNotification('generales', $event)"></mat-slide-toggle>
+                        <mat-slide-toggle id="btnToggleGenerales" name="btnToggleGenerales" [checked]="state().notifications.generales.active" (change)="toggleNotification('generales', $event)"></mat-slide-toggle>
                     </div>
                 </div>
             </div>
@@ -76,15 +76,15 @@
     <div class="info-box-footer">
         <mat-icon style="color: #3b82f6;">info</mat-icon>
         <div class="info-text">
-            <h5>Notificaciones configuradas</h5>
-            <p>Las notificaciones activas se enviarán automáticamente por correo, SMS o WhatsApp según tus preferencias.</p>
+            <h5 id="lbFooterNotif" name="lbFooterNotif">Notificaciones configuradas</h5>
+            <p id="spFooterNotifDesc" name="spFooterNotifDesc">Las notificaciones activas se enviarán automáticamente por correo, SMS o WhatsApp según tus preferencias.</p>
         </div>
     </div>
 
     <!-- Final Actions -->
     <div class="d-flex justify-content-center mt-5 pb-4">
-        <button class="btn-primary-blue px-32px" (click)="onContinue()" style="width: 300px;">
-            <span>Ver Estadísticas Finales</span>
+        <button id="btnVerEstadisticas" name="btnVerEstadisticas" class="btn-primary-blue px-32px" (click)="onContinue()" style="width: 300px;">
+            <span id="spVerEstadisticas" name="spVerEstadisticas">Ver Estadísticas Finales</span>
             <mat-icon>bar_chart</mat-icon>
         </button>
     </div>

@@ -1,36 +1,21 @@
 import { Injectable, signal, computed } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { Observable } from 'rxjs';
-
-export interface WizardState {
-  currentStep: number;
-  policy: {
-    data: any;
-  };
-  client: {
-    name: string;
-    email: string;
-    phone: string;
-    address: string;
-  };
-  receipts: any[];
-  commissionPercentage: number;
-  notifications: {
-    cobranza: { active: boolean };
-    renovacion: { active: boolean };
-    siniestros: { active: boolean };
-    comisiones: { active: boolean };
-    generales: { active: boolean };
-    [key: string]: { active: boolean };
-  };
-  logs: string[];
-  statistics: any;
-}
+import { WizardState, PolicyData, DatosPolizaExtraidos } from '../models/wizard.model';
 
 const initialState: WizardState = {
   currentStep: 1,
   policy: {
-    data: {}
+    data: {
+      policyNumber: '',
+      concept: '',
+      aseguradora: '',
+      agentCode: '',
+      formaPago: '',
+      moneda: 'MXN',
+      startDate: '',
+      endDate: ''
+    }
   },
   client: {
     name: '',
@@ -48,7 +33,8 @@ const initialState: WizardState = {
     generales: { active: false }
   },
   logs: [],
-  statistics: {}
+  statistics: {},
+  extractionHistory: []
 };
 
 @Injectable({
@@ -102,5 +88,18 @@ export class WizardService {
 
   resetState(): void {
     this.state.set(initialState);
+  }
+
+  addExtractionToHistory(data: DatosPolizaExtraidos): void {
+    this.state.update(state => ({
+      ...state,
+      extractionHistory: [
+        ...(state.extractionHistory || []),
+        {
+          timestamp: new Date().toISOString(),
+          data: data
+        }
+      ]
+    }));
   }
 }
