@@ -1,8 +1,4 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { MatStepperModule } from '@angular/material/stepper';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
 
 import { Step1ImportarComponent } from './steps/step1-importar/step1-importar.component';
 import { Step2ExtraccionComponent } from './steps/step2-extraccion/step2-extraccion.component';
@@ -14,20 +10,6 @@ import { Step7EstadisticasComponent } from './steps/step7-estadisticas/step7-est
 
 @Component({
   selector: 'app-wizard',
-  standalone: true,
-  imports: [
-    CommonModule,
-    MatStepperModule,
-    MatIconModule,
-    MatButtonModule,
-    Step1ImportarComponent,
-    Step2ExtraccionComponent,
-    Step3CompletarComponent,
-    Step4RecibosComponent,
-    Step5PolizaComponent,
-    Step6NotificacionesComponent,
-    Step7EstadisticasComponent
-  ],
   templateUrl: './wizard.component.html',
   styleUrls: ['./wizard.component.scss']
 })

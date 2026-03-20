@@ -2,10 +2,10 @@
     
     <!-- Header Section -->
     <div class="text-center mb-3">
-        <h1 class="step-title" style="font-size: 2.25rem !important; font-weight: 800; color: #111827;">Paso 2: IA Extrae Información</h1>
-        <p class="summary-text">
+        <h1 id="lbTituloPaso2" name="lbTituloPaso2" class="step-title" style="font-size: 2.25rem !important; font-weight: 800; color: #111827;">Paso 2: IA Extrae Información</h1>
+        <p id="lbResumenPaso2" name="lbResumenPaso2" class="summary-text">
             Nuestra IA ha leído y extraído los siguientes datos.
-            <span style="color: #4f46e5; font-weight: 600;">Revisa la información antes de continuar.</span>
+            <span id="spRevisaInfo" name="spRevisaInfo" style="color: #4f46e5; font-weight: 600;">Revisa la información antes de continuar.</span>
         </p>
     </div>
 
@@ -16,15 +16,15 @@
             <div class="info-card client">
                 <div class="card-header">
                     <div class="icon-box blue"><mat-icon>person</mat-icon></div>
-                    <h3>Datos del Cliente</h3>
+                    <h3 id="lbDatosCliente" name="lbDatosCliente">Datos del Cliente</h3>
                 </div>
                 <div class="data-item">
-                    <label>Nombre Completo</label>
-                    <p>{{ state().client.name || 'N/A' }}</p>
+                    <label id="lbNombreCompleto" name="lbNombreCompleto">Nombre Completo</label>
+                    <p id="txNombreCompleto" name="txNombreCompleto">{{ state().client.name || 'N/A' }}</p>
                 </div>
                 <div class="data-item">
-                    <label>Dirección</label>
-                    <p>{{ state().client.address || '—' }}</p>
+                    <label id="lbDireccion" name="lbDireccion">Dirección</label>
+                    <p id="txDireccion" name="txDireccion">{{ state().client.address || '—' }}</p>
                 </div>
             </div>
         </div>
@@ -34,15 +34,15 @@
             <div class="info-card policy">
                 <div class="card-header">
                     <div class="icon-box green"><mat-icon>assignment</mat-icon></div>
-                    <h3>Datos de la Póliza</h3>
+                    <h3 id="lbDatosPoliza" name="lbDatosPoliza">Datos de la Póliza</h3>
                 </div>
                 <div class="data-item">
-                    <label>Número de Póliza</label>
-                    <p>{{ state().policy.data.policyNumber || '—' }}</p>
+                    <label id="lbNumPoliza" name="lbNumPoliza">Número de Póliza</label>
+                    <p id="txNumPoliza" name="txNumPoliza">{{ state().policy.data.policyNumber || '—' }}</p>
                 </div>
                 <div class="data-item">
-                    <label>Tipo de Seguro</label>
-                    <p>{{ state().policy.data.concept || 'N/A' }}</p>
+                    <label id="lbTipoSeguro" name="lbTipoSeguro">Tipo de Seguro</label>
+                    <p id="txTipoSeguro" name="txTipoSeguro">{{ state().policy.data.concept || 'N/A' }}</p>
                 </div>
             </div>
         </div>
@@ -52,15 +52,15 @@
             <div class="info-card validity">
                 <div class="card-header">
                     <div class="icon-box purple"><mat-icon>event_available</mat-icon></div>
-                    <h3>Vigencia</h3>
+                    <h3 id="lbVigencia" name="lbVigencia">Vigencia</h3>
                 </div>
                 <div class="data-item">
-                    <label>Fecha de Inicio</label>
-                    <p>{{ state().policy.data.startDate || '—' }}</p>
+                    <label id="lbInicio" name="lbInicio">Fecha de Inicio</label>
+                    <p id="txInicio" name="txInicio">{{ state().policy.data.startDate || '—' }}</p>
                 </div>
                 <div class="data-item">
-                    <label>Fecha de Fin</label>
-                    <p>{{ state().policy.data.endDate || '—' }}</p>
+                    <label id="lbFin" name="lbFin">Fecha de Fin</label>
+                    <p id="txFin" name="txFin">{{ state().policy.data.endDate || '—' }}</p>
                 </div>
             </div>
         </div>
@@ -70,7 +70,7 @@
             <div class="info-card receipts">
                 <div class="card-header">
                     <div class="icon-box yellow"><mat-icon>account_balance_wallet</mat-icon></div>
-                    <h3>Recibos ({{ state().receipts.length || 0 }} encontrados)</h3>
+                    <h3 id="lbRecibos" name="lbRecibos">Recibos ({{ state().receipts.length || 0 }} encontrados)</h3>
                 </div>
                 <div class="receipt-mini-list scroll-figma" style="max-height: 120px; overflow-y: auto; display: flex; flex-direction: column; gap: 0.75rem;">
                     <div *ngFor="let r of state().receipts; let i = index" 
@@ -89,9 +89,9 @@
 
     <!-- Actions -->
     <div class="d-flex justify-content-center mt-5">
-        <button class="btn-primary-blue fs-16x font-700 px-32px" (click)="onConfirm()">
+        <button id="btnConfirmar" name="btnConfirmar" class="btn-primary-blue fs-16x font-700 px-32px" (click)="onConfirm()">
             <mat-icon>verified_user</mat-icon>
-            <span>Confirmar Datos y Continuar</span>
+            <span id="spConfirmar" name="spConfirmar">Confirmar Datos y Continuar</span>
         </button>
     </div>
 

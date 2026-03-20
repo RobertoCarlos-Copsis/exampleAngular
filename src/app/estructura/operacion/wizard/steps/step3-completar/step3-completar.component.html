@@ -2,8 +2,8 @@
     
     <!-- Header Section -->
     <div class="text-center mb-4">
-        <h1 class="step-title" style="font-size: 2.25rem !important; font-weight: 800; color: #111827;">Paso 3: Completar Datos Faltantes</h1>
-        <p class="summary-text">
+        <h1 id="lbTituloPaso3" name="lbTituloPaso3" class="step-title" style="font-size: 2.25rem !important; font-weight: 800; color: #111827;">Paso 3: Completar Datos Faltantes</h1>
+        <p id="lbResumenPaso3" name="lbResumenPaso3" class="summary-text">
             Algunos datos no están en la carátula. Por favor complétalos para activar todas las funcionalidades.
         </p>
     </div>
@@ -13,63 +13,63 @@
             <div class="info-card p-32px mb-32px" [formGroup]="completarForm">
                 <!-- Email -->
                 <div class="mb-4">
-                    <label class="form-label font-600 text-figma-gray-600 mb-2 d-flex align-items-center gap-2">
+                    <label id="lbEmail" name="lbEmail" class="form-label font-600 text-figma-gray-600 mb-2 d-flex align-items-center gap-2">
                         <mat-icon class="fs-18x text-figma-blue-600">mail</mat-icon>
                         Correo Electrónico del Cliente <span class="text-danger">*</span>
                     </label>
-                    <input type="email" formControlName="email" class="form-control figma-input" placeholder="ejemplo@correo.com">
-                    <div *ngIf="completarForm.get('email')?.invalid && completarForm.get('email')?.touched" class="text-danger fs-12x mt-1">
+                    <input id="txEmail" name="txEmail" type="email" formControlName="email" class="form-control figma-input" placeholder="ejemplo@correo.com">
+                    <div id="spErrorEmail" name="spErrorEmail" *ngIf="completarForm.get('email')?.invalid && completarForm.get('email')?.touched" class="text-danger fs-12x mt-1">
                         Ingrese un email válido.
                     </div>
-                    <p class="fs-12x text-figma-gray-400 mt-2">Necesario para enviar póliza y notificaciones por correo</p>
+                    <p id="spMensajeEmail" name="spMensajeEmail" class="fs-12x text-figma-gray-400 mt-2">Necesario para enviar póliza y notificaciones por correo</p>
                 </div>
 
                 <!-- Phone -->
                 <div class="mb-4">
-                    <label class="form-label font-600 text-figma-gray-600 mb-2 d-flex align-items-center gap-2">
+                    <label id="lbTelefono" name="lbTelefono" class="form-label font-600 text-figma-gray-600 mb-2 d-flex align-items-center gap-2">
                         <mat-icon class="fs-18x text-figma-blue-600">smartphone</mat-icon>
                         Número de Celular <span class="text-danger">*</span>
                     </label>
-                    <input type="tel" formControlName="telefono" class="form-control figma-input" placeholder="5512345678" (input)="handlePhoneInput($event)">
-                    <div *ngIf="completarForm.get('telefono')?.invalid && completarForm.get('telefono')?.touched" class="text-danger fs-12x mt-1">
+                    <input id="txTelefono" name="txTelefono" type="tel" formControlName="telefono" class="form-control figma-input" placeholder="5512345678" (input)="handlePhoneInput($event)">
+                    <div id="spErrorTelefono" name="spErrorTelefono" *ngIf="completarForm.get('telefono')?.invalid && completarForm.get('telefono')?.touched" class="text-danger fs-12x mt-1">
                         Ingrese un número a 10 dígitos.
                     </div>
-                    <p class="fs-12x text-figma-gray-400 mt-2">Necesario para enviar SMS y mensajes de WhatsApp</p>
+                    <p id="spMensajeTelefono" name="spMensajeTelefono" class="fs-12x text-figma-gray-400 mt-2">Necesario para enviar SMS y mensajes de WhatsApp</p>
                 </div>
 
                 <!-- Commission Slider -->
                 <div class="mb-4">
-                    <label class="form-label font-600 text-figma-gray-600 mb-2 d-flex align-items-center gap-2">
+                    <label id="lbPorcentajeComision" name="lbPorcentajeComision" class="form-label font-600 text-figma-gray-600 mb-2 d-flex align-items-center gap-2">
                         <mat-icon class="fs-18x text-figma-blue-600">percentage</mat-icon>
                         Porcentaje de Comisión
                     </label>
                     <div class="d-flex align-items-center gap-3 mt-2">
-                        <input type="range" class="form-range flex-grow-1" min="0" max="100" [value]="comisionPorcentaje" (input)="updateComision($event)">
-                        <div style="background: #fef9c3; border: 1px solid #fde047; padding: 0.5rem 1rem; border-radius: 8px; font-weight: 700; color: #854d0e;">
+                        <input id="txComision" name="txComision" type="range" class="form-range flex-grow-1" min="0" max="100" [value]="comisionPorcentaje" (input)="updateComision($event)">
+                        <div id="txComisionValue" name="txComisionValue" style="background: #fef9c3; border: 1px solid #fde047; padding: 0.5rem 1rem; border-radius: 8px; font-weight: 700; color: #854d0e;">
                             {{ comisionPorcentaje }}%
                         </div>
                     </div>
-                    <p class="fs-12x text-figma-gray-400 mt-2">Porcentaje de comisión que recibes por esta póliza</p>
+                    <p id="spMensajeComision" name="spMensajeComision" class="fs-12x text-figma-gray-400 mt-2">Porcentaje de comisión que recibes por esta póliza</p>
                 </div>
 
                 <!-- Commission Summary Box -->
                 <div class="commission-summary mt-4">
-                    <h3 class="fs-16x font-700 mb-3">Comisiones calculadas:</h3>
+                    <h3 id="lbComisionesCalculadas" name="lbComisionesCalculadas" class="fs-16x font-700 mb-3">Comisiones calculadas:</h3>
                     <div class="summary-rows">
                         <div *ngFor="let r of state().receipts; let i = index" class="summary-row">
-                            <span>Recibo {{ i + 1 }}/{{ state().receipts.length }}:</span>
-                            <strong>{{ (r.prima * (comisionPorcentaje / 100)) | currency:'MXN' }}</strong>
+                            <span [attr.id]="'lbRecibo' + i" [attr.name]="'lbRecibo' + i">Recibo {{ i + 1 }}/{{ state().receipts.length }}:</span>
+                            <strong [attr.id]="'txComisionRecibo' + i" [attr.name]="'txComisionRecibo' + i">{{ (r.prima * (comisionPorcentaje / 100)) | currency:'MXN' }}</strong>
                         </div>
                         <div class="summary-row total">
-                            <span>Total Comisión:</span>
-                            <strong>{{ comisionCalculada | currency:'MXN' }}</strong>
+                            <span id="lbTotalComision" name="lbTotalComision">Total Comisión:</span>
+                            <strong id="txTotalComision" name="txTotalComision">{{ comisionCalculada | currency:'MXN' }}</strong>
                         </div>
                     </div>
                 </div>
 
-                <button class="btn-primary-blue mt-4 w-100" (click)="onSave()" [disabled]="completarForm.invalid" style="height: 52px;">
+                <button id="btnGuardar" name="btnGuardar" class="btn-primary-blue mt-4 w-100" (click)="onSave()" [disabled]="completarForm.invalid" style="height: 52px;">
                     <mat-icon>save</mat-icon>
-                    <span>Guardar y Continuar</span>
+                    <span id="spGuardar" name="spGuardar">Guardar y Continuar</span>
                 </button>
             </div>
         </div>

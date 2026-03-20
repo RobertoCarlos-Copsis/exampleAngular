@@ -1,19 +1,9 @@
 import { Component, Output, EventEmitter, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { MatIconModule } from '@angular/material/icon';
-import { MatSlideToggleModule, MatSlideToggleChange } from '@angular/material/slide-toggle';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { WizardService } from '../../../../../core/services/wizard.service';
 
 @Component({
   selector: 'app-step6-notificaciones',
-  standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule,
-    MatIconModule,
-    MatSlideToggleModule
-  ],
   templateUrl: './step6-notificaciones.component.html',
   styleUrls: ['./step6-notificaciones.component.scss']
 })

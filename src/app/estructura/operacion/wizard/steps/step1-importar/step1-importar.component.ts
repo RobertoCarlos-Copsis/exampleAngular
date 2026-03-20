@@ -1,6 +1,4 @@
 import { Component, Output, EventEmitter, ViewChild, ElementRef, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { MatIconModule } from '@angular/material/icon';
 import { WizardService } from '../../../../../core/services/wizard.service';
 import { GeminiExtractionService } from '../../../../../core/services/gemini-extraction.service';
 
@@ -9,11 +7,6 @@ type UploadState = 'idle' | 'processing' | 'done';
 
 @Component({
   selector: 'app-step1-importar',
-  standalone: true,
-  imports: [
-    CommonModule,
-    MatIconModule
-  ],
   templateUrl: './step1-importar.component.html',
   styleUrls: ['./step1-importar.component.scss']
 })
@@ -69,7 +62,13 @@ export class Step1ImportarComponent {
             endDate: datos.vigencia.vigenciaHasta,
             extractedData: datos // Guardar objeto completo para pasos posteriores
           }
-        }
+        },
+        receipts: datos.recibos.map(r => ({
+          id: r.numero,
+          prima: r.primaTotal,
+          periodo: `${r.fechaInicio} al ${r.fechaFin}`,
+          status: 'Pendiente'
+        }))
       });
 
       // Avanzar automáticamente después de un breve delay para mostrar el estado "done"

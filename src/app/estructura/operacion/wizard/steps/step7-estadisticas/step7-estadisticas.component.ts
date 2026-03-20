@@ -1,5 +1,5 @@
 import { Component, Output, EventEmitter, computed, inject } from '@angular/core';
-import { CommonModule, DecimalPipe, CurrencyPipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import {
@@ -33,14 +33,6 @@ export type ChartOptions = {
 
 @Component({
   selector: 'app-step7-estadisticas',
-  standalone: true,
-  imports: [
-    CommonModule,
-    DecimalPipe,
-    CurrencyPipe,
-    NgApexchartsModule,
-    MatIconModule
-  ],
   templateUrl: './step7-estadisticas.component.html',
   styleUrls: ['./step7-estadisticas.component.scss']
 })

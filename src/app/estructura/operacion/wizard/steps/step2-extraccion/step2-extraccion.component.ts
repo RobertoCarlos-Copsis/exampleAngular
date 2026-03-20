@@ -1,19 +1,9 @@
 import { Component, Output, EventEmitter, inject } from '@angular/core';
-import { CommonModule, DecimalPipe, DatePipe, CurrencyPipe } from '@angular/common';
-import { MatIconModule } from '@angular/material/icon';
 import { WizardService } from '../../../../../core/services/wizard.service';
 import { GeminiExtractionService } from '../../../../../core/services/gemini-extraction.service';
 
 @Component({
   selector: 'app-step2-extraccion',
-  standalone: true,
-  imports: [
-    CommonModule,
-    DecimalPipe,
-    DatePipe,
-    CurrencyPipe,
-    MatIconModule
-  ],
   templateUrl: './step2-extraccion.component.html',
   styleUrls: ['./step2-extraccion.component.scss']
 })

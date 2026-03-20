@@ -1,19 +1,8 @@
 import { Component, Output, EventEmitter, OnInit, inject } from '@angular/core';
-import { CommonModule, DecimalPipe, CurrencyPipe } from '@angular/common';
-import { MatIconModule } from '@angular/material/icon';
-import { FormsModule } from '@angular/forms';
 import { WizardService } from '../../../../../core/services/wizard.service';
 
 @Component({
   selector: 'app-step4-recibos',
-  standalone: true,
-  imports: [
-    CommonModule,
-    DecimalPipe,
-    CurrencyPipe,
-    MatIconModule,
-    FormsModule
-  ],
   templateUrl: './step4-recibos.component.html',
   styleUrls: ['./step4-recibos.component.scss']
 })
@@ -22,7 +11,7 @@ export class Step4RecibosComponent implements OnInit {
 
   private wizardService = inject(WizardService);
   state = this.wizardService.state;
-  
+
   showBitacora = false;
   activeIndex = 0;
   actionSuccess: { type: string, message: string } | null = null;
@@ -91,15 +80,15 @@ export class Step4RecibosComponent implements OnInit {
 
   confirmAction() {
     if (!this.activeDialog) return;
-    
+
     this.isSending = true;
 
     // Simular retraso de red
     setTimeout(() => {
       this.isSending = false;
-      this.actionSuccess = { 
-        type: this.activeDialog!.type, 
-        message: `¡${this.activeDialog!.type} enviado exitosamente a ${this.activeDialog!.type === 'Email' ? this.state().client.email : this.state().client.phone}!` 
+      this.actionSuccess = {
+        type: this.activeDialog!.type,
+        message: `¡${this.activeDialog!.type} enviado exitosamente a ${this.activeDialog!.type === 'Email' ? this.state().client.email : this.state().client.phone}!`
       };
 
       // Agregar a la bitácora
@@ -109,7 +98,7 @@ export class Step4RecibosComponent implements OnInit {
         icon: this.activeDialog!.icon,
         color: this.activeDialog!.type === 'Email' ? 'blue' : (this.activeDialog!.type === 'SMS' ? 'pink' : 'green')
       });
-      
+
       setTimeout(() => {
         this.closeDialog();
       }, 2000);
@@ -148,7 +137,7 @@ export class Step4RecibosComponent implements OnInit {
 
   get isFormValid(): boolean {
     if (!this.activeDialog) return true;
-    
+
     // Validar mensaje no vacío
     if (!this.actionText || this.actionText.trim().length === 0) return false;
 

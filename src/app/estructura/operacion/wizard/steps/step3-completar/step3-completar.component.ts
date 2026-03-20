@@ -1,20 +1,9 @@
 import { Component, Output, EventEmitter, OnInit, inject } from '@angular/core';
-import { CommonModule, DecimalPipe, CurrencyPipe } from '@angular/common';
-import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatIconModule } from '@angular/material/icon';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { WizardService } from '../../../../../core/services/wizard.service';
 
 @Component({
   selector: 'app-step3-completar',
-  standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    DecimalPipe,
-    CurrencyPipe,
-    MatIconModule
-  ],
   templateUrl: './step3-completar.component.html',
   styleUrls: ['./step3-completar.component.scss']
 })
