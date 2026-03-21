@@ -6,6 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatMenuModule } from '@angular/material/menu';
 import { NgApexchartsModule } from 'ng-apexcharts';
 
 import { WizardComponent } from './wizard.component';
@@ -39,6 +40,7 @@ import { Step7EstadisticasComponent } from './steps/step7-estadisticas/step7-est
     MatButtonModule,
     MatSlideToggleModule,
     MatTooltipModule,
+    MatMenuModule,
     NgApexchartsModule
   ],
   exports: [

@@ -22,7 +22,21 @@
                     <div [attr.id]="'txEstado' + i" [attr.name]="'txEstado' + i" class="r-status" [class.paid]="r.status === 'Pagado'">
                         {{ r.status }}
                     </div>
-                    <mat-icon class="chevron">chevron_right</mat-icon>
+                    
+                    <button mat-icon-button [matMenuTriggerFor]="menu" (click)="$event.stopPropagation()" class="ms-2">
+                        <mat-icon class="text-figma-gray-400">more_vert</mat-icon>
+                    </button>
+
+                    <mat-menu #menu="matMenu" xPosition="before">
+                        <button mat-menu-item (click)="selectReceipt(i)">
+                            <mat-icon>visibility</mat-icon>
+                            <span>Ver Detalles</span>
+                        </button>
+                        <button mat-menu-item (click)="onActionClick('Email')">
+                            <mat-icon>send</mat-icon>
+                            <span>Enviar por Email</span>
+                        </button>
+                    </mat-menu>
                 </div>
             </div>
         </div>
