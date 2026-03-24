@@ -1,7 +1,4 @@
 import { Component, Output, EventEmitter, computed, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { MatIconModule } from '@angular/material/icon';
-import { NgApexchartsModule } from 'ng-apexcharts';
 import {
   ApexNonAxisChartSeries,
   ApexResponsive,
@@ -16,6 +13,7 @@ import {
 } from "ng-apexcharts";
 import { WizardService } from '../../../../../core/services/wizard.service';
 import { GeminiExtractionService } from '../../../../../core/services/gemini-extraction.service';
+import { EstadisticasService } from '../../../../../core/services/estadisticas.service';
 import { Receipt } from '../../../../../core/models/wizard.model';
 
 export type ChartOptions = {
@@ -42,39 +40,37 @@ export class Step7EstadisticasComponent {
 
   private wizardService = inject(WizardService);
   private geminiService = inject(GeminiExtractionService);
+  private estadisticasService = inject(EstadisticasService);
   state = this.wizardService.state;
 
   get totalPrima() {
-    return this.state().receipts.reduce((acc: number, r: Receipt) => acc + (r.prima || 0), 0);
+    return this.estadisticasService.calcularTotalPrima(this.state().receipts);
   }
 
   get totalComision() {
-    return (this.totalPrima * (this.state().commissionPercentage || 0)) / 100;
+    return this.estadisticasService.calcularTotalComision(this.totalPrima, this.state().commissionPercentage);
   }
 
   get numRecibos() {
-    return this.state().receipts.length;
+    return this.estadisticasService.calcularNumRecibos(this.state().receipts);
   }
 
   get numAlertas() {
-    return Object.values(this.state().notifications).filter((n: { active: boolean }) => n.active).length;
+    return this.estadisticasService.calcularNumAlertas(this.state().notifications);
   }
 
   // Configuración de la Gráfica de Pastel (Distribución)
   public pieChart = computed<Partial<ChartOptions>>(() => {
-    const total = this.totalPrima || 1000;
-    const neta = total * 0.8;
-    const impuestos = total * 0.16;
-    const derechos = total * 0.04;
+    const data = this.estadisticasService.generarDatosPastel(this.totalPrima);
 
     return {
-      series: [neta, impuestos, derechos],
+      series: data.series,
       chart: {
         width: "100%",
         type: "pie",
         fontFamily: 'Inter, sans-serif'
       },
-      labels: ["Prima Neta", "Impuestos", "Derechos"],
+      labels: data.labels,
       colors: ['#2563EB', '#9333EA', '#F59E0B'],
       legend: { position: 'bottom' },
       dataLabels: { enabled: true },
@@ -92,11 +88,10 @@ export class Step7EstadisticasComponent {
 
   // Configuración de la Gráfica de Barras (Comisiones)
   public barChart = computed<Partial<ChartOptions>>(() => {
-    const actual = this.totalComision || 500;
-    const proyectado = actual * 1.5;
+    const data = this.estadisticasService.generarDatosBarras(this.totalComision);
 
     return {
-      series: [{ name: "MXN", data: [actual, proyectado] }],
+      series: data.series,
       chart: {
         type: "bar",
         height: 300,
@@ -111,7 +106,7 @@ export class Step7EstadisticasComponent {
         }
       },
       dataLabels: { enabled: false },
-      xaxis: { categories: ["Actual", "Proyectado"] },
+      xaxis: { categories: data.categories },
       colors: ['#16A34A', '#D1FAE5'],
       fill: { opacity: 1 }
     };

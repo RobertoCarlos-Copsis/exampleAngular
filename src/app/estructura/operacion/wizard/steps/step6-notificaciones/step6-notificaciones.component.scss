@@ -1,3 +1,5 @@
+@import '../../../../../core/styles/figma-mixins';
+
 // Step 6 Notification Grid Styles - Parity with React
 .notif-list {
     display: flex;
@@ -14,15 +16,8 @@
     width: 100%;
 
     .notif-icon {
-        width: 48px;
-        height: 48px;
-        border-radius: 50%;
-        background: white;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        @include figma-icon-box(48px, white, #64748b, 50%);
         box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        mat-icon { font-size: 24px; width: 24px; height: 24px; }
     }
 
     .notif-details {
@@ -31,11 +26,11 @@
         p { font-size: 0.875rem; color: #4b5563; margin: 0; line-height: 1.4; }
     }
 
-    &.cobranza { background: #ecfdf5; border-color: #d1fae5; .notif-icon { color: #10b981; } }
-    &.renovacion { background: #fff7ed; border-color: #ffedd5; .notif-icon { color: #f97316; } }
-    &.siniestros { background: #f9fafb; border-color: #f3f4f6; .notif-icon { color: #6b7280; } }
-    &.comisiones { background: #fffbeb; border-color: #fef3c7; .notif-icon { color: #f59e0b; } }
-    &.generales { background: #eff6ff; border-color: #dbeafe; .notif-icon { color: #3b82f6; } }
+    &.cobranza { background: #ecfdf5; border-color: #d1fae5; .notif-icon { color: #10b981 !important; } }
+    &.renovacion { background: #fff7ed; border-color: #ffedd5; .notif-icon { color: #f97316 !important; } }
+    &.siniestros { background: #f9fafb; border-color: #f3f4f6; .notif-icon { color: #6b7280 !important; } }
+    &.comisiones { background: #fffbeb; border-color: #fef3c7; .notif-icon { color: #f59e0b !important; } }
+    &.generales { background: #eff6ff; border-color: #dbeafe; .notif-icon { color: #3b82f6 !important; } }
 }
 
 .info-box-footer {

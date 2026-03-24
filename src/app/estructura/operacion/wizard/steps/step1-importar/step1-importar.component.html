@@ -55,7 +55,7 @@
             </ng-container>
 
             <!-- Success State -->
-            <ng-container *ngIf="state === 'done'">
+            <ng-container *ngIf="state === 'done' && !geminiService.error()">
                 <div class="success-ui py-5 text-center">
                     <div class="success-orb mb-32px mx-auto">
                         <mat-icon>check</mat-icon>
@@ -63,6 +63,21 @@
                     <h3 class="fs-24x font-800 text-figma-green-600">¡Lectura Completada!</h3>
                     <p class="fs-16x text-figma-gray-400 mt-10px text-center">Se han detectado los datos del cliente y
                         vigencia.</p>
+                </div>
+            </ng-container>
+
+            <!-- Error State -->
+            <ng-container *ngIf="geminiService.error()">
+                <div class="error-ui py-5 text-center animation-fade-in">
+                    <div class="orb bg-danger text-white mx-auto mb-32px" style="width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 20px rgba(239, 68, 68, 0.2);">
+                        <mat-icon style="font-size: 40px; width: 40px; height: 40px;">error_outline</mat-icon>
+                    </div>
+                    <h3 class="fs-24x font-800 text-danger mb-2">Error de Lectura</h3>
+                    <p class="fs-16x text-figma-gray-400 mb-4 px-4">{{ geminiService.error() }}</p>
+                    <button class="btn-primary-blue mx-auto" (click)="geminiService.reset()">
+                        <mat-icon class="me-2">refresh</mat-icon>
+                        Intentar de Nuevo
+                    </button>
                 </div>
             </ng-container>
         </div>

@@ -1,7 +1,8 @@
-import { Injectable, signal, computed } from '@angular/core';
+import { Injectable, signal, computed, inject } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { Observable } from 'rxjs';
 import { WizardState, PolicyData, DatosPolizaExtraidos } from '../models/wizard.model';
+import { AuditService } from './audit.service';
 
 const initialState: WizardState = {
   currentStep: 1,
@@ -41,6 +42,8 @@ const initialState: WizardState = {
   providedIn: 'root'
 })
 export class WizardService {
+  private auditService = inject(AuditService);
+
   // Señal principal de estado (pública para consumo directo, o usar un getter)
   readonly state = signal<WizardState>(initialState);
   
@@ -51,7 +54,25 @@ export class WizardService {
   // Observable para compatibilidad con código existente (RxJS)
   readonly state$ = toObservable(this.state);
 
-  constructor() {}
+  constructor() {
+    this.loadFromLocalStorage();
+  }
+
+  private loadFromLocalStorage(): void {
+    const saved = localStorage.getItem('wizard_state');
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        this.state.set(parsed);
+      } catch (e) {
+        console.error('Error loading wizard state', e);
+      }
+    }
+  }
+
+  private saveToLocalStorage(): void {
+    localStorage.setItem('wizard_state', JSON.stringify(this.state()));
+  }
 
   // Getter síncrono para el valor del estado actual
   get currentStateValue(): WizardState {
@@ -64,6 +85,7 @@ export class WizardService {
       ...state,
       ...partialState
     }));
+    this.saveToLocalStorage();
   }
 
   nextStep(): void {
@@ -88,9 +110,12 @@ export class WizardService {
 
   resetState(): void {
     this.state.set(initialState);
+    this.saveToLocalStorage();
   }
 
   addExtractionToHistory(data: DatosPolizaExtraidos): void {
+    this.auditService.log('Extracción de póliza completada', data, 'success');
+    
     this.state.update(state => ({
       ...state,
       extractionHistory: [
@@ -101,5 +126,6 @@ export class WizardService {
         }
       ]
     }));
+    this.saveToLocalStorage();
   }
 }

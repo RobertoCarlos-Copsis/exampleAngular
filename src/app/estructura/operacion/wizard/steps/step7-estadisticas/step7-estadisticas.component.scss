@@ -1,3 +1,5 @@
+@import '../../../../../core/styles/figma-mixins';
+
 // Step 7 Dashboard Styles
 .dashboard-container {
     max-width: 1200px !important;
@@ -21,18 +23,12 @@
     border: 1px solid #f1f5f9;
 
     .kpi-icon {
-        width: 48px;
-        height: 48px;
-        border-radius: 12px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        mat-icon { font-size: 24px; width: 24px; height: 24px; }
+        @include figma-icon-box(48px, #f1f5f9, #64748b, 12px);
         
-        &.blue { background: #eff6ff; color: #2563eb; }
-        &.purple { background: #f5f3ff; color: #7c3aed; }
-        &.yellow { background: #fffbeb; color: #d97706; }
-        &.green { background: #f0fdf4; color: #16a34a; }
+        &.blue { background: #eff6ff !important; color: #2563eb !important; }
+        &.purple { background: #f5f3ff !important; color: #7c3aed !important; }
+        &.yellow { background: #fffbeb !important; color: #d97706 !important; }
+        &.green { background: #f0fdf4 !important; color: #16a34a !important; }
     }
 
     .kpi-info {
@@ -44,14 +40,8 @@
 }
 
 .badge-premium {
-    background: #eff6ff;
-    color: #2563eb;
-    padding: 6px 14px;
-    border-radius: 40px;
-    font-size: 0.75rem;
-    font-weight: 700;
+    @include figma-badge(#eff6ff, #2563eb);
     border: 1px solid #dbeafe;
-    text-transform: uppercase;
     letter-spacing: 0.05em;
 }
 

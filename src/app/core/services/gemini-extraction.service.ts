@@ -119,14 +119,8 @@ export class GeminiExtractionService {
       const mensaje = err instanceof Error ? err.message : 'Error desconocido al procesar el PDF';
       this.error.set(mensaje);
       console.error('[GeminiExtractionService] Error:', err);
-
-      // Si falla la API, usar datos simulados para demo
-      const datosMock = this.generarDatosMock(file.name);
-      this.datosPoliza.set(datosMock);
-      this.datosExtraidos.set(datosMock);
-      this.progreso.set(100);
-      return datosMock;
-
+      this.progreso.set(0);
+      throw err;
     } finally {
       this.extrayendo.set(false);
     }

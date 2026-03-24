@@ -4,82 +4,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 
-// ── Local Design Tokens (Sass Maps for Reusability) ─────────────────────
-$figma-colors: (
-    "blue-600": #2563eb,
-    "blue-700": #1d4ed8,
-    "blue-50": #eff6ff,
-    "purple-600": #9333ea,
-    "purple-700": #7e22ce,
-    "purple-50": #faf5ff,
-    "green-600": #16a34a,
-    "green-50": #f0fdf4,
-    "amber-500": #f59e0b,
-    "yellow-50": #fefce8,
-    "yellow-200": #fef08a,
-    "gray-50": #f8fafc,
-    "gray-100": #f1f5f9,
-    "gray-200": #e2e8f0,
-    "gray-400": #94a3b8,
-    "gray-600": #475569,
-    "gray-900": #111827
-);
+@import 'app/core/styles/figma-mixins';
 
-$figma-font-sizes: (
-    "10x": 0.625rem,
-    "12x": 0.75rem,
-    "14x": 0.875rem,
-    "16x": 1rem,
-    "18x": 1.125rem,
-    "20x": 1.25rem,
-    "24x": 1.5rem,
-    "32x": 2rem
-);
-
-$figma-radius: (
-    "xl": 12px,
-    "2xl": 16px,
-    "pill": 50px
-);
-
-// ── Reusable Mixins ─────────────────────────────────────────────────────
-@mixin figma-button($bg, $color: white, $hover-bg: null) {
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    background-color: $bg !important;
-    color: $color !important;
-    border: none !important;
-    border-radius: map-get($figma-radius, "xl") !important;
-    padding: 0.75rem 2rem !important;
-    font-weight: 600 !important;
-    transition: all 0.2s ease !important;
-    gap: 0.5rem !important;
-    text-decoration: none !important;
-
-    @if $hover-bg {
-        &:hover:not(:disabled) {
-            background-color: $hover-bg !important;
-            box-shadow: var(--figma-shadow-md) !important;
-        }
-    } @else {
-        &:hover:not(:disabled) {
-            filter: brightness(0.9) !important;
-        }
-    }
-
-    &:disabled {
-        background-color: #e2e8f0 !important;
-        color: #94a3b8 !important;
-        cursor: not-allowed !important;
-        opacity: 0.7;
-    }
-}
-
-@mixin figma-card-accent($color, $bg-light) {
-    border-left: 4px solid $color !important;
-    background: $bg-light !important;
-}
 
 // ── Figma Design Tokens (Root) ──────────────────────────
 :root {

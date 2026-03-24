@@ -1,3 +1,5 @@
+@import '../../../../../core/styles/figma-mixins';
+
 // Step 4 Layout Styles - Parity with React Sidebar Design
 .receipt-sidebar {
     width: 320px;
@@ -43,21 +45,12 @@
     }
 
     .r-status {
-        font-size: 0.625rem;
-        font-weight: 800;
-        padding: 4px 8px;
-        border-radius: 6px;
-        background: #fef3c7;
-        color: #92400e;
-        text-transform: uppercase;
-        &.paid { background: #d1fae5; color: #065f46; }
+        @include figma-badge(#fef3c7, #92400e);
+        &.paid { @include figma-badge(#d1fae5, #065f46); }
     }
 
     ::ng-deep .mat-icon-button {
-        width: 32px !important;
-        height: 32px !important;
-        line-height: 32px !important;
-        mat-icon { font-size: 18px !important; width: 18px !important; height: 18px !important; color: #94a3b8; }
+        @include figma-icon-box(32px, transparent, #94a3b8, 50%);
         &:hover { background: rgba(0,0,0,0.05) !important; }
     }
 }
@@ -87,29 +80,20 @@
     padding: 2rem 1.5rem;
     text-align: center;
     cursor: pointer;
-    transition: all 0.3s ease;
-
-    &:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.05); border-color: #e2e8f0; }
+    @include figma-card-hover;
 
     .action-icon {
-        width: 64px;
-        height: 64px;
-        border-radius: 16px;
-        background: #f8fafc;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        @include figma-icon-box(64px, #f8fafc, #64748b, 16px);
         margin: 0 auto 1.5rem;
-        mat-icon { font-size: 32px; width: 32px; height: 32px; }
     }
 
     h4 { font-size: 1rem; font-weight: 800; margin-bottom: 0.5rem; color: #1e293b; }
     p { font-size: 0.8125rem; color: #64748b; margin: 0; }
 
-    &.email .action-icon { color: #2563eb; background: #eff6ff; }
-    &.sms .action-icon { color: #be185d; background: #fff1f2; }
-    &.whatsapp .action-icon { color: #15803d; background: #f0fdf4; }
-    &.log .action-icon { color: #7c3aed; background: #f5f3ff; }
+    &.email .action-icon { color: #2563eb !important; background: #eff6ff !important; }
+    &.sms .action-icon { color: #be185d !important; background: #fff1f2 !important; }
+    &.whatsapp .action-icon { color: #15803d !important; background: #f0fdf4 !important; }
+    &.log .action-icon { color: #7c3aed !important; background: #f5f3ff !important; }
 }
 
 .status-toggle-box {

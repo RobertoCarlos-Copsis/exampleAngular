@@ -1,6 +1,7 @@
 import { Component, Output, EventEmitter, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { WizardService } from '../../../../../core/services/wizard.service';
+import { formatMexicanPhone } from '../../../../../core/utils/formatters';
 
 @Component({
   selector: 'app-step3-completar',
@@ -14,8 +15,8 @@ export class Step3CompletarComponent implements OnInit {
   private wizardService = inject(WizardService);
   
   completarForm: FormGroup = this.fb.group({
-    email: ['', [Validators.required, Validators.email]],
-    telefono: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]]
+    email: ['', [Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
+    telefono: ['', [Validators.required, Validators.pattern('^\\(\\d{2}\\) \\d{4}-\\d{4}$')]]
   });
 
   state = this.wizardService.state;
@@ -23,9 +24,10 @@ export class Step3CompletarComponent implements OnInit {
 
   ngOnInit(): void {
     const s = this.state();
+    const phoneValue = s.client.phone || '';
     this.completarForm.patchValue({
       email: s.client.email || '',
-      telefono: s.client.phone || ''
+      telefono: formatMexicanPhone(phoneValue)
     });
     this.comisionPorcentaje = s.commissionPercentage || 0;
   }
@@ -40,8 +42,9 @@ export class Step3CompletarComponent implements OnInit {
 
   handlePhoneInput(event: Event) {
     const input = event.target as HTMLInputElement;
-    const value = input.value.replace(/\D/g, '').slice(0, 10);
-    this.completarForm.patchValue({ telefono: value }, { emitEvent: false });
+    const formatted = formatMexicanPhone(input.value);
+    input.value = formatted;
+    this.completarForm.patchValue({ telefono: formatted }, { emitEvent: true });
   }
 
   updateComision(event: any) {

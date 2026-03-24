@@ -1,3 +1,5 @@
+@import '../../../../../core/styles/figma-mixins';
+
 .dropzone-figma {
     border: 2px dashed var(--figma-gray-200);
     padding: 60px 20px;
@@ -21,17 +23,10 @@
     justify-content: center;
     gap: 16px;
     .orb {
-        width: 56px;
-        height: 56px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: white;
+        @include figma-icon-box(56px, var(--figma-gray-100), var(--figma-gray-400));
         box-shadow: var(--figma-shadow-md);
-        mat-icon { font-size: 28px; width: 28px; height: 28px; }
-        &.blue { background: var(--figma-blue-600); }
-        &.purple { background: var(--figma-purple-600); }
+        &.blue { background: var(--figma-blue-600) !important; color: white !important; }
+        &.purple { background: var(--figma-purple-600) !important; color: white !important; }
     }
 }
 
