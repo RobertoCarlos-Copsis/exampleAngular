@@ -15,7 +15,6 @@ import {
 import { WizardService } from '../../../../../core/services/wizard.service';
 import { GeminiExtractionService } from '../../../../../core/services/gemini-extraction.service';
 import { EstadisticasService } from '../../../../../core/services/estadisticas.service';
-import { Receipt } from '../../../../../core/models/wizard.model';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries | ApexNonAxisChartSeries;
