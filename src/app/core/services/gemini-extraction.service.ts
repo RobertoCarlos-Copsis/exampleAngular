@@ -1,16 +1,15 @@
 import { Injectable, signal, computed } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
-import { DatosPolizaExtraidos, ReciboExtraido } from '../models/wizard.model';
+import { DatosPolizaExtraidos } from '../models/wizard.model';
 
-// ── Configuración API (basado en importador-qcrm) ──────────────────────────
+// ── Configuración API ──
 const GEMINI_API_CONFIG = {
-  baseUrl: 'https://apiuat.quattrocrm.mx/operaciones/gemini',
-  formatoJsonPath: '/utils/docs/FormatoJson.pdf',
-  token: 'eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdGllcyI6IntcInR5cGVcIjpcInRva2VuXCJ9Iiwib3JpZ2luIjoidW5rbm93biIsImF1ZCI6Inxjb3BzaXNBdXRvc3xhdXRvc3wiLCJzcWxJbnN0YW5jZUlkIjoidWF0LTg0Iiwic3FsSW5zdGFuY2VOYW1lIjoicXVhdHRyby11YXQtODQiLCJkYm4iOiJxdWF0dHJvMDAwMzEiLCJzb2Npb0VuYyI6InRSOHo3SVJzUllrYjlOejJlT2t1dVE9PSIsInBlcnNvbmFFbmMiOiI5NGMzcWFCVGxPQmJkVVdQQmt4RW1nPT0iLCJzdWIiOiJxMzFAcXVhdHRyb2NybS5teCIsImlhdCI6MTc3MzQxMDk2NiwiZXhwIjoxNzczNDU0MTY2fQ.oWr68kyT6cAAs9XnBTdq6Gh18tpn-Rk5WlgJ7E4ERIY',
+  baseUrl: 'https://apiuat.quattrocrm.mx/operaciones/gemini/lector-pdf',
+  formatoJsonPath: '/utils/docs/FormatoJson.txt',
+  token: 'eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdGllcyI6IntcInR5cGVcIjpcInRva2VuXCJ9Iiwib3JpZ2luIjoidW5rbm93biIsImF1ZCI6Inxjb3BzaXNBdXRvc3xhdXRvc3wiLCJzcWxJbnN0YW5jZUlkIjoidWF0LTg0Iiwic3FsSW5zdGFuY2VOYW1lIjoicXVhdHRyby11YXQtODQiLCJkYm4iOiJxdWF0dHJvMDAwMzEiLCJzb2Npb0VuYyI6InRSOHo3SVJzUllrYjlOejJlT2t1dVE9PSIsInBlcnNvbmFFbmMiOiI5NGMzcWFCVGxPQmJkVVdQQmt4RW1nPT0iLCJzdWIiOiJxMzFAcXVhdHRyb2NybS5teCIsImlhdCI6MTc3NDM5NTA2NSwiZXhwIjoxNzc0NDM4MjY1fQ.VL37WGzAEk1vmQem9iqxuuDhF1C8vSho2GU5NRSGdT8',
   modelo: 0
 };
-
 
 const DATOS_VACIOS: DatosPolizaExtraidos = {
   cliente: { nombreCompleto: '', rfc: '', direccion: '', codigoPostal: '', telefono: '', email: '' },
@@ -64,37 +63,18 @@ export class GeminiExtractionService {
         const responseFormato = await fetch(GEMINI_API_CONFIG.formatoJsonPath);
         if (responseFormato.ok) {
           const blobFormato = await responseFormato.blob();
-          const fileFormato = new File([blobFormato], 'formato-json.pdf', { type: blobFormato.type });
+          const fileFormato = new File([blobFormato], 'formato-json.txt', { type: 'text/plain' });
           formData.append('files', fileFormato);
+        } else {
+          console.warn('[GeminiExtraction] No se encontró FormatoJson.txt, código:', responseFormato.status);
         }
-      } catch {
-        console.warn('[GeminiExtraction] No se encontró FormatoJson.pdf, continuando sin él');
+      } catch (err) {
+        console.warn('[GeminiExtraction] Error obteniendo FormatoJson.txt:', err);
       }
 
       this.progreso.set(30);
 
-      // ── MODO SIMULADO (Solicitado por el usuario para no consumir tokens) ──
-      console.log('[GeminiExtraction] Simulando extracción (Modo Ahorro de Tokens)...');
-      
-      // Simulamos latencia de red e IA
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      this.progreso.set(60);
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      const datosMock = this.generarDatosMock(file.name);
-      
-      this.progreso.set(90);
-      await new Promise(resolve => setTimeout(resolve, 500));
-
-      this.datosPoliza.set(datosMock);
-      this.datosExtraidos.set(datosMock);
-      this.progreso.set(100);
-      
-      console.log('[GeminiExtraction] Extracción simulada completada.');
-      return datosMock;
-
-      /* 
-      // ── LÓGICA ORIGINAL DE API (Comentada para futura activación) ──
+      console.log('[GeminiExtraction] Enviando PDF a API de Gemini...');
       const headers = new HttpHeaders({
         'Authorization': `Bearer ${GEMINI_API_CONFIG.token}`
       });
@@ -113,7 +93,6 @@ export class GeminiExtractionService {
       } else {
         throw new Error(response?.message || 'Error en la respuesta de la API');
       }
-      */
 
     } catch (err) {
       const mensaje = err instanceof Error ? err.message : 'Error desconocido al procesar el PDF';
@@ -131,89 +110,59 @@ export class GeminiExtractionService {
     const datos: DatosPolizaExtraidos = structuredClone(DATOS_VACIOS);
 
     try {
-      datos.cliente.nombreCompleto = apiData.conducto || apiData.conductoc || apiData.contratante || apiData.conductor || '';
-      datos.cliente.rfc = apiData.rfs || apiData.rfc || '';
-      datos.cliente.direccion = apiData.cteDireccion || apiData.direccion || apiData.direccionc || '';
-      datos.cliente.codigoPostal = apiData.cp || apiData.codigoPostal || '';
-      datos.cliente.telefono = apiData.telefono || apiData.tel || '';
-      datos.cliente.email = apiData.email || apiData.correo || '';
+      // ── Cliente ──
+      datos.cliente.nombreCompleto = apiData.cteNombre || '';
+      datos.cliente.rfc = apiData.rfc || '';
+      datos.cliente.direccion = apiData.cteDireccion || '';
+      datos.cliente.codigoPostal = apiData.cp || '';
+      datos.cliente.telefono = apiData.telefono || '';
+      datos.cliente.email = apiData.email || '';
 
-      datos.poliza.numeroPoliza = apiData.poliza || apiData.numeroPoliza || apiData.noPoliza || '';
-      datos.poliza.tipoPoliza = apiData.ramo || apiData.tipo || apiData.tipoPoliza || '';
-      datos.poliza.aseguradora = apiData.aseguradora || apiData.compania || apiData.cia || '';
-      datos.poliza.claveAgente = apiData.cveAgente || apiData.cveagente || apiData.claveAgente || '';
-      datos.poliza.formaPago = apiData.formaPago || apiData.cvp || apiData.periodicidad || '';
+      // ── Póliza ──
+      datos.poliza.numeroPoliza = apiData.poliza || '';
+      datos.poliza.tipoPoliza = apiData.ramo || '';
+      datos.poliza.aseguradora = apiData.aseguradora || '';
+      datos.poliza.claveAgente = apiData.cveAgente || '';
+      datos.poliza.formaPago = apiData.formaPago || '';
       datos.poliza.moneda = apiData.moneda || 'MXN';
 
-      datos.vigencia.fechaEmision = apiData.fechaemision || apiData.fechaEmision || '';
-      datos.vigencia.vigenciaDesde = apiData.vigenciaDe || apiData.vigenciaIni || apiData.vigenciaDesde || '';
-      datos.vigencia.vigenciaHasta = apiData.vigenciaA || apiData.vigenciaHasta || apiData.vigenciaFin || '';
+      // ── Vigencia ──
+      datos.vigencia.fechaEmision = apiData.fechaEmision || '';
+      datos.vigencia.vigenciaDesde = apiData.vigenciaDe || '';
+      datos.vigencia.vigenciaHasta = apiData.vigenciaA || '';
 
-      datos.importe.primaNeta = this.parseNumber(apiData.primaNeta || apiData.primaneta || 0);
-      datos.importe.derechoPoliza = this.parseNumber(apiData.derecho || apiData.derechoPoliza || 0);
-      datos.importe.recargoPago = this.parseNumber(apiData.recargo || apiData.recargoPago || 0);
-      datos.importe.iva = this.parseNumber(apiData.iva || 0);
-      const primaTotal = this.parseNumber(apiData.primaTotal || 0);
-      datos.importe.primaTotal = primaTotal > 0
-        ? primaTotal
+      // ── Importes ──
+      datos.importe.primaNeta = this.parseNumber(apiData.primaneta || apiData.primaNeta);
+      datos.importe.derechoPoliza = this.parseNumber(apiData.derecho);
+      datos.importe.recargoPago = this.parseNumber(apiData.recargo);
+      datos.importe.iva = this.parseNumber(apiData.iva);
+      
+      const primaTotal = this.parseNumber(apiData.primaTotal);
+      datos.importe.primaTotal = primaTotal > 0 
+        ? primaTotal 
         : datos.importe.primaNeta + datos.importe.derechoPoliza + datos.importe.recargoPago + datos.importe.iva;
-      datos.importe.porcentajeComision = this.parseNumber(apiData.comision || apiData.porcentajeComision || 10);
 
-      if (apiData.recibos && Array.isArray(apiData.recibos)) {
+      datos.importe.porcentajeComision = this.parseNumber(apiData.comision);
+
+      // ── Recibos ──
+      if (Array.isArray(apiData.recibos) && apiData.recibos.length > 0) {
         datos.recibos = apiData.recibos.map((r: any, idx: number) => ({
-          numero: r.serie || r.numero || idx + 1,
-          fechaInicio: r.vigenciaDe || r.fechaInicio || r.vigenciaIni || '',
-          fechaFin: r.vigenciaA || r.fechaFin || r.vigenciaHasta || '',
-          primaNeta: this.parseNumber(r.primaNeta || r.primaneta || 0),
-          iva: this.parseNumber(r.iva || 0),
-          primaTotal: this.parseNumber(r.primaTotal || r.total || 0)
+          numero: r.serie || idx + 1,
+          fechaInicio: r.vigenciaDe || '',
+          fechaFin: r.vigenciaA || '',
+          primaNeta: this.parseNumber(r.primaneta || r.primaNeta),
+          iva: this.parseNumber(r.iva),
+          primaTotal: this.parseNumber(r.primaTotal)
         }));
       }
+
+      console.log('[GeminiExtraction] Mapeo completado:', datos);
+
     } catch (err) {
       console.error('[GeminiExtraction] Error mapeando respuesta:', err);
     }
 
     return datos;
-  }
-
-  /** Datos simulados cuando la API falla (modo demo) */
-  private generarDatosMock(nombreArchivo: string): DatosPolizaExtraidos {
-    const esAuto = nombreArchivo.toLowerCase().includes('auto');
-    return {
-      cliente: {
-        nombreCompleto: 'JOSE JOSE TORRES DE LA CRUZ',
-        rfc: 'TOCJ850315ABC',
-        direccion: 'AV. DEL PRADO NO. 300',
-        codigoPostal: '06600',
-        telefono: '5512345678',
-        email: 'jose.torres@email.com'
-      },
-      poliza: {
-        numeroPoliza: 'FW998873',
-        tipoPoliza: esAuto ? 'SEGURO DE AUTOMÓVIL' : 'SEGURO DE VIDA',
-        aseguradora: 'Qualitas',
-        claveAgente: '665534',
-        formaPago: 'SEMESTRAL',
-        moneda: 'MXN'
-      },
-      vigencia: {
-        fechaEmision: '15 Feb 2025',
-        vigenciaDesde: '15 Feb 2025',
-        vigenciaHasta: '15 Feb 2026'
-      },
-      importe: {
-        primaNeta: 40853,
-        derechoPoliza: 2000,
-        recargoPago: 1200,
-        iva: 3893,
-        primaTotal: 45392.42,
-        porcentajeComision: 10
-      },
-      recibos: [
-        { numero: 1, fechaInicio: '15 Feb 2025', fechaFin: '15 Ago 2025', primaNeta: 22238, iva: 2000.19, primaTotal: 24238.19 },
-        { numero: 2, fechaInicio: '15 Ago 2025', fechaFin: '15 Feb 2026', primaNeta: 19154, iva: 1999.23, primaTotal: 21154.23 }
-      ]
-    };
   }
 
   private parseNumber(value: any): number {

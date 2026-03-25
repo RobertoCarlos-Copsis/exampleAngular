@@ -9,7 +9,8 @@ import {
   ApexAxisChartSeries,
   ApexXAxis,
   ApexYAxis,
-  ApexPlotOptions
+  ApexPlotOptions,
+  ApexTooltip
 } from "ng-apexcharts";
 import { WizardService } from '../../../../../core/services/wizard.service';
 import { GeminiExtractionService } from '../../../../../core/services/gemini-extraction.service';
@@ -28,6 +29,7 @@ export type ChartOptions = {
   xaxis: ApexXAxis;
   yaxis: ApexYAxis;
   colors: string[];
+  tooltip: ApexTooltip;
 };
 
 @Component({
@@ -73,7 +75,19 @@ export class Step7EstadisticasComponent {
       labels: data.labels,
       colors: ['#2563EB', '#9333EA', '#F59E0B'],
       legend: { position: 'bottom' },
-      dataLabels: { enabled: true },
+      dataLabels: { 
+        enabled: true,
+        formatter: function (val: number) {
+          return Math.round(val) + "%";
+        }
+      },
+      tooltip: {
+        y: {
+          formatter: function(val: number) {
+            return "$" + Math.round(val).toLocaleString('es-MX');
+          }
+        }
+      },
       responsive: [
         {
           breakpoint: 480,
@@ -107,6 +121,20 @@ export class Step7EstadisticasComponent {
       },
       dataLabels: { enabled: false },
       xaxis: { categories: data.categories },
+      yaxis: {
+        labels: {
+          formatter: function (val: number) {
+            return "$" + Math.round(val).toLocaleString('es-MX');
+          }
+        }
+      },
+      tooltip: {
+        y: {
+          formatter: function (val: number) {
+            return "$" + Math.round(val).toLocaleString('es-MX');
+          }
+        }
+      },
       colors: ['#16A34A', '#D1FAE5'],
       fill: { opacity: 1 }
     };
