@@ -1,6 +1,13 @@
 import { Injectable, computed } from '@angular/core';
 import { WizardState, Receipt } from '../models/wizard.model';
 
+export const ESTADISTICAS_CONSTANTES = {
+  TASA_NETA: 0.8,
+  TASA_IVA: 0.16,
+  TASA_DERECHOS: 0.04,
+  PROYECCION_CRECIMIENTO: 1.5
+};
+
 export interface KpiCard {
   titulo: string;
   valor: string | number;
@@ -76,10 +83,10 @@ export class EstadisticasService {
   }
 
   generarDatosPastel(totalPrima: number): ChartData {
-    const total = totalPrima || 1000;
-    const neta = total * 0.8;
-    const impuestos = total * 0.16;
-    const derechos = total * 0.04;
+    const total = Math.round(totalPrima || 1000);
+    const neta = Math.round(total * ESTADISTICAS_CONSTANTES.TASA_NETA);
+    const impuestos = Math.round(total * ESTADISTICAS_CONSTANTES.TASA_IVA);
+    const derechos = Math.round(total * ESTADISTICAS_CONSTANTES.TASA_DERECHOS);
 
     return {
       series: [neta, impuestos, derechos],
@@ -88,8 +95,8 @@ export class EstadisticasService {
   }
 
   generarDatosBarras(totalComision: number): ChartData {
-    const actual = totalComision || 500;
-    const proyectado = actual * 1.5;
+    const actual = Math.round(totalComision || 500);
+    const proyectado = Math.round(actual * ESTADISTICAS_CONSTANTES.PROYECCION_CRECIMIENTO);
 
     return {
       series: [{ name: "MXN", data: [actual, proyectado] }],

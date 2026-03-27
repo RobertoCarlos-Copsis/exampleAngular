@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter, computed, inject } from '@angular/core';
+import { Component, Output, EventEmitter, computed, inject, ChangeDetectionStrategy } from '@angular/core';
 import {
   ApexNonAxisChartSeries,
   ApexResponsive,
@@ -34,14 +34,15 @@ export type ChartOptions = {
 @Component({
   selector: 'app-step7-estadisticas',
   templateUrl: './step7-estadisticas.component.html',
-  styleUrls: ['./step7-estadisticas.component.scss']
+  styleUrls: ['./step7-estadisticas.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Step7EstadisticasComponent {
   @Output() resetWizard = new EventEmitter<void>();
 
-  private wizardService = inject(WizardService);
-  private geminiService = inject(GeminiExtractionService);
-  private estadisticasService = inject(EstadisticasService);
+  private readonly wizardService = inject(WizardService);
+  private readonly geminiService = inject(GeminiExtractionService);
+  private readonly estadisticasService = inject(EstadisticasService);
   state = this.wizardService.state;
 
   get totalPrima() {
@@ -118,7 +119,12 @@ export class Step7EstadisticasComponent {
           borderRadius: 6
         }
       },
-      dataLabels: { enabled: false },
+      dataLabels: {
+        enabled: true,
+        formatter: function (val: number) {
+          return "$" + Math.round(val).toLocaleString('es-MX');
+        }
+      },
       xaxis: { categories: data.categories },
       yaxis: {
         labels: {

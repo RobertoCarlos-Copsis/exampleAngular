@@ -1,7 +1,7 @@
-import { Component, Output, EventEmitter, ViewChild, ElementRef, inject } from '@angular/core';
+import { Component, Output, EventEmitter, ViewChild, ElementRef, inject, ChangeDetectionStrategy } from '@angular/core';
 import { WizardService } from '../../../../../core/services/wizard.service';
 import { GeminiExtractionService } from '../../../../../core/services/gemini-extraction.service';
-import { ReciboExtraido } from '../../../../../core/models/wizard.model';
+import { ReciboExtraido, EstadoRecibo } from '../../../../../core/models/wizard.model';
 
 /** Estados posibles de la demo de importación */
 type UploadState = 'idle' | 'processing' | 'done';
@@ -9,7 +9,8 @@ type UploadState = 'idle' | 'processing' | 'done';
 @Component({
   selector: 'app-step1-importar',
   templateUrl: './step1-importar.component.html',
-  styleUrls: ['./step1-importar.component.scss']
+  styleUrls: ['./step1-importar.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Step1ImportarComponent {
   @Output() nextStep = new EventEmitter<void>();
@@ -72,7 +73,7 @@ export class Step1ImportarComponent {
           prima: r.primaTotal,
           periodo: `${r.fechaInicio} al ${r.fechaFin}`,
           vencimiento: r.fechaFin,
-          status: 'Pendiente'
+          status: EstadoRecibo.Pendiente
         }))
       });
 

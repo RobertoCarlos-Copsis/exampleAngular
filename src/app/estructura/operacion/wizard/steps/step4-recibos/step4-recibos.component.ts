@@ -1,16 +1,17 @@
-import { Component, Output, EventEmitter, OnInit, inject } from '@angular/core';
+import { Component, Output, EventEmitter, inject, ChangeDetectionStrategy } from '@angular/core';
 import { WizardService } from '../../../../../core/services/wizard.service';
-import { Receipt } from '../../../../../core/models/wizard.model';
+import { Receipt, EstadoRecibo } from '../../../../../core/models/wizard.model';
 
 @Component({
   selector: 'app-step4-recibos',
   templateUrl: './step4-recibos.component.html',
-  styleUrls: ['./step4-recibos.component.scss']
+  styleUrls: ['./step4-recibos.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class Step4RecibosComponent implements OnInit {
+export class Step4RecibosComponent {
   @Output() nextStep = new EventEmitter<void>();
 
-  private wizardService = inject(WizardService);
+  private readonly wizardService = inject(WizardService);
   state = this.wizardService.state;
 
   showBitacora = false;
@@ -25,11 +26,9 @@ export class Step4RecibosComponent implements OnInit {
     { fecha: 'Ayer, 03:15 PM', evento: 'Póliza digitalizada correctamente', icon: 'description', color: 'green' }
   ];
 
-  ngOnInit(): void {
-  }
 
   get reciboActual(): Receipt {
-    return this.state().receipts[this.activeIndex] || { id: 0, status: 'Pendiente', vencimiento: '15/04/2025', prima: 0, periodo: '' };
+    return this.state().receipts[this.activeIndex] || { id: 0, status: EstadoRecibo.Pendiente, vencimiento: '15/04/2025', prima: 0, periodo: '' };
   }
 
   selectReceipt(index: number) {
@@ -63,11 +62,17 @@ export class Step4RecibosComponent implements OnInit {
     const formattedAmount = amount.toLocaleString('es-MX', { style: 'currency', currency: 'MXN' });
     const dueDate = this.reciboActual.vencimiento || 'pronto';
 
+    const iconMap: Record<string, string> = {
+      'Email': 'mail',
+      'SMS': 'smartphone',
+      'WhatsApp': 'chat'
+    };
+
     this.activeDialog = {
       type: action,
       title: `Enviar ${action}`,
       subtitle: `Comunicación para Recibo ${this.activeIndex + 1}`,
-      icon: action === 'Email' ? 'mail' : (action === 'SMS' ? 'smartphone' : 'chat')
+      icon: iconMap[action] || 'info'
     };
 
     if (action === 'Email') {
@@ -92,12 +97,18 @@ export class Step4RecibosComponent implements OnInit {
         message: `¡${this.activeDialog!.type} enviado exitosamente a ${this.activeDialog!.type === 'Email' ? this.state().client.email : this.state().client.phone}!`
       };
 
+      const colorMap: Record<string, string> = {
+        'Email': 'blue',
+        'SMS': 'pink',
+        'WhatsApp': 'green'
+      };
+
       // Agregar a la bitácora
       this.bitacoraItems.unshift({
         fecha: 'Hace un momento',
         evento: `${this.activeDialog!.type} enviado: ${this.activeDialog!.type === 'Email' ? 'Recordatorio de pago' : 'Link de cobro'}`,
         icon: this.activeDialog!.icon,
-        color: this.activeDialog!.type === 'Email' ? 'blue' : (this.activeDialog!.type === 'SMS' ? 'pink' : 'green')
+        color: colorMap[this.activeDialog!.type] || 'gray'
       });
 
       setTimeout(() => {
@@ -109,7 +120,7 @@ export class Step4RecibosComponent implements OnInit {
   togglePaid(index: number) {
     const receipts = [...this.state().receipts];
     const r = { ...receipts[index] };
-    r.status = r.status === 'Pagado' ? 'Pendiente' : 'Pagado';
+    r.status = r.status === EstadoRecibo.Pagado ? EstadoRecibo.Pendiente : EstadoRecibo.Pagado;
     receipts[index] = r;
     this.wizardService.updateState({ receipts });
 
@@ -117,8 +128,8 @@ export class Step4RecibosComponent implements OnInit {
     this.bitacoraItems.unshift({
       fecha: 'Hace un momento',
       evento: `Estado cambiado a: ${r.status}`,
-      icon: r.status === 'Pagado' ? 'check_circle' : 'pending',
-      color: r.status === 'Pagado' ? 'green' : 'yellow'
+      icon: r.status === EstadoRecibo.Pagado ? 'check_circle' : 'pending',
+      color: r.status === EstadoRecibo.Pagado ? 'green' : 'yellow'
     });
   }
 

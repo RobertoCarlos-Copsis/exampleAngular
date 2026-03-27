@@ -35,10 +35,10 @@
                     </label>
                     <input id="txTelefono" name="txTelefono" type="tel" formControlName="telefono" class="form-control figma-input" 
                            [class.is-invalid]="completarForm.get('telefono')?.invalid && completarForm.get('telefono')?.touched"
-                           placeholder="(55) 0000-0000" (input)="handlePhoneInput($event)">
+                           placeholder="Ej: 5512345678" (input)="handlePhoneInput($event)" maxlength="10">
                     <div id="spErrorTelefono" name="spErrorTelefono" *ngIf="completarForm.get('telefono')?.invalid && completarForm.get('telefono')?.touched" class="text-danger fs-12x mt-1">
                         <span *ngIf="completarForm.get('telefono')?.errors?.['required']">El teléfono es obligatorio.</span>
-                        <span *ngIf="completarForm.get('telefono')?.errors?.['pattern']">Formato inválido: (XX) XXXX-XXXX</span>
+                        <span *ngIf="completarForm.get('telefono')?.errors?.['pattern']">El teléfono debe tener 10 dígitos.</span>
                     </div>
                     <p id="spMensajeTelefono" name="spMensajeTelefono" class="fs-12x text-figma-gray-400 mt-2">Necesario para enviar SMS y mensajes de WhatsApp</p>
                 </div>

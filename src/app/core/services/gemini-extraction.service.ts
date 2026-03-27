@@ -1,16 +1,10 @@
 import { Injectable, signal, computed } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { DatosPolizaExtraidos } from '../models/wizard.model';
+import { environment } from '../../../environments/environment';
 
-// ── Configuración API ──
-const GEMINI_API_CONFIG = {
-  baseUrl: 'https://apiuat.quattrocrm.mx/operaciones/gemini/lector-pdf',
-  formatoJsonPath: '/utils/docs/FormatoJson.txt',
-  token: 'eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdGllcyI6IntcInR5cGVcIjpcInRva2VuXCJ9Iiwib3JpZ2luIjoidW5rbm93biIsImF1ZCI6Inxjb3BzaXNBdXRvc3xhdXRvc3wiLCJzcWxJbnN0YW5jZUlkIjoidWF0LTg0Iiwic3FsSW5zdGFuY2VOYW1lIjoicXVhdHRyby11YXQtODQiLCJkYm4iOiJxdWF0dHJvMDAwMzEiLCJzb2Npb0VuYyI6InRSOHo3SVJzUllrYjlOejJlT2t1dVE9PSIsInBlcnNvbmFFbmMiOiI5NGMzcWFCVGxPQmJkVVdQQmt4RW1nPT0iLCJzdWIiOiJxMzFAcXVhdHRyb2NybS5teCIsImlhdCI6MTc3NDM5NTA2NSwiZXhwIjoxNzc0NDM4MjY1fQ.VL37WGzAEk1vmQem9iqxuuDhF1C8vSho2GU5NRSGdT8',
-  modelo: 0
-};
-
+// Configuration now comes from environments and interceptor
 const DATOS_VACIOS: DatosPolizaExtraidos = {
   cliente: { nombreCompleto: '', rfc: '', direccion: '', codigoPostal: '', telefono: '', email: '' },
   poliza: { numeroPoliza: '', tipoPoliza: '', aseguradora: '', claveAgente: '', formaPago: '', moneda: 'MXN' },
@@ -22,7 +16,7 @@ const DATOS_VACIOS: DatosPolizaExtraidos = {
 @Injectable({ providedIn: 'root' })
 export class GeminiExtractionService {
 
-  constructor(private readonly http: HttpClient) {}
+  constructor(private readonly http: HttpClient) { }
 
   // ── Signals de estado ────────────────────────────────────────────────────
   readonly archivoSeleccionado = signal<File | null>(null);
@@ -53,14 +47,14 @@ export class GeminiExtractionService {
       this.progreso.set(10);
 
       const formData = new FormData();
-      formData.append('modelo', GEMINI_API_CONFIG.modelo.toString());
+      formData.append('modelo', environment.gemini.modelo.toString());
       formData.append('files', file);
 
       this.progreso.set(20);
 
       // Cargar archivo de formato JSON de referencia
       try {
-        const responseFormato = await fetch(GEMINI_API_CONFIG.formatoJsonPath);
+        const responseFormato = await fetch(environment.gemini.formatoJsonPath);
         if (responseFormato.ok) {
           const blobFormato = await responseFormato.blob();
           const fileFormato = new File([blobFormato], 'formato-json.txt', { type: 'text/plain' });
@@ -75,13 +69,9 @@ export class GeminiExtractionService {
       this.progreso.set(30);
 
       console.log('[GeminiExtraction] Enviando PDF a API de Gemini...');
-      const headers = new HttpHeaders({
-        'Authorization': `Bearer ${GEMINI_API_CONFIG.token}`
-      });
-
-      this.progreso.set(40);
+      // Token handled by HTTP Interceptor
       const response = await firstValueFrom(
-        this.http.post<any>(GEMINI_API_CONFIG.baseUrl, formData, { headers })
+        this.http.post<any>(environment.gemini.baseUrl, formData)
       );
 
       if (response?.ok && response?.result) {
@@ -120,7 +110,7 @@ export class GeminiExtractionService {
 
       // ── Póliza ──
       datos.poliza.numeroPoliza = apiData.poliza || '';
-      datos.poliza.tipoPoliza = apiData.ramo || '';
+      datos.poliza.tipoPoliza = this.normalizeTipoPoliza(apiData.ramo || '');
       datos.poliza.aseguradora = apiData.aseguradora || '';
       datos.poliza.claveAgente = apiData.cveAgente || '';
       datos.poliza.formaPago = apiData.formaPago || '';
@@ -136,10 +126,10 @@ export class GeminiExtractionService {
       datos.importe.derechoPoliza = this.parseNumber(apiData.derecho);
       datos.importe.recargoPago = this.parseNumber(apiData.recargo);
       datos.importe.iva = this.parseNumber(apiData.iva);
-      
+
       const primaTotal = this.parseNumber(apiData.primaTotal);
-      datos.importe.primaTotal = primaTotal > 0 
-        ? primaTotal 
+      datos.importe.primaTotal = primaTotal > 0
+        ? primaTotal
         : datos.importe.primaNeta + datos.importe.derechoPoliza + datos.importe.recargoPago + datos.importe.iva;
 
       datos.importe.porcentajeComision = this.parseNumber(apiData.comision);
@@ -165,12 +155,27 @@ export class GeminiExtractionService {
     return datos;
   }
 
+  private normalizeTipoPoliza(ramo: string): string {
+    if (!ramo) return 'Diversos / Otros';
+    const r = ramo.toLowerCase();
+    if (r.includes('auto') || r.includes('vehiculo') || r.includes('camion')) {
+      return 'Autos';
+    }
+    if (r.includes('vida') || r.includes('fallecimiento') || r.includes('supervivencia') || r.includes('accidentes')) {
+      return 'Vida';
+    }
+    if (r.includes('salud') || r.includes('enfermedad') || r.includes('gastos medicos') || r.includes('medico') || r.includes('gmm')) {
+      return 'Salud';
+    }
+    return 'Diversos / Otros';
+  }
+
   private parseNumber(value: any): number {
     if (typeof value === 'number') return value;
     if (typeof value === 'string') {
-      const cleaned = value.replace(/[$,]/g, '');
+      const cleaned = value.replaceAll(/[$,]/g, '');
       const parsed = parseFloat(cleaned);
-      return isNaN(parsed) ? 0 : parsed;
+      return Number.isNaN(parsed) ? 0 : parsed;
     }
     return 0;
   }

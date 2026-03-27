@@ -1,22 +1,23 @@
-import { Component, Output, EventEmitter, OnInit, inject } from '@angular/core';
+import { Component, Output, EventEmitter, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { WizardService } from '../../../../../core/services/wizard.service';
-import { formatMexicanPhone } from '../../../../../core/utils/formatters';
+import { cleanDigits } from '../../../../../core/utils/formatters';
 
 @Component({
   selector: 'app-step3-completar',
   templateUrl: './step3-completar.component.html',
-  styleUrls: ['./step3-completar.component.scss']
+  styleUrls: ['./step3-completar.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Step3CompletarComponent implements OnInit {
   @Output() nextStep = new EventEmitter<void>();
 
-  private fb = inject(FormBuilder);
-  private wizardService = inject(WizardService);
+  private readonly fb = inject(FormBuilder);
+  private readonly wizardService = inject(WizardService);
   
   completarForm: FormGroup = this.fb.group({
-    email: ['', [Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
-    telefono: ['', [Validators.required, Validators.pattern('^\\(\\d{2}\\) \\d{4}-\\d{4}$')]]
+    email: ['', [Validators.required, Validators.pattern(String.raw`^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$`)]],
+    telefono: ['', [Validators.required, Validators.pattern(String.raw`^[0-9]{10}$`)]]
   });
 
   state = this.wizardService.state;
@@ -27,7 +28,7 @@ export class Step3CompletarComponent implements OnInit {
     const phoneValue = s.client.phone || '';
     this.completarForm.patchValue({
       email: s.client.email || '',
-      telefono: formatMexicanPhone(phoneValue)
+      telefono: cleanDigits(phoneValue).substring(0, 10)
     });
     this.comisionPorcentaje = s.commissionPercentage || 0;
   }
@@ -42,9 +43,9 @@ export class Step3CompletarComponent implements OnInit {
 
   handlePhoneInput(event: Event) {
     const input = event.target as HTMLInputElement;
-    const formatted = formatMexicanPhone(input.value);
-    input.value = formatted;
-    this.completarForm.patchValue({ telefono: formatted }, { emitEvent: true });
+    const digits = cleanDigits(input.value).substring(0, 10);
+    input.value = digits;
+    this.completarForm.patchValue({ telefono: digits }, { emitEvent: false });
   }
 
   updateComision(event: any) {

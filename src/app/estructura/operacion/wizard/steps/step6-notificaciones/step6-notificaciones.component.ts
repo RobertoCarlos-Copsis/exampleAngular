@@ -1,16 +1,17 @@
-import { Component, Output, EventEmitter, inject } from '@angular/core';
+import { Component, Output, EventEmitter, inject, ChangeDetectionStrategy } from '@angular/core';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { WizardService } from '../../../../../core/services/wizard.service';
 
 @Component({
   selector: 'app-step6-notificaciones',
   templateUrl: './step6-notificaciones.component.html',
-  styleUrls: ['./step6-notificaciones.component.scss']
+  styleUrls: ['./step6-notificaciones.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Step6NotificacionesComponent {
   @Output() nextStep = new EventEmitter<void>();
 
-  private wizardService = inject(WizardService);
+  private readonly wizardService = inject(WizardService);
   state = this.wizardService.state;
 
   toggleNotification(key: string, event: MatSlideToggleChange) {

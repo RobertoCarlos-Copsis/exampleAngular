@@ -1,11 +1,13 @@
-import { Component, Output, EventEmitter, inject } from '@angular/core';
+import { Component, Output, EventEmitter, inject, ChangeDetectionStrategy } from '@angular/core';
 import { WizardService } from '../../../../../core/services/wizard.service';
 import { GeminiExtractionService } from '../../../../../core/services/gemini-extraction.service';
+import { DatosPolizaExtraidos, EstadoRecibo } from '../../../../../core/models/wizard.model';
 
 @Component({
   selector: 'app-step2-extraccion',
   templateUrl: './step2-extraccion.component.html',
-  styleUrls: ['./step2-extraccion.component.scss']
+  styleUrls: ['./step2-extraccion.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Step2ExtraccionComponent {
   @Output() nextStep = new EventEmitter<void>();
@@ -26,7 +28,7 @@ export class Step2ExtraccionComponent {
           id: r.numero,
           periodo: `Recibo ${r.numero}`,
           prima: r.primaTotal,
-          status: 'Pendiente',
+          status: EstadoRecibo.Pendiente,
           vencimiento: r.fechaInicio
         }))
       });

@@ -1,3 +1,15 @@
+export enum EstadoRecibo {
+  Pendiente = 'Pendiente',
+  Pagado = 'Pagado',
+  Vencido = 'Vencido'
+}
+
+export enum CanalNotificacion {
+  Email = 'Email',
+  SMS = 'SMS',
+  WhatsApp = 'WhatsApp'
+}
+
 export interface Client {
   name: string;
   email: string;
@@ -14,7 +26,7 @@ export interface PolicyData {
   moneda: string;
   startDate: string;
   endDate: string;
-  extractedData?: any; // Raw extraction data from Gemini
+  extractedData?: DatosPolizaExtraidos; // Raw extraction data from Gemini
 }
 
 export interface Receipt {
@@ -22,13 +34,12 @@ export interface Receipt {
   prima: number;
   periodo: string;
   vencimiento: string;
-  status: 'Pendiente' | 'Pagado' | 'Vencido';
+  status: EstadoRecibo;
   commission?: number;
 }
 
 export interface NotificationConfig {
   active: boolean;
-  [key: string]: any;
 }
 
 export interface ReciboExtraido {
@@ -87,10 +98,10 @@ export interface WizardState {
     siniestros: NotificationConfig;
     comisiones: NotificationConfig;
     generales: NotificationConfig;
-    [key: string]: NotificationConfig;
+  [key: string]: NotificationConfig | any;
   };
   logs: string[];
-  statistics: any;
+  statistics?: any;
   extractionHistory: {
     timestamp: string;
     data: DatosPolizaExtraidos;
