@@ -19,7 +19,8 @@
                     </label>
                     <input id="txEmail" name="txEmail" type="email" formControlName="email" class="form-control figma-input" 
                            [class.is-invalid]="completarForm.get('email')?.invalid && completarForm.get('email')?.touched"
-                           placeholder="ejemplo@correo.com">
+                           placeholder="ejemplo@correo.com"
+                           (blur)="completarForm.get('email')?.markAsTouched()">
                     <div id="spErrorEmail" name="spErrorEmail" *ngIf="completarForm.get('email')?.invalid && completarForm.get('email')?.touched" class="text-danger fs-12x mt-1">
                         <span *ngIf="completarForm.get('email')?.errors?.['required']">El email es obligatorio.</span>
                         <span *ngIf="completarForm.get('email')?.errors?.['pattern']">Introduce un email válido.</span>
@@ -35,7 +36,8 @@
                     </label>
                     <input id="txTelefono" name="txTelefono" type="tel" formControlName="telefono" class="form-control figma-input" 
                            [class.is-invalid]="completarForm.get('telefono')?.invalid && completarForm.get('telefono')?.touched"
-                           placeholder="Ej: 5512345678" (input)="handlePhoneInput($event)" maxlength="10">
+                           placeholder="Ej: 5512345678" (input)="handlePhoneInput($event)" maxlength="10"
+                           (blur)="completarForm.get('telefono')?.markAsTouched()">
                     <div id="spErrorTelefono" name="spErrorTelefono" *ngIf="completarForm.get('telefono')?.invalid && completarForm.get('telefono')?.touched" class="text-danger fs-12x mt-1">
                         <span *ngIf="completarForm.get('telefono')?.errors?.['required']">El teléfono es obligatorio.</span>
                         <span *ngIf="completarForm.get('telefono')?.errors?.['pattern']">El teléfono debe tener 10 dígitos.</span>
@@ -62,7 +64,7 @@
                 <div class="commission-summary mt-4">
                     <h3 id="lbComisionesCalculadas" name="lbComisionesCalculadas" class="fs-16x font-700 mb-3">Comisiones calculadas:</h3>
                     <div class="summary-rows">
-                        <div *ngFor="let r of state().receipts; let i = index" class="summary-row">
+                        <div *ngFor="let r of state().receipts; let i = index; trackBy: trackByReceiptId" class="summary-row">
                             <span [attr.id]="'lbRecibo' + i" [attr.name]="'lbRecibo' + i">Recibo {{ i + 1 }}/{{ state().receipts.length }}:</span>
                             <strong [attr.id]="'txComisionRecibo' + i" [attr.name]="'txComisionRecibo' + i">{{ (r.prima * (comisionPorcentaje / 100)) | currency:'MXN' }}</strong>
                         </div>

@@ -87,3 +87,139 @@
     &.app .d-icon-box { color: #7c3aed !important; }
     &.renewal .d-icon-box { color: #f97316 !important; }
 }
+
+/* ── Dialog / Modal Styles ─────────────────────────────────── */
+.modal-backdrop-figma {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(15, 23, 42, 0.4);
+    backdrop-filter: blur(8px);
+    z-index: 2000;
+}
+
+.action-modal-figma {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    max-width: 550px;
+    background: white;
+    border-radius: 24px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    z-index: 2001;
+    overflow: hidden;
+    animation: fadeInCentered 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes fadeInCentered {
+    from { opacity: 0; transform: translate(-50%, -48%) scale(0.96); }
+    to   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+
+.modal-header-figma {
+    padding: 1.5rem 2rem;
+    border-bottom: 1px solid #f1f5f9;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .icon-box-figma {
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        mat-icon { font-size: 24px; width: 24px; height: 24px; }
+
+        &.tupoliza { background: #2563eb; }
+        &.app      { background: #7c3aed; }
+        &.renovacion { background: #f97316; }
+    }
+
+    .btn-close-figma {
+        background: #f8fafc;
+        border: none;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        color: #94a3b8;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        &:hover { background: #f1f5f9; color: #64748b; }
+    }
+}
+
+.modal-body-figma {
+    padding: 0 2rem;
+
+    .input-group-figma {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        label { font-size: 0.75rem; font-weight: 700; color: #64748b; text-transform: uppercase; }
+        input, textarea {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 0.75rem 1rem;
+            font-size: 0.9375rem;
+            color: #1e293b;
+            font-family: inherit;
+            width: 100%;
+        }
+        textarea { resize: none; min-height: 100px; }
+    }
+}
+
+.modal-footer-figma {
+    padding: 1.5rem 2rem 2rem;
+    display: flex;
+    gap: 1rem;
+}
+
+.btn-figma-primary {
+    background: #111827;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 0.75rem 1rem;
+    font-weight: 700;
+    transition: all 0.2s;
+    cursor: pointer;
+    &:hover { background: #1f2937; transform: translateY(-1px); }
+    &:disabled { opacity: 0.5; cursor: not-allowed; }
+}
+
+.btn-figma-secondary {
+    background: #f1f5f9;
+    color: #475569;
+    border: none;
+    border-radius: 12px;
+    padding: 0.75rem 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    &:hover { background: #e2e8f0; }
+}
+
+.success-icon-anim {
+    mat-icon {
+        font-size: 64px;
+        width: 64px;
+        height: 64px;
+        color: #16a34a;
+        animation: scaleIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+}
+
+@keyframes scaleIn {
+    from { transform: scale(0); opacity: 0; }
+    to   { transform: scale(1); opacity: 1; }
+}

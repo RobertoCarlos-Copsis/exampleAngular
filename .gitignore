@@ -40,3 +40,7 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+
+# Environment files with sensitive data (API keys, secrets)
+# Keep environment.ts (base/template) but ignore development-specific files
+src/environments/environment.development.ts

@@ -39,7 +39,7 @@ export class Step1ImportarComponent {
     const isImage = file.type.startsWith('image/');
     
     if (!isPdf && !isImage) {
-      alert('Solo se aceptan archivos PDF o Imágenes');
+      this.geminiService.error.set('Solo se aceptan archivos PDF o Imágenes.');
       return;
     }
 
@@ -87,7 +87,7 @@ export class Step1ImportarComponent {
 
     } catch (error) {
       console.error('Error al procesar el archivo con Gemini', error);
-      alert('Hubo un error interpretando el documento con IA.');
+      // Error is already set by the service via its error signal - no alert needed
     }
   }
 

@@ -9,6 +9,13 @@
         </p>
     </div>
 
+    <!-- Session Restored Banner -->
+    <div *ngIf="isRestoredSession" class="alert d-flex align-items-center gap-3 mb-3 animation-fade-in" 
+         style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 12px; padding: 0.85rem 1.25rem;">
+        <mat-icon style="color: #2563eb; flex-shrink: 0;">restore</mat-icon>
+        <span style="color: #1d4ed8; font-size: 0.875rem; font-weight: 500;">Estado restaurado desde sesión anterior. Revisa los datos antes de continuar.</span>
+    </div>
+
     <!-- Data Grid 2x2 (Using Bootstrap Row/Col) -->
     <div class="row g-4 mb-32px text-start">
         <!-- Client Card (Blue) -->

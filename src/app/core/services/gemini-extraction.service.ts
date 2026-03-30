@@ -1,8 +1,82 @@
 import { Injectable, signal, computed } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
-import { DatosPolizaExtraidos } from '../models/wizard.model';
+import { DatosPolizaExtraidos, ReciboExtraido } from '../models/wizard.model';
 import { environment } from '../../../environments/environment';
+
+/** Mapa de IDs de tipo de seguro devueltos por la API → etiqueta legible */
+const TIPO_SEGURO_MAP: Record<number, string> = {
+  1: 'Autos',
+  2: 'Autos',
+  3: 'Salud',
+  4: 'Salud',
+  5: 'Vida',
+  6: 'Vida',
+  7: 'Diversos / Otros'
+};
+
+/** Mapa de IDs de forma de pago devueltos por la API → etiqueta legible */
+const FORMA_PAGO_MAP: Record<number, string> = {
+  1: 'Anual',
+  2: 'Semestral',
+  3: 'Trimestral',
+  4: 'Bimestral',
+  5: 'Mensual'
+};
+
+/** Mapa de IDs de moneda devueltos por la API → etiqueta legible */
+const MONEDA_MAP: Record<number, string> = {
+  0: 'MXN',
+  1: 'MXN',
+  2: 'USD',
+  3: 'UDI'
+};
+
+/** Número de recibos por forma de pago */
+const RECIBOS_POR_FORMA_PAGO: Record<string, number> = {
+  'Anual': 1,
+  'Semestral': 2,
+  'Trimestral': 4,
+  'Bimestral': 6,
+  'Mensual': 12
+};
+
+export interface GeminiApiResponse {
+  tipo?: number;
+  poliza?: string;
+  ramo?: string;
+  aseguradora?: string;
+  cveAgente?: string;
+  formaPago?: string;
+  moneda?: string;
+  cteNombre?: string;
+  rfc?: string;
+  cteDireccion?: string;
+  cp?: string;
+  telefono?: string;
+  email?: string;
+  fechaEmision?: string;
+  vigenciaDe?: string;
+  vigenciaA?: string;
+  primaneta?: number | string;
+  primaNeta?: number | string;
+  derecho?: number | string;
+  recargo?: number | string;
+  iva?: number | string;
+  primaTotal?: number | string;
+  comision?: number | string;
+  recibos?: GeminiReciboResponse[];
+}
+
+export interface GeminiReciboResponse {
+  serie?: number;
+  vigenciaDe?: string;
+  vigenciaA?: string;
+  primaneta?: number | string;
+  primaNeta?: number | string;
+  iva?: number | string;
+  primaTotal?: number | string;
+}
 
 // Configuration now comes from environments and interceptor
 const DATOS_VACIOS: DatosPolizaExtraidos = {
@@ -96,7 +170,7 @@ export class GeminiExtractionService {
   }
 
   // ── Mapear respuesta plana de la API al formato tipado ───────────────────
-  private mapearRespuestaAPI(apiData: any): DatosPolizaExtraidos {
+  private mapearRespuestaAPI(apiData: GeminiApiResponse): DatosPolizaExtraidos {
     const datos: DatosPolizaExtraidos = structuredClone(DATOS_VACIOS);
 
     try {
@@ -108,13 +182,19 @@ export class GeminiExtractionService {
       datos.cliente.telefono = apiData.telefono || '';
       datos.cliente.email = apiData.email || '';
 
-      // ── Póliza ──
+      // ── Póliza (con IDs numéricos de la API) ──
       datos.poliza.numeroPoliza = apiData.poliza || '';
-      datos.poliza.tipoPoliza = this.normalizeTipoPoliza(apiData.ramo || '');
+      // 'tipo' viene como ID numérico (1=Autos, 3=Salud, 5=Vida, 7=Diversos)
+      const tipoId = typeof apiData.tipo === 'number' ? apiData.tipo : Number(apiData.tipo);
+      datos.poliza.tipoPoliza = TIPO_SEGURO_MAP[tipoId] ?? this.normalizeTipoPoliza(apiData.ramo || '');
       datos.poliza.aseguradora = apiData.aseguradora || '';
       datos.poliza.claveAgente = apiData.cveAgente || '';
-      datos.poliza.formaPago = apiData.formaPago || '';
-      datos.poliza.moneda = apiData.moneda || 'MXN';
+      // formaPago viene como ID numérico (1=Anual, 2=Semestral, 3=Trimestral, 4=Bimestral, 5=Mensual)
+      const formaPagoId = typeof apiData.formaPago === 'number' ? apiData.formaPago : Number(apiData.formaPago);
+      datos.poliza.formaPago = FORMA_PAGO_MAP[formaPagoId] ?? (apiData.formaPago?.toString() || '');
+      // moneda viene como ID numérico (0/1=MXN, 2=USD)
+      const monedaId = typeof apiData.moneda === 'number' ? apiData.moneda : Number(apiData.moneda);
+      datos.poliza.moneda = MONEDA_MAP[monedaId] ?? 'MXN';
 
       // ── Vigencia ──
       datos.vigencia.fechaEmision = apiData.fechaEmision || '';
@@ -136,7 +216,7 @@ export class GeminiExtractionService {
 
       // ── Recibos ──
       if (Array.isArray(apiData.recibos) && apiData.recibos.length > 0) {
-        datos.recibos = apiData.recibos.map((r: any, idx: number) => ({
+        datos.recibos = apiData.recibos.map((r: GeminiReciboResponse, idx: number) => ({
           numero: r.serie || idx + 1,
           fechaInicio: r.vigenciaDe || '',
           fechaFin: r.vigenciaA || '',
@@ -144,6 +224,15 @@ export class GeminiExtractionService {
           iva: this.parseNumber(r.iva),
           primaTotal: this.parseNumber(r.primaTotal)
         }));
+      } else {
+        // → Gemini no regresó recibos: generarlos automáticamente
+        datos.recibos = this.generarRecibos(
+          datos.poliza.formaPago,
+          datos.importe.primaTotal,
+          datos.importe.iva,
+          datos.vigencia.vigenciaDesde,
+          datos.vigencia.vigenciaHasta
+        );
       }
 
       console.log('[GeminiExtraction] Mapeo completado:', datos);
@@ -155,19 +244,51 @@ export class GeminiExtractionService {
     return datos;
   }
 
+  /**
+   * Fallback para identificar el ramo cuando no viene el campo 'tipo' numérico.
+   * Usa palabras clave del campo 'ramo' en texto libre.
+   */
   private normalizeTipoPoliza(ramo: string): string {
     if (!ramo) return 'Diversos / Otros';
     const r = ramo.toLowerCase();
-    if (r.includes('auto') || r.includes('vehiculo') || r.includes('camion')) {
-      return 'Autos';
-    }
-    if (r.includes('vida') || r.includes('fallecimiento') || r.includes('supervivencia') || r.includes('accidentes')) {
-      return 'Vida';
-    }
-    if (r.includes('salud') || r.includes('enfermedad') || r.includes('gastos medicos') || r.includes('medico') || r.includes('gmm')) {
-      return 'Salud';
-    }
+    if (r.includes('auto') || r.includes('vehiculo') || r.includes('camion')) return 'Autos';
+    if (r.includes('vida') || r.includes('fallecimiento') || r.includes('supervivencia') || r.includes('accidentes')) return 'Vida';
+    if (r.includes('salud') || r.includes('enfermedad') || r.includes('gastos medicos') || r.includes('gastos médicos') || r.includes('medico') || r.includes('médico') || r.includes('gmm')) return 'Salud';
     return 'Diversos / Otros';
+  }
+
+  /**
+   * Genera recibos automáticamente cuando la API no los devuelve.
+   * La prima total se divide entre el número de recibos.
+   */
+  private generarRecibos(
+    formaPago: string,
+    primaTotal: number,
+    iva: number,
+    vigenciaDe: string,
+    vigenciaA: string
+  ): ReciboExtraido[] {
+    const numRecibos = RECIBOS_POR_FORMA_PAGO[formaPago] ?? 1;
+    const primaXRecibo = primaTotal / numRecibos;
+    const ivaXRecibo = iva / numRecibos;
+
+    const fechaInicio = vigenciaDe ? new Date(vigenciaDe) : new Date();
+    const fechaFin = vigenciaA ? new Date(vigenciaA) : new Date();
+    const rangoMs = fechaFin.getTime() - fechaInicio.getTime();
+    const stepMs = rangoMs / numRecibos;
+
+    return Array.from({ length: numRecibos }, (_, i) => {
+      const inicio = new Date(fechaInicio.getTime() + stepMs * i);
+      const fin = new Date(fechaInicio.getTime() + stepMs * (i + 1));
+      return {
+        numero: i + 1,
+        fechaInicio: inicio.toISOString().split('T')[0],
+        fechaFin: fin.toISOString().split('T')[0],
+        primaNeta: Math.round((primaXRecibo - ivaXRecibo) * 100) / 100,
+        iva: Math.round(ivaXRecibo * 100) / 100,
+        primaTotal: Math.round(primaXRecibo * 100) / 100
+      };
+    });
   }
 
   private parseNumber(value: any): number {

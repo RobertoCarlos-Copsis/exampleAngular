@@ -72,4 +72,8 @@ export class Step3CompletarComponent implements OnInit {
       this.completarForm.markAllAsTouched();
     }
   }
+
+  trackByReceiptId(_index: number, receipt: { id: number }): number {
+    return receipt.id;
+  }
 }

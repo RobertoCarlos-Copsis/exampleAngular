@@ -19,6 +19,13 @@ export class Step2ExtraccionComponent {
     return this.wizardService.state;
   }
 
+  /** True when page was reloaded and state was restored from localStorage */
+  get isRestoredSession(): boolean {
+    const hasHistory = (this.wizardService.state().extractionHistory || []).length > 0;
+    const hasNoActiveFile = !this.geminiService.archivoSeleccionado();
+    return hasHistory && hasNoActiveFile;
+  }
+
   onConfirm() {
     // Sincronizar recibos extraídos al estado global si aún no están
     const datosExtraidos = this.geminiService.datosExtraidos();

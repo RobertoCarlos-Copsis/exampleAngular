@@ -162,4 +162,11 @@ export class Step4RecibosComponent {
       return !!phone && phone.trim().length >= 8;
     }
   }
+  trackByReceiptId(_index: number, receipt: Receipt): number {
+    return receipt.id;
+  }
+
+  trackByIndex(index: number): number {
+    return index;
+  }
 }

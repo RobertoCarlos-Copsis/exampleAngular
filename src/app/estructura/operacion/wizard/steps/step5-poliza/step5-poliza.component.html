@@ -91,3 +91,104 @@
     </div>
 
 </div>
+
+<!-- ── Backdrop ────────────────────────────────────────────────────── -->
+<div class="modal-backdrop-figma" *ngIf="activeDialog" (click)="closeDialog()"></div>
+
+<!-- ── Dialog ────────────────────────────────────────────────────── -->
+<div class="action-modal-figma" *ngIf="activeDialog">
+
+    <!-- Header -->
+    <div class="modal-header-figma">
+        <div class="d-flex align-items-center gap-3">
+            <div class="icon-box-figma" [ngClass]="activeDialog.type.toLowerCase()">
+                <mat-icon>{{ activeDialog.icon }}</mat-icon>
+            </div>
+            <div>
+                <h3 id="lbDialogTitulo" name="lbDialogTitulo" class="m-0 fs-18x font-800">{{ activeDialog.title }}</h3>
+                <p id="spDialogSubtitulo" name="spDialogSubtitulo" class="m-0 fs-12x text-figma-gray-400">{{ activeDialog.subtitle }}</p>
+            </div>
+        </div>
+        <button id="btnDialogClose" name="btnDialogClose" class="btn-close-figma" (click)="closeDialog()">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+
+    <!-- Body — Success -->
+    <div class="modal-body-figma py-5 text-center" *ngIf="dialogSuccess">
+        <div class="success-icon-anim mb-4">
+            <mat-icon>check_circle</mat-icon>
+        </div>
+        <h4 id="lbSuccessTitle" name="lbSuccessTitle" class="font-800 mb-2">¡Listo!</h4>
+        <p id="spSuccessMsg" name="spSuccessMsg" class="text-figma-gray-400 fs-14x">
+            <ng-container *ngIf="activeDialog.type === 'TuPoliza'">La póliza fue enviada al correo del cliente.</ng-container>
+            <ng-container *ngIf="activeDialog.type === 'App'">La póliza fue compartida a la app del cliente.</ng-container>
+            <ng-container *ngIf="activeDialog.type === 'Renovacion'">El recordatorio de renovación fue programado.</ng-container>
+        </p>
+    </div>
+
+    <!-- Body — TuPoliza form -->
+    <div class="modal-body-figma py-4" *ngIf="!dialogSuccess && activeDialog.type === 'TuPoliza'">
+        <div class="input-group-figma mb-3">
+            <label id="lbDiagPara" name="lbDiagPara">Para:</label>
+            <input id="txDiagEmail" name="txDiagEmail" type="text" [value]="state().client.email || ''" readonly>
+        </div>
+        <div class="input-group-figma mb-3">
+            <label id="lbDiagAsunto" name="lbDiagAsunto">Asunto:</label>
+            <input id="txDiagAsunto" name="txDiagAsunto" type="text" [value]="'Tu Póliza ' + (state().policy.data.policyNumber || '') + ' está lista'" readonly>
+        </div>
+        <div class="input-group-figma">
+            <label id="lbDiagMensaje" name="lbDiagMensaje">Vista previa del mensaje:</label>
+            <textarea id="txaDiagMensaje" name="txaDiagMensaje" rows="4" readonly
+                [value]="'Hola ' + (state().client.name || 'Cliente') + ',\n\nTe compartimos tu póliza ' + (state().policy.data.policyNumber || '') + ' de ' + (state().policy.data.aseguradora || 'tu aseguradora') + '.\n\nVigencia: ' + (state().policy.data.startDate || '') + ' al ' + (state().policy.data.endDate || '') + '.'">
+            </textarea>
+        </div>
+    </div>
+
+    <!-- Body — MiPoliza App form -->
+    <div class="modal-body-figma py-4" *ngIf="!dialogSuccess && activeDialog.type === 'App'">
+        <div class="input-group-figma mb-3">
+            <label id="lbDiagNombreApp" name="lbDiagNombreApp">Cliente:</label>
+            <input id="txDiagNombreApp" name="txDiagNombreApp" type="text" [value]="state().client.name || ''" readonly>
+        </div>
+        <div class="input-group-figma mb-3">
+            <label id="lbDiagTelApp" name="lbDiagTelApp">Teléfono / WhatsApp:</label>
+            <input id="txDiagTelApp" name="txDiagTelApp" type="text" [value]="state().client.phone || ''" readonly>
+        </div>
+        <div class="p-3 rounded-3 text-center" style="background: #f0fdf4; border: 1px solid #bbf7d0;">
+            <mat-icon style="color: #16a34a; font-size: 32px; width:32px; height:32px;">qr_code_2</mat-icon>
+            <p id="spQrInfo" name="spQrInfo" class="mt-2 mb-0 fs-13x" style="color:#15803d; font-weight:600;">Se generará un QR de acceso a la app para el cliente</p>
+        </div>
+    </div>
+
+    <!-- Body — Renovacion form -->
+    <div class="modal-body-figma py-4" *ngIf="!dialogSuccess && activeDialog.type === 'Renovacion'">
+        <div class="input-group-figma mb-3">
+            <label id="lbDiagVencimiento" name="lbDiagVencimiento">Fecha de vencimiento:</label>
+            <input id="txDiagVencimiento" name="txDiagVencimiento" type="text" [value]="state().policy.data.endDate || ''" readonly>
+        </div>
+        <div class="input-group-figma mb-3">
+            <label id="lbDiagRecordatorio" name="lbDiagRecordatorio">Enviar recordatorio:</label>
+            <select id="seDiagRecordatorio" name="seDiagRecordatorio" class="form-select" [(ngModel)]="renovacionFecha" style="border-radius:8px; border:1px solid #e5e7eb; padding: 0.6rem 1rem;">
+                <option value="30">30 días antes</option>
+                <option value="60">60 días antes</option>
+                <option value="90">90 días antes</option>
+            </select>
+        </div>
+        <div class="p-3 rounded-3" style="background: #fffbeb; border: 1px solid #fde68a;">
+            <p id="spRenovInfo" name="spRenovInfo" class="mb-0 fs-13x d-flex align-items-center gap-2" style="color:#92400e;">
+                <mat-icon style="font-size:18px;width:18px;height:18px;">info</mat-icon>
+                Recibirás una alerta en el dashboard y por correo cuando falten los días indicados.
+            </p>
+        </div>
+    </div>
+
+    <!-- Footer — actions -->
+    <div class="modal-footer-figma mt-2" *ngIf="!dialogSuccess">
+        <button id="btnDialogCancelar" name="btnDialogCancelar" class="btn-figma-secondary w-100" (click)="closeDialog()" [disabled]="isSending">Cancelar</button>
+        <button id="btnDialogConfirmar" name="btnDialogConfirmar" class="btn-figma-primary w-100" (click)="confirmDialog()" [disabled]="isSending">
+            <span class="spinner-border spinner-border-sm me-2" *ngIf="isSending"></span>
+            <span id="spDialogConfirmarTxt" name="spDialogConfirmarTxt">{{ isSending ? 'Enviando...' : 'Confirmar' }}</span>
+        </button>
+    </div>
+</div>

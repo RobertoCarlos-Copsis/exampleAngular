@@ -10,7 +10,7 @@
         <!-- Sidebar: Receipt List -->
         <div class="col-md-4">
             <div class="receipt-sidebar h-100">
-                <div *ngFor="let r of state().receipts; let i = index" 
+                <div *ngFor="let r of state().receipts; let i = index; trackBy: trackByReceiptId" 
                      [attr.id]="'btnReciboItem' + i" [attr.name]="'btnReciboItem' + i"
                      class="receipt-item-card" 
                      [class.active]="activeIndex === i"
@@ -172,7 +172,7 @@
 
         <div class="modal-body-figma py-4">
             <div class="timeline-figma">
-                <div class="timeline-item" *ngFor="let item of bitacoraItems; let j = index">
+                <div class="timeline-item" *ngFor="let item of bitacoraItems; let j = index; trackBy: trackByIndex">
                     <div class="timeline-icon" [ngClass]="item.color">
                         <mat-icon>{{ item.icon }}</mat-icon>
                     </div>
