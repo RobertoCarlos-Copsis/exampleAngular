@@ -40,7 +40,7 @@
 }
 
 .doc-field {
-    label { display: block; font-size: 0.75rem; color: #94a3b8; font-weight: 600; text-transform: uppercase; margin-bottom: 0.25rem; }
+    label, .doc-label { display: block; font-size: 0.75rem; color: #475569; font-weight: 600; text-transform: uppercase; margin-bottom: 0.25rem; }
     strong { font-size: 1.125rem; color: #1e293b; }
     p, span { font-size: 1rem; color: #334155; font-weight: 700; }
 }
@@ -63,10 +63,13 @@
     padding: 1.5rem;
     text-align: center;
     cursor: pointer;
+    width: 100%;
+    display: block;
+    font-family: inherit;
     @include figma-card-hover;
     position: relative;
 
-    &:hover { background: white; border-color: #e2e8f0; }
+    &:hover, &:focus { background: white; border-color: #e2e8f0; outline: 2px solid var(--figma-blue-600); outline-offset: 2px; }
     &.active {
         background: white;
         border-color: var(--figma-blue-600);
@@ -81,11 +84,11 @@
     }
 
     h4 { font-size: 1rem; font-weight: 800; color: #1e293b; margin-bottom: 0.35rem; }
-    p { font-size: 0.75rem; color: #64748b; margin: 0; line-height: 1.4; }
+    p { font-size: 0.75rem; color: #4b5563; margin: 0; line-height: 1.4; }
 
-    &.email .d-icon-box { color: #2563eb !important; }
-    &.app .d-icon-box { color: #7c3aed !important; }
-    &.renewal .d-icon-box { color: #f97316 !important; }
+    &.email .d-icon-box { color: #2563eb; }
+    &.app .d-icon-box { color: #7c3aed; }
+    &.renewal .d-icon-box { color: #b45309; }
 }
 
 /* ── Dialog / Modal Styles ─────────────────────────────────── */
@@ -148,12 +151,12 @@
         width: 36px;
         height: 36px;
         border-radius: 50%;
-        color: #94a3b8;
+        color: #475569;
         display: flex;
         align-items: center;
         justify-content: center;
         cursor: pointer;
-        &:hover { background: #f1f5f9; color: #64748b; }
+        &:hover, &:focus { background: #f1f5f9; color: #334155; outline: none; }
     }
 }
 
@@ -164,7 +167,7 @@
         display: flex;
         flex-direction: column;
         gap: 0.5rem;
-        label { font-size: 0.75rem; font-weight: 700; color: #64748b; text-transform: uppercase; }
+        label { font-size: 0.75rem; font-weight: 700; color: #475569; text-transform: uppercase; }
         input, textarea {
             background: #f8fafc;
             border: 1px solid #e2e8f0;

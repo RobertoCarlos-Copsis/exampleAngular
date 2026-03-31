@@ -1,7 +1,7 @@
 import { Component, Output, EventEmitter, inject, ChangeDetectionStrategy } from '@angular/core';
 import { WizardService } from '../../../../../core/services/wizard.service';
 import { GeminiExtractionService } from '../../../../../core/services/gemini-extraction.service';
-import { DatosPolizaExtraidos, EstadoRecibo } from '../../../../../core/models/wizard.model';
+import { EstadoRecibo } from '../../../../../core/models/wizard.model';
 
 @Component({
   selector: 'app-step2-extraccion',
@@ -12,7 +12,7 @@ import { DatosPolizaExtraidos, EstadoRecibo } from '../../../../../core/models/w
 export class Step2ExtraccionComponent {
   @Output() nextStep = new EventEmitter<void>();
 
-  private wizardService = inject(WizardService);
+  private readonly wizardService = inject(WizardService);
   public geminiService = inject(GeminiExtractionService);
 
   get state() {

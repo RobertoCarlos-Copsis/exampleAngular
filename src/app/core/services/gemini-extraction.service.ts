@@ -7,13 +7,19 @@ import { environment } from '../../../environments/environment';
 /** Mapa de IDs de tipo de seguro devueltos por la API → etiqueta legible */
 const TIPO_SEGURO_MAP: Record<number, string> = {
   1: 'Autos',
-  2: 'Autos',
+  2: 'Vida',
   3: 'Salud',
-  4: 'Salud',
+  4: 'Diversos / Otros',
   5: 'Vida',
-  6: 'Vida',
-  7: 'Diversos / Otros'
+  6: 'Salud',
+  7: 'Diversos / Otros',
+  8: 'Diversos / Otros'
 };
+
+const PROGRESS_START = 10;
+const PROGRESS_DATA_APPENDED = 20;
+const PROGRESS_JSON_LOADED = 30;
+const PROGRESS_COMPLETE = 100;
 
 /** Mapa de IDs de forma de pago devueltos por la API → etiqueta legible */
 const FORMA_PAGO_MAP: Record<number, string> = {
@@ -142,7 +148,6 @@ export class GeminiExtractionService {
 
       this.progreso.set(30);
 
-      console.log('[GeminiExtraction] Enviando PDF a API de Gemini...');
       // Token handled by HTTP Interceptor
       const response = await firstValueFrom(
         this.http.post<any>(environment.gemini.baseUrl, formData)
@@ -152,7 +157,7 @@ export class GeminiExtractionService {
         const datos = this.mapearRespuestaAPI(response.result);
         this.datosPoliza.set(datos);
         this.datosExtraidos.set(datos);
-        this.progreso.set(100);
+        this.progreso.set(PROGRESS_COMPLETE);
         return datos;
       } else {
         throw new Error(response?.message || 'Error en la respuesta de la API');
@@ -235,7 +240,6 @@ export class GeminiExtractionService {
         );
       }
 
-      console.log('[GeminiExtraction] Mapeo completado:', datos);
 
     } catch (err) {
       console.error('[GeminiExtraction] Error mapeando respuesta:', err);
@@ -252,7 +256,7 @@ export class GeminiExtractionService {
     if (!ramo) return 'Diversos / Otros';
     const r = ramo.toLowerCase();
     if (r.includes('auto') || r.includes('vehiculo') || r.includes('camion')) return 'Autos';
-    if (r.includes('vida') || r.includes('fallecimiento') || r.includes('supervivencia') || r.includes('accidentes')) return 'Vida';
+    if (r.includes('vida') || r.includes('vid') || r.includes('fallecimiento') || r.includes('supervivencia') || r.includes('accidentes')) return 'Vida';
     if (r.includes('salud') || r.includes('enfermedad') || r.includes('gastos medicos') || r.includes('gastos médicos') || r.includes('medico') || r.includes('médico') || r.includes('gmm')) return 'Salud';
     return 'Diversos / Otros';
   }
@@ -291,11 +295,11 @@ export class GeminiExtractionService {
     });
   }
 
-  private parseNumber(value: any): number {
+  private parseNumber(value: number | string | null | undefined): number {
     if (typeof value === 'number') return value;
     if (typeof value === 'string') {
-      const cleaned = value.replaceAll(/[$,]/g, '');
-      const parsed = parseFloat(cleaned);
+      const cleaned = value.replaceAll(/[$, ]/g, '');
+      const parsed = Number.parseFloat(cleaned);
       return Number.isNaN(parsed) ? 0 : parsed;
     }
     return 0;

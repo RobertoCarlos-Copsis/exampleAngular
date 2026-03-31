@@ -1,12 +1,6 @@
 import { Component } from '@angular/core';
-
-import { Step1ImportarComponent } from './steps/step1-importar/step1-importar.component';
-import { Step2ExtraccionComponent } from './steps/step2-extraccion/step2-extraccion.component';
-import { Step3CompletarComponent } from './steps/step3-completar/step3-completar.component';
-import { Step4RecibosComponent } from './steps/step4-recibos/step4-recibos.component';
-import { Step5PolizaComponent } from './steps/step5-poliza/step5-poliza.component';
-import { Step6NotificacionesComponent } from './steps/step6-notificaciones/step6-notificaciones.component';
-import { Step7EstadisticasComponent } from './steps/step7-estadisticas/step7-estadisticas.component';
+import { MatStepper } from '@angular/material/stepper';
+import { StepperSelectionEvent } from '@angular/cdk/stepper';
 
 @Component({
   selector: 'app-wizard',
@@ -33,16 +27,16 @@ export class WizardComponent {
   }
 
   /** Marca el paso como completado y avanza al siguiente */
-  advance(stepIndex: number, stepper: any) {
+  advance(stepIndex: number, stepper: MatStepper) {
     this.completedSteps[stepIndex] = true;
     // setTimeout asegura que Angular detecte [completed]=true ANTES de invocar next()
     setTimeout(() => stepper.next(), 0);
   }
 
-  resetAll(stepper: any) {
+  resetAll(stepper: MatStepper) {
     this.completedSteps = [false, false, false, false, false, false, false];
     stepper.reset();
   }
 
-  onStepChange(event: any) { }
+  onStepChange(event: StepperSelectionEvent) { }
 }

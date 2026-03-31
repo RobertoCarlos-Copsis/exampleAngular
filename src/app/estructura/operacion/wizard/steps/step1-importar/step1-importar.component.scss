@@ -9,9 +9,10 @@
     cursor: pointer;
     transition: all 0.2s ease;
 
-    &:hover {
+    &:hover, &:focus {
         border-color: var(--figma-blue-600);
         background: var(--figma-gray-50);
+        outline: none;
     }
 
     &.processing { border-style: solid; border-color: var(--figma-blue-600); cursor: wait; }
@@ -88,4 +89,31 @@
 @keyframes scan {
     0% { top: 0%; }
     100% { top: 100%; }
+}
+
+.dz-action-item {
+    background: transparent;
+    border: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-family: inherit;
+    color: inherit;
+    transition: transform 0.2s;
+
+    &:hover, &:focus {
+        transform: translateY(-2px);
+        outline: none;
+    }
+
+    .dz-icon-box {
+        @include figma-icon-box(48px, #eff6ff, #2563eb, 12px);
+        &.blue { background: #eff6ff; color: #2563eb; }
+        &.purple { background: #f5f3ff; color: #7c3aed; }
+    }
+
+    span { font-size: 0.875rem; font-weight: 700; color: #1e293b; }
 }

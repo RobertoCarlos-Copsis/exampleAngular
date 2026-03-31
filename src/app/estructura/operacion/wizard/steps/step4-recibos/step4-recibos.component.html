@@ -10,11 +10,12 @@
         <!-- Sidebar: Receipt List -->
         <div class="col-md-4">
             <div class="receipt-sidebar h-100">
-                <div *ngFor="let r of state().receipts; let i = index; trackBy: trackByReceiptId" 
-                     [attr.id]="'btnReciboItem' + i" [attr.name]="'btnReciboItem' + i"
-                     class="receipt-item-card" 
-                     [class.active]="activeIndex === i"
-                     (click)="selectReceipt(i)">
+                <button *ngFor="let r of state().receipts; let i = index; trackBy: trackByReceiptId" 
+                        [attr.id]="'btnReciboItem' + i" [attr.name]="'btnReciboItem' + i"
+                        class="receipt-item-card w-100" 
+                        [class.active]="activeIndex === i"
+                        (click)="selectReceipt(i)"
+                        type="button">
                     <div class="receipt-info">
                         <span [attr.id]="'txPeriodo' + i" [attr.name]="'txPeriodo' + i" class="r-period">{{ r.periodo }}</span>
                         <span [attr.id]="'txPrima' + i" [attr.name]="'txPrima' + i" class="r-amount">{{ r.prima | currency:'MXN' }}</span>
@@ -37,7 +38,7 @@
                             <span>Enviar por Email</span>
                         </button>
                     </mat-menu>
-                </div>
+                </button>
             </div>
         </div>
 
@@ -50,32 +51,32 @@
 
                 <div class="row g-3 mb-4">
                     <div class="col-sm-6">
-                        <div id="btnEnviarEmail" name="btnEnviarEmail" class="action-card email w-100 h-100" (click)="onActionClick('Email')">
+                        <button id="btnEnviarEmail" name="btnEnviarEmail" class="action-card email w-100 h-100" (click)="onActionClick('Email')" type="button">
                             <div class="action-icon"><mat-icon>mail</mat-icon></div>
                             <h4 id="lbEnviarEmail" name="lbEnviarEmail">Enviar Email</h4>
                             <p id="spEnviarEmail" name="spEnviarEmail">Envío de liga de pago por correo</p>
-                        </div>
+                        </button>
                     </div>
                     <div class="col-sm-6">
-                        <div id="btnEnviarSMS" name="btnEnviarSMS" class="action-card sms w-100 h-100" (click)="onActionClick('SMS')">
+                        <button id="btnEnviarSMS" name="btnEnviarSMS" class="action-card sms w-100 h-100" (click)="onActionClick('SMS')" type="button">
                             <div class="action-icon"><mat-icon>smartphone</mat-icon></div>
                             <h4 id="lbEnviarSMS" name="lbEnviarSMS">Enviar SMS</h4>
                             <p id="spEnviarSMS" name="spEnviarSMS">Recordatorio rápido al celular</p>
-                        </div>
+                        </button>
                     </div>
                     <div class="col-sm-6">
-                        <div id="btnWhatsApp" name="btnWhatsApp" class="action-card whatsapp w-100 h-100" (click)="onActionClick('WhatsApp')">
+                        <button id="btnWhatsApp" name="btnWhatsApp" class="action-card whatsapp w-100 h-100" (click)="onActionClick('WhatsApp')" type="button">
                             <div class="action-icon"><mat-icon>chat</mat-icon></div>
                             <h4 id="lbWhatsApp" name="lbWhatsApp">WhatsApp</h4>
                             <p id="spWhatsApp" name="spWhatsApp">Comunicación directa y oficial</p>
-                        </div>
+                        </button>
                     </div>
                     <div class="col-sm-6">
-                        <div id="btnBitacora" name="btnBitacora" class="action-card log w-100 h-100" (click)="onActionClick('Bitácora')">
+                        <button id="btnBitacora" name="btnBitacora" class="action-card log w-100 h-100" (click)="onActionClick('Bitácora')" type="button">
                             <div class="action-icon"><mat-icon>history_edu</mat-icon></div>
                             <h4 id="lbBitacora" name="lbBitacora">Bitácora</h4>
                             <p id="spBitacora" name="spBitacora">Ver historial de este recibo</p>
-                        </div>
+                        </button>
                     </div>
                 </div>
 
@@ -93,7 +94,7 @@
     </div>
 
     <!-- Modals / Overlays -->
-    <div class="modal-backdrop-figma" *ngIf="activeDialog || showBitacora" (click)="closeDialog(); closeBitacora()"></div>
+    <button class="modal-backdrop-figma" *ngIf="activeDialog || showBitacora" (click)="closeDialog(); closeBitacora()" (keydown.escape)="closeDialog(); closeBitacora()" type="button"></button>
 
     <!-- Action Modal (Email, SMS, WhatsApp) -->
     <div class="action-modal-figma" *ngIf="activeDialog">
@@ -114,24 +115,24 @@
             <!-- Email Fields -->
             <div *ngIf="activeDialog.type === 'Email'" class="mb-3">
                 <div class="input-group-figma mb-2">
-                    <label id="lbPara" name="lbPara">Para:</label>
+                    <label id="lbPara" name="lbPara" for="txParaEmail">Para:</label>
                     <input id="txParaEmail" name="txParaEmail" type="text" [value]="state().client.email" readonly>
                 </div>
                 <div class="input-group-figma">
-                    <label id="lbAsunto" name="lbAsunto">Asunto:</label>
+                    <label id="lbAsunto" name="lbAsunto" for="txAsuntoEmail">Asunto:</label>
                     <input id="txAsuntoEmail" name="txAsuntoEmail" type="text" [value]="'Recordatorio de Pago - Póliza ' + state().policy.data.policyNumber" readonly>
                 </div>
             </div>
 
             <!-- Phone Field for SMS/WhatsApp -->
             <div *ngIf="activeDialog.type !== 'Email'" class="input-group-figma mb-3">
-                <label id="lbNumero" name="lbNumero">Número:</label>
+                <label id="lbNumero" name="lbNumero" for="txNumeroTel">Número:</label>
                 <input id="txNumeroTel" name="txNumeroTel" type="text" [value]="state().client.phone" readonly>
             </div>
 
             <!-- Message Body -->
             <div class="input-group-figma">
-                <label id="lbMensaje" name="lbMensaje">Mensaje:</label>
+                <label id="lbMensaje" name="lbMensaje" for="txaMensajeCuerpo">Mensaje:</label>
                 <textarea id="txaMensajeCuerpo" name="txaMensajeCuerpo" rows="6" [(ngModel)]="actionText"></textarea>
             </div>
         </div>

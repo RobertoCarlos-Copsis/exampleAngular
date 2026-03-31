@@ -27,8 +27,11 @@
     transition: all 0.2s ease;
     position: relative;
     box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    width: 100%;
+    font-family: inherit;
+    text-align: left;
 
-    &:hover { border-color: var(--figma-blue-600); transform: translateX(5px); }
+    &:hover, &:focus { border-color: var(--figma-blue-600); transform: translateX(5px); outline: none; }
     &.active {
         border-color: var(--figma-blue-600);
         background: var(--figma-blue-50);
@@ -40,7 +43,7 @@
         flex: 1;
         display: flex;
         flex-direction: column;
-        .r-period { font-size: 0.75rem; color: #6b7280; margin-bottom: 2px; }
+        .r-period { font-size: 0.75rem; color: #4b5563; margin-bottom: 2px; }
         .r-amount { font-size: 1.125rem; font-weight: 800; color: #111827; }
     }
 
@@ -50,8 +53,8 @@
     }
 
     ::ng-deep .mat-icon-button {
-        @include figma-icon-box(32px, transparent, #94a3b8, 50%);
-        &:hover { background: rgba(0,0,0,0.05) !important; }
+        @include figma-icon-box(32px, transparent, #475569, 50%);
+        &:hover { background-color: #f1f5f9; color: #111827; }
     }
 }
 
@@ -80,7 +83,11 @@
     padding: 2rem 1.5rem;
     text-align: center;
     cursor: pointer;
-    @include figma-card-hover;
+    background: white;
+    width: 100%;
+    display: block;
+    font-family: inherit;
+    &:hover, &:focus { outline: none; }
 
     .action-icon {
         @include figma-icon-box(64px, #f8fafc, #64748b, 16px);
@@ -88,12 +95,12 @@
     }
 
     h4 { font-size: 1rem; font-weight: 800; margin-bottom: 0.5rem; color: #1e293b; }
-    p { font-size: 0.8125rem; color: #64748b; margin: 0; }
+    p { font-size: 0.8125rem; color: #475569; margin: 0; }
 
-    &.email .action-icon { color: #2563eb !important; background: #eff6ff !important; }
-    &.sms .action-icon { color: #be185d !important; background: #fff1f2 !important; }
-    &.whatsapp .action-icon { color: #15803d !important; background: #f0fdf4 !important; }
-    &.log .action-icon { color: #7c3aed !important; background: #f5f3ff !important; }
+    &.email .action-icon { color: #2563eb; background: #eff6ff; }
+    &.sms .action-icon { color: #be185d; background: #fff1f2; }
+    &.whatsapp .action-icon { color: #15803d; background: #f0fdf4; }
+    &.log .action-icon { color: #7c3aed; background: #f5f3ff; }
 }
 
 .status-toggle-box {
@@ -101,7 +108,7 @@
     padding-top: 2rem;
     border-top: 1px dashed #e2e8f0;
     text-align: center;
-    p { font-size: 0.875rem; font-weight: 600; color: #64748b; margin-bottom: 1rem; }
+    p { font-size: 0.875rem; font-weight: 600; color: #475569; margin-bottom: 1rem; }
 }
 
 @media (max-width: 1024px) {
@@ -180,11 +187,11 @@
         width: 36px;
         height: 36px;
         border-radius: 50%;
-        color: #94a3b8;
+        color: #475569;
         display: flex;
         align-items: center;
         justify-content: center;
-        &:hover { background: #f1f5f9; color: #64748b; }
+        &:hover, &:focus { background: white; border-color: #e2e8f0; outline: none; }
     }
 }
 
@@ -195,7 +202,7 @@
         display: flex;
         flex-direction: column;
         gap: 0.5rem;
-        label { font-size: 0.75rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; }
+        label { font-size: 0.75rem; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: 0.02em; }
         input, textarea {
             background: #f8fafc;
             border: 1px solid #e2e8f0;
@@ -273,14 +280,14 @@
             justify-content: center;
             mat-icon { font-size: 18px; width: 18px; height: 18px; }
 
-            &.blue { color: #2563eb; border-color: #dbeafe; background: #eff6ff; }
-            &.green { color: #16a34a; border-color: #dcfce7; background: #f0fdf4; }
-            &.pink { color: #db2777; border-color: #fce7f3; background: #fff1f2; }
-            &.yellow { color: #d97706; border-color: #fef3c7; background: #fffbeb; }
+            &.blue { color: #1d4ed8; border-color: #dbeafe; background: #eff6ff; }
+            &.green { color: #15803d; border-color: #dcfce7; background: #f0fdf4; }
+            &.pink { color: #be185d; border-color: #fce7f3; background: #fff1f2; }
+            &.yellow { color: #92400e; border-color: #fef3c7; background: #fffbeb; }
         }
 
         .timeline-content {
-            .t-date { font-size: 0.75rem; color: #94a3b8; font-weight: 500; display: block; margin-bottom: 2px; }
+            .t-date { font-size: 0.75rem; color: #475569; font-weight: 600; display: block; margin-bottom: 2px; }
             .t-event { font-size: 0.9375rem; font-weight: 700; color: #1e293b; margin: 0; }
         }
     }

@@ -38,68 +38,68 @@ $figma-radius: (
 
 // ── Reusable Mixins ─────────────────────────────────────────────────────
 @mixin figma-button($bg, $color: white, $hover-bg: null) {
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    background-color: $bg !important;
-    color: $color !important;
-    border: none !important;
-    border-radius: map-get($figma-radius, "xl") !important;
-    padding: 0.75rem 2rem !important;
-    font-weight: 600 !important;
-    transition: all 0.2s ease !important;
-    gap: 0.5rem !important;
-    text-decoration: none !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: $bg;
+    color: $color;
+    border: none;
+    border-radius: map-get($figma-radius, "xl");
+    padding: 0.75rem 2rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    gap: 0.5rem;
+    text-decoration: none;
 
     @if $hover-bg {
         &:hover:not(:disabled) {
-            background-color: $hover-bg !important;
-            box-shadow: var(--figma-shadow-md) !important;
+            background-color: $hover-bg;
+            box-shadow: var(--figma-shadow-md);
         }
     } @else {
         &:hover:not(:disabled) {
-            filter: brightness(0.9) !important;
+            filter: brightness(0.9);
         }
     }
 
     &:disabled {
-        background-color: #e2e8f0 !important;
-        color: #94a3b8 !important;
-        cursor: not-allowed !important;
+        background-color: #e2e8f0;
+        color: #475569;
+        cursor: not-allowed;
         opacity: 0.7;
     }
 }
 
 @mixin figma-card-accent($color, $bg-light) {
-    border-left: 4px solid $color !important;
-    background: $bg-light !important;
+    border-left: 4px solid $color;
+    background: $bg-light;
 }
 
 @mixin figma-icon-box($size, $bg, $color, $radius: 12px) {
-    width: $size !important;
-    height: $size !important;
-    border-radius: $radius !important;
-    background: $bg !important;
-    color: $color !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    mat-icon { font-size: calc($size * 0.5) !important; width: calc($size * 0.5) !important; height: calc($size * 0.5) !important; margin: 0 !important; }
+    width: $size;
+    height: $size;
+    border-radius: $radius;
+    background: $bg;
+    color: $color;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    mat-icon { font-size: calc($size * 0.5); width: calc($size * 0.5); height: calc($size * 0.5); margin: 0; }
 }
 
 @mixin figma-badge($bg, $color) {
-    background: $bg !important;
-    color: $color !important;
-    font-size: 0.75rem !important;
-    font-weight: 800 !important;
-    padding: 4px 12px !important;
-    border-radius: 50px !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    text-transform: uppercase !important;
+    background: $bg;
+    color: $color;
+    font-size: 0.75rem;
+    font-weight: 800;
+    padding: 4px 12px;
+    border-radius: 50px;
+    display: inline-flex;
+    align-items: center;
+    text-transform: uppercase;
 }
 
 @mixin figma-card-hover {
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-    &:hover { transform: translateY(-4px) !important; box-shadow: var(--figma-shadow-lg) !important; }
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    &:hover { transform: translateY(-4px); box-shadow: var(--figma-shadow-lg); }
 }

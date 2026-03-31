@@ -1,7 +1,6 @@
 import { Injectable, signal, computed, inject } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
-import { Observable } from 'rxjs';
-import { WizardState, PolicyData, DatosPolizaExtraidos } from '../models/wizard.model';
+import { WizardState, DatosPolizaExtraidos } from '../models/wizard.model';
 import { AuditService } from './audit.service';
 
 const initialState: WizardState = {
@@ -42,7 +41,7 @@ const initialState: WizardState = {
   providedIn: 'root'
 })
 export class WizardService {
-  private auditService = inject(AuditService);
+  private readonly auditService = inject(AuditService);
 
   // Señal principal de estado (pública para consumo directo, o usar un getter)
   readonly state = signal<WizardState>(initialState);

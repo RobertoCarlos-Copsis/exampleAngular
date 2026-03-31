@@ -15,7 +15,7 @@ type UploadState = 'idle' | 'processing' | 'done';
 export class Step1ImportarComponent {
   @Output() nextStep = new EventEmitter<void>();
 
-  private wizardService = inject(WizardService);
+  private readonly wizardService = inject(WizardService);
   public geminiService = inject(GeminiExtractionService);
 
   get state(): UploadState {
@@ -30,14 +30,14 @@ export class Step1ImportarComponent {
   }
 
   /** Handles real file upload from the hidden file input or dropzone */
-  async onSelect(event: any) {
+  async onSelect(event: { addedFiles: File[] }) {
     const file: File = event.addedFiles[0];
     if (!file) return;
-    
+
     // Check if it's a PDF or Image
     const isPdf = file.type === 'application/pdf';
     const isImage = file.type.startsWith('image/');
-    
+
     if (!isPdf && !isImage) {
       this.geminiService.error.set('Solo se aceptan archivos PDF o Imágenes.');
       return;
@@ -46,7 +46,7 @@ export class Step1ImportarComponent {
     try {
       // Usar el servicio de Gemini para extraer datos
       const datos = await this.geminiService.extractText(file);
-      
+
       // Actualizar el estado global del wizard con lo extraído
       this.wizardService.updateState({
         client: {
@@ -94,12 +94,11 @@ export class Step1ImportarComponent {
   onCapturePhoto() {
     // Simular flujo de captura (en una app real usaría Capacitor/Cordova o MediaDevices)
     // Para la demo, lanzamos un archivo mock o simplemente disparamos el servicio con un delay
-    alert('Función de cámara disponible en versión móvil. Simulando carga...');
-    // Se podría disparar triggerFileInput() como fallback
+    console.warn('Función de cámara disponible en versión móvil.');
     this.triggerFileInput();
   }
 
-  onRemove(event: any) {
+  onRemove() {
     this.geminiService.reset();
   }
 

@@ -26,11 +26,11 @@
                     <h3 id="lbDatosCliente" name="lbDatosCliente">Datos del Cliente</h3>
                 </div>
                 <div class="data-item">
-                    <label id="lbNombreCompleto" name="lbNombreCompleto">Nombre Completo</label>
+                    <span id="lbNombreCompleto" name="lbNombreCompleto">Nombre Completo</span>
                     <p id="txNombreCompleto" name="txNombreCompleto">{{ state().client.name || 'N/A' }}</p>
                 </div>
                 <div class="data-item">
-                    <label id="lbDireccion" name="lbDireccion">Dirección</label>
+                    <span id="lbDireccion" name="lbDireccion">Dirección</span>
                     <p id="txDireccion" name="txDireccion">{{ state().client.address || '—' }}</p>
                 </div>
             </div>
@@ -44,11 +44,11 @@
                     <h3 id="lbDatosPoliza" name="lbDatosPoliza">Datos de la Póliza</h3>
                 </div>
                 <div class="data-item">
-                    <label id="lbNumPoliza" name="lbNumPoliza">Número de Póliza</label>
+                    <span id="lbNumPoliza" name="lbNumPoliza">Número de Póliza</span>
                     <p id="txNumPoliza" name="txNumPoliza">{{ state().policy.data.policyNumber || '—' }}</p>
                 </div>
                 <div class="data-item">
-                    <label id="lbTipoSeguro" name="lbTipoSeguro">Tipo de Seguro</label>
+                    <span id="lbTipoSeguro" name="lbTipoSeguro">Tipo de Seguro</span>
                     <p id="txTipoSeguro" name="txTipoSeguro">{{ state().policy.data.concept || 'N/A' }}</p>
                 </div>
             </div>
@@ -62,11 +62,11 @@
                     <h3 id="lbVigencia" name="lbVigencia">Vigencia</h3>
                 </div>
                 <div class="data-item">
-                    <label id="lbInicio" name="lbInicio">Fecha de Inicio</label>
+                    <span id="lbInicio" name="lbInicio">Fecha de Inicio</span>
                     <p id="txInicio" name="txInicio">{{ state().policy.data.startDate || '—' }}</p>
                 </div>
                 <div class="data-item">
-                    <label id="lbFin" name="lbFin">Fecha de Fin</label>
+                    <span id="lbFin" name="lbFin">Fecha de Fin</span>
                     <p id="txFin" name="txFin">{{ state().policy.data.endDate || '—' }}</p>
                 </div>
             </div>

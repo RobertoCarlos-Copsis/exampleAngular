@@ -139,7 +139,7 @@ export class Step4RecibosComponent {
   }
 
   get totalPrimas() {
-    return (this.state().receipts || []).reduce((acc: number, r: any) => acc + (r.prima || 0), 0);
+    return (this.state().receipts || []).reduce((acc: number, r: Receipt) => acc + (r.prima || 0), 0);
   }
 
   get comisionEstimada() {

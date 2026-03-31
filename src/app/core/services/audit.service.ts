@@ -4,7 +4,7 @@ export interface AuditLog {
   id: string;
   timestamp: string;
   action: string;
-  details: any;
+  details: any; // Using 'any' for flexible log metadata to avoid complex type casting in audit calls
   status: 'success' | 'error' | 'info';
 }
 
@@ -19,9 +19,9 @@ export class AuditService {
     this.loadFromStorage();
   }
 
-  log(action: string, details: any, status: 'success' | 'error' | 'info' = 'info'): void {
+  log(action: string, details: any = null, status: 'success' | 'error' | 'info' = 'info'): void {
     const newLog: AuditLog = {
-      id: crypto.randomUUID ? crypto.randomUUID() : new Date().getTime().toString(),
+      id: crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(),
       timestamp: new Date().toISOString(),
       action,
       details,
@@ -30,13 +30,6 @@ export class AuditService {
 
     this.logsSignal.update(current => [newLog, ...current]);
     this.saveToStorage();
-    
-    // Console output for development
-    if (status === 'error') {
-      console.error(`[Audit] ${action}:`, details);
-    } else {
-      console.log(`[Audit] ${action}:`, details);
-    }
   }
 
   clearLogs(): void {

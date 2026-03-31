@@ -11,8 +11,15 @@
 
     <!-- Main Upload Area -->
     <div class="figma-card mb-32px overflow-hidden">
-        <div class="dropzone-figma" [class.processing]="state === 'processing'" [class.success]="state === 'done'"
-            (click)="state === 'idle' ? triggerFileInput() : null">
+        <div class="dropzone-figma" 
+             [class.processing]="state === 'processing'" 
+             [class.success]="state === 'done'" 
+             (click)="state === 'idle' ? triggerFileInput() : null" 
+             (keydown.enter)="state === 'idle' ? triggerFileInput() : null"
+             (keydown.space)="state === 'idle' ? triggerFileInput() : null"
+             tabindex="0"
+             role="button"
+             aria-label="Zona de carga de documentos">
 
             <ng-container *ngIf="state === 'idle'">
                 <div class="orb-container mb-20px">
@@ -23,15 +30,17 @@
                 <p class="fs-16x text-figma-gray-400 mb-4">o selecciona una opción debajo</p>
 
                 <div class="d-flex justify-content-center vertical-center gap-3">
-                    <button class="btn-primary-blue d-flex align-items-center gap-2"
-                        (click)="$event.stopPropagation(); triggerFileInput()">
-                        <mat-icon>cloud_upload</mat-icon>
-                        <span>Subir PDF o Imagen</span>
+                    <button id="btnSubirArchivo" name="btnSubirArchivo" class="dz-action-item" 
+                            (click)="$event.stopPropagation(); triggerFileInput()"
+                            type="button">
+                        <div class="dz-icon-box blue"><mat-icon>upload_file</mat-icon></div>
+                        <span>Subir Archivo</span>
                     </button>
-                    <button class="btn-orange-figma d-flex align-items-center gap-2"
-                        (click)="$event.stopPropagation(); onCapturePhoto()">
-                        <mat-icon>photo_camera</mat-icon>
-                        <span>Tomar Foto</span>
+                    <button id="btnCapturarFoto" name="btnCapturarFoto" class="dz-action-item" 
+                            (click)="$event.stopPropagation(); onCapturePhoto()"
+                            type="button">
+                        <div class="dz-icon-box purple"><mat-icon>photo_camera</mat-icon></div>
+                        <span>Capturar Foto</span>
                     </button>
                 </div>
                 <p class="fs-12x text-figma-gray-400 mt-32px text-center">Formatos aceptados: PDF, JPG, PNG • Máximo

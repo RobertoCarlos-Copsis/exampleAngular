@@ -12,7 +12,7 @@ export class GeminiInterceptor implements HttpInterceptor {
     if (request.url.includes(environment.gemini.baseUrl)) {
       request = request.clone({
         setHeaders: {
-          Authorization: `Bearer ${environment.gemini.token}`
+          Authorization: `Bearer ${environment.gemini.apiKey}`
         }
       });
     }

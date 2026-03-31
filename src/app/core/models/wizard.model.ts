@@ -98,7 +98,7 @@ export interface WizardState {
     siniestros: NotificationConfig;
     comisiones: NotificationConfig;
     generales: NotificationConfig;
-  [key: string]: NotificationConfig | any;
+  [key: string]: NotificationConfig;
   };
   logs: string[];
   statistics?: any;

@@ -48,8 +48,9 @@ export class Step3CompletarComponent implements OnInit {
     this.completarForm.patchValue({ telefono: digits }, { emitEvent: false });
   }
 
-  updateComision(event: any) {
-    const val = Number(event.target.value);
+  updateComision(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const val = Number(input.value);
     if (val >= 0 && val <= 100) {
       this.comisionPorcentaje = val;
       this.wizardService.updateState({ commissionPercentage: val });

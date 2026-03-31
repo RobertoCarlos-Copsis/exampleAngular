@@ -1,4 +1,4 @@
-import { Injectable, computed } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { WizardState, Receipt } from '../models/wizard.model';
 
 export const ESTADISTICAS_CONSTANTES = {
@@ -18,7 +18,7 @@ export interface KpiCard {
 }
 
 export interface ChartData {
-  series: number[] | any[];
+  series: number[] | { name: string; data: number[] }[];
   labels?: string[];
   categories?: string[];
 }
@@ -39,9 +39,9 @@ export class EstadisticasService {
     return receipts.length;
   }
 
-  calcularNumAlertas(notifications: any): number {
+  calcularNumAlertas(notifications: WizardState['notifications']): number {
     if (!notifications) return 0;
-    return Object.values(notifications).filter((n: any) => n.active).length;
+    return Object.values(notifications).filter((n: any) => typeof n === 'object' && n?.active).length;
   }
 
   generarKPIs(state: WizardState): KpiCard[] {

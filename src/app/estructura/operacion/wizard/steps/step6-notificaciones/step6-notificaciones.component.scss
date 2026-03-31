@@ -26,11 +26,11 @@
         p { font-size: 0.875rem; color: #4b5563; margin: 0; line-height: 1.4; }
     }
 
-    &.cobranza { background: #ecfdf5; border-color: #d1fae5; .notif-icon { color: #10b981 !important; } }
-    &.renovacion { background: #fff7ed; border-color: #ffedd5; .notif-icon { color: #f97316 !important; } }
-    &.siniestros { background: #f9fafb; border-color: #f3f4f6; .notif-icon { color: #6b7280 !important; } }
-    &.comisiones { background: #fffbeb; border-color: #fef3c7; .notif-icon { color: #f59e0b !important; } }
-    &.generales { background: #eff6ff; border-color: #dbeafe; .notif-icon { color: #3b82f6 !important; } }
+    &.cobranza { background: #ecfdf5; border-color: #d1fae5; .notif-icon { color: #10b981; } }
+    &.renovacion { background: #fff7ed; border-color: #ffedd5; .notif-icon { color: #f97316; } }
+    &.siniestros { background: #f9fafb; border-color: #f3f4f6; .notif-icon { color: #6b7280; } }
+    &.comisiones { background: #fffbeb; border-color: #fef3c7; .notif-icon { color: #f59e0b; } }
+    &.generales { background: #eff6ff; border-color: #dbeafe; .notif-icon { color: #3b82f6; } }
 }
 
 .info-box-footer {

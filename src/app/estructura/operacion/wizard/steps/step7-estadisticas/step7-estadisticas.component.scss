@@ -2,7 +2,7 @@
 
 // Step 7 Dashboard Styles
 .dashboard-container {
-    max-width: 1200px !important;
+    max-width: 1200px;
     margin: 0 auto;
 }
 
@@ -25,22 +25,22 @@
     .kpi-icon {
         @include figma-icon-box(48px, #f1f5f9, #64748b, 12px);
         
-        &.blue { background: #eff6ff !important; color: #2563eb !important; }
-        &.purple { background: #f5f3ff !important; color: #7c3aed !important; }
-        &.yellow { background: #fffbeb !important; color: #d97706 !important; }
-        &.green { background: #f0fdf4 !important; color: #16a34a !important; }
+        &.blue { background: #eff6ff; color: #1d4ed8; }
+        &.purple { background: #f5f3ff; color: #7c3aed; }
+        &.yellow { background: #fffbeb; color: #b45309; }
+        &.green { background: #f0fdf4; color: #15803d; }
     }
 
     .kpi-info {
         display: flex;
         flex-direction: column;
         .v { font-size: 1.5rem; font-weight: 800; color: #1e293b; line-height: 1; margin-bottom: 4px; }
-        .l { font-size: 0.75rem; color: #64748b; font-weight: 600; text-transform: uppercase; }
+        .l { font-size: 0.75rem; color: #475569; font-weight: 600; text-transform: uppercase; }
     }
 }
 
 .badge-premium {
-    @include figma-badge(#eff6ff, #2563eb);
+    @include figma-badge(#eff6ff, #1d4ed8);
     border: 1px solid #dbeafe;
     letter-spacing: 0.05em;
 }
@@ -48,7 +48,7 @@
 .card-p-header {
     margin-bottom: 2rem;
     h3 { font-size: 1.125rem; font-weight: 800; color: #1e293b; margin: 0; }
-    p { font-size: 0.875rem; color: #64748b; margin: 0; }
+    p { font-size: 0.875rem; color: #475569; margin: 0; }
 }
 
 .checklist-list {

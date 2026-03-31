@@ -13,10 +13,10 @@
             <div class="info-card p-32px mb-32px" [formGroup]="completarForm">
                 <!-- Email -->
                 <div class="mb-4">
-                    <label id="lbEmail" name="lbEmail" class="form-label font-600 text-figma-gray-600 mb-2 d-flex align-items-center gap-2">
+                    <span id="lbEmail" name="lbEmail" class="form-label font-600 text-figma-gray-600 mb-2 d-flex align-items-center gap-2">
                         <mat-icon class="fs-18x text-figma-blue-600">mail</mat-icon>
                         Correo Electrónico del Cliente <span class="text-danger">*</span>
-                    </label>
+                    </span>
                     <input id="txEmail" name="txEmail" type="email" formControlName="email" class="form-control figma-input" 
                            [class.is-invalid]="completarForm.get('email')?.invalid && completarForm.get('email')?.touched"
                            placeholder="ejemplo@correo.com"
@@ -30,10 +30,10 @@
 
                 <!-- Phone -->
                 <div class="mb-4">
-                    <label id="lbTelefono" name="lbTelefono" class="form-label font-600 text-figma-gray-600 mb-2 d-flex align-items-center gap-2">
+                    <span id="lbTelefono" name="lbTelefono" class="form-label font-600 text-figma-gray-600 mb-2 d-flex align-items-center gap-2">
                         <mat-icon class="fs-18x text-figma-blue-600">smartphone</mat-icon>
                         Número de Celular <span class="text-danger">*</span>
-                    </label>
+                    </span>
                     <input id="txTelefono" name="txTelefono" type="tel" formControlName="telefono" class="form-control figma-input" 
                            [class.is-invalid]="completarForm.get('telefono')?.invalid && completarForm.get('telefono')?.touched"
                            placeholder="Ej: 5512345678" (input)="handlePhoneInput($event)" maxlength="10"
@@ -47,10 +47,10 @@
 
                 <!-- Commission Slider -->
                 <div class="mb-4">
-                    <label id="lbPorcentajeComision" name="lbPorcentajeComision" class="form-label font-600 text-figma-gray-600 mb-2 d-flex align-items-center gap-2">
+                    <span id="lbPorcentajeComision" name="lbPorcentajeComision" class="form-label font-600 text-figma-gray-600 mb-2 d-flex align-items-center gap-2">
                         <mat-icon class="fs-18x text-figma-blue-600">percentage</mat-icon>
                         Porcentaje de Comisión
-                    </label>
+                    </span>
                     <div class="d-flex align-items-center gap-3 mt-2">
                         <input id="txComision" name="txComision" type="range" class="form-range flex-grow-1" min="0" max="100" [value]="comisionPorcentaje" (input)="updateComision($event)">
                         <div id="txComisionValue" name="txComisionValue" style="background: #fef9c3; border: 1px solid #fde047; padding: 0.5rem 1rem; border-radius: 8px; font-weight: 700; color: #854d0e;">
