@@ -45,6 +45,17 @@
                     <p id="spMensajeTelefono" name="spMensajeTelefono" class="fs-12x text-figma-gray-400 mt-2">Necesario para enviar SMS y mensajes de WhatsApp</p>
                 </div>
 
+                <!-- Address (Dirección) -->
+                <div class="mb-4">
+                    <span id="lbDireccion" name="lbDireccion" class="form-label font-600 text-figma-gray-600 mb-2 d-flex align-items-center gap-2">
+                        <mat-icon class="fs-18x text-figma-blue-600">location_on</mat-icon>
+                        Dirección del Asegurado
+                    </span>
+                    <textarea id="txDireccion" name="txDireccion" formControlName="direccion" class="form-control figma-input" 
+                           placeholder="Ej: Av. Insurgentes Sur 1234, Col. Del Valle, CDMX" rows="2"></textarea>
+                    <p id="spMensajeDireccion" name="spMensajeDireccion" class="fs-12x text-figma-gray-400 mt-2">Dirección para el envío físico de documentos si es necesario</p>
+                </div>
+
                 <!-- Commission Slider -->
                 <div class="mb-4">
                     <span id="lbPorcentajeComision" name="lbPorcentajeComision" class="form-label font-600 text-figma-gray-600 mb-2 d-flex align-items-center gap-2">
@@ -61,16 +72,25 @@
                 </div>
 
                 <!-- Commission Summary Box -->
-                <div class="commission-summary mt-4">
-                    <h3 id="lbComisionesCalculadas" name="lbComisionesCalculadas" class="fs-16x font-700 mb-3">Comisiones calculadas:</h3>
-                    <div class="summary-rows">
-                        <div *ngFor="let r of state().receipts; let i = index; trackBy: trackByReceiptId" class="summary-row">
-                            <span [attr.id]="'lbRecibo' + i" [attr.name]="'lbRecibo' + i">Recibo {{ i + 1 }}/{{ state().receipts.length }}:</span>
-                            <strong [attr.id]="'txComisionRecibo' + i" [attr.name]="'txComisionRecibo' + i">{{ (r.prima * (comisionPorcentaje / 100)) | currency:'MXN' }}</strong>
+                <div class="commission-summary-premium mt-4">
+                    <div class="d-flex align-items-center gap-2 mb-3">
+                        <mat-icon class="text-figma-blue-600">analytics</mat-icon>
+                        <h3 id="lbComisionesCalculadas" name="lbComisionesCalculadas" class="fs-18x font-800 m-0">Resumen de Comisiones</h3>
+                    </div>
+                    <div class="summary-details p-3">
+                        <div *ngFor="let r of state().receipts; let i = index; trackBy: trackByReceiptId" class="summary-row-premium">
+                            <span [attr.id]="'lbRecibo' + i" [attr.name]="'lbRecibo' + i">Recibo {{ i + 1 }}</span>
+                            <div class="d-flex align-items-center gap-2">
+                                <span class="text-muted fs-12x">{{ r.prima | currency:'MXN' }} × {{ comisionPorcentaje }}%</span>
+                                <strong [attr.id]="'txComisionRecibo' + i" [attr.name]="'txComisionRecibo' + i">{{ (r.prima * (comisionPorcentaje / 100)) | currency:'MXN' }}</strong>
+                            </div>
                         </div>
-                        <div class="summary-row total">
-                            <span id="lbTotalComision" name="lbTotalComision">Total Comisión:</span>
-                            <strong id="txTotalComision" name="txTotalComision">{{ comisionCalculada | currency:'MXN' }}</strong>
+                        <div class="summary-divider my-2"></div>
+                        <div class="summary-row-premium total-premium">
+                            <span id="lbTotalComision" name="lbTotalComision">Total a Recibir:</span>
+                            <div class="total-amount-box">
+                                <strong id="txTotalComision" name="txTotalComision">{{ comisionCalculada | currency:'MXN' }}</strong>
+                            </div>
                         </div>
                     </div>
                 </div>

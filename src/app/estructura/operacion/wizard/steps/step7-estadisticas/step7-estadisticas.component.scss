@@ -4,26 +4,41 @@
 .dashboard-container {
     max-width: 1200px;
     margin: 0 auto;
+    background: var(--bg-app-tinted);
+    padding: 2rem;
+    border-radius: 24px;
 }
 
 .kpi-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 1.5rem;
+    gap: 1.25rem;
+    margin-bottom: 2rem;
+}
+
+.step-title {
+    font-size: 2.25rem !important;
+    font-weight: 800;
+    color: var(--text-main);
+}
+
+.summary-text {
+    font-size: 1.125rem;
+    color: var(--text-muted);
 }
 
 .kpi-card {
-    background: white;
+    background: var(--bg-card);
     border-radius: 16px;
     padding: 1.5rem;
     display: flex;
     align-items: center;
     gap: 1.25rem;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-    border: 1px solid #f1f5f9;
+    box-shadow: var(--figma-shadow-sm);
+    border: 1px solid var(--border-color);
 
     .kpi-icon {
-        @include figma-icon-box(48px, #f1f5f9, #64748b, 12px);
+        @include figma-icon-box(48px, var(--bg-app), var(--text-muted), 12px);
         
         &.blue { background: #eff6ff; color: #1d4ed8; }
         &.purple { background: #f5f3ff; color: #7c3aed; }
@@ -33,9 +48,30 @@
 
     .kpi-info {
         display: flex;
-        flex-direction: column;
-        .v { font-size: 1.5rem; font-weight: 800; color: #1e293b; line-height: 1; margin-bottom: 4px; }
-        .l { font-size: 0.75rem; color: #475569; font-weight: 600; text-transform: uppercase; }
+        flex-direction: row-reverse;
+        align-items: center;
+        gap: 0.5rem;
+        flex-grow: 1;
+        justify-content: space-between;
+        min-width: 0;
+
+        .v { 
+            font-size: 1.25rem; 
+            font-weight: 800; 
+            color: var(--text-main); 
+            margin: 0;
+            white-space: nowrap;
+        }
+        .l { 
+            font-size: 0.8125rem; 
+            color: var(--text-muted); 
+            font-weight: 700; 
+            text-transform: none;
+            margin: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
     }
 }
 
@@ -47,8 +83,8 @@
 
 .card-p-header {
     margin-bottom: 2rem;
-    h3 { font-size: 1.125rem; font-weight: 800; color: #1e293b; margin: 0; }
-    p { font-size: 0.875rem; color: #475569; margin: 0; }
+    h3 { font-size: 1.125rem; font-weight: 800; color: var(--text-title); margin: 0; }
+    p { font-size: 0.875rem; color: var(--text-muted); margin: 0; }
 }
 
 .checklist-list {
@@ -83,7 +119,51 @@
     font-weight: 700;
 }
 
+.success-check-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: bounceIn 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.checkmark-circle {
+    width: 64px;
+    height: 64px;
+    background: #111827;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 10px 25px -5px rgba(17, 24, 39, 0.3);
+    
+    mat-icon {
+        color: white;
+        font-size: 32px;
+        width: 32px;
+        height: 32px;
+    }
+}
+
+@keyframes bounceIn {
+    0% { transform: scale(0.3); opacity: 0; }
+    50% { transform: scale(1.05); opacity: 0.8; }
+    70% { transform: scale(0.9); opacity: 0.9; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
 @media (max-width: 1024px) {
     .kpi-grid { grid-template-columns: repeat(2, 1fr); }
     .dashboard-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 640px) {
+    .kpi-grid { grid-template-columns: 1fr; }
+}
+
+.btn-figma-secondary {
+    background: var(--bg-item);
+    color: var(--text-main);
+    border: 1px solid var(--border-color);
+    transition: all 0.2s ease;
+    &:hover { background: var(--bg-app); transform: translateY(-1px); }
 }

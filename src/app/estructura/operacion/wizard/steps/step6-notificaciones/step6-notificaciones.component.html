@@ -14,7 +14,13 @@
                     <div class="notif-icon"><mat-icon>payments</mat-icon></div>
                     <div class="notif-details flex-grow-1">
                         <h4 id="txCobranzaTitulo" name="txCobranzaTitulo" class="mb-1">Cobranza (CxC)</h4>
-                        <p id="spCobranzaDesc" name="spCobranzaDesc" class="mb-0">Recordatorios automáticos de pago 15, 7 y 3 días antes del vencimiento</p>
+                        <p id="spCobranzaDesc" name="spCobranzaDesc" class="mb-2 fs-12x text-muted">Recordatorios automáticos de pago 15, 7 y 3 días antes del vencimiento</p>
+                        <div class="channels-supported d-flex gap-2">
+                            <mat-icon class="fs-14x text-blue-500">mail</mat-icon>
+                            <mat-icon class="fs-14x text-pink-500">smartphone</mat-icon>
+                            <mat-icon class="fs-14x text-green-500">chat</mat-icon>
+                            <span class="fs-10x text-uppercase font-700 text-muted ls-05">Multicanal</span>
+                        </div>
                     </div>
                     <div class="notif-toggle">
                         <mat-slide-toggle id="btnToggleCobranza" name="btnToggleCobranza" [checked]="state().notifications.cobranza.active" (change)="toggleNotification('cobranza', $event)"></mat-slide-toggle>
@@ -26,7 +32,12 @@
                     <div class="notif-icon"><mat-icon>rotate_right</mat-icon></div>
                     <div class="notif-details flex-grow-1">
                         <h4 id="txRenovacionTitulo" name="txRenovacionTitulo" class="mb-1">Renovaciones</h4>
-                        <p id="spRenovacionDesc" name="spRenovacionDesc" class="mb-0">Alertas de renovación 60, 30 y 15 días antes del vencimiento</p>
+                        <p id="spRenovacionDesc" name="spRenovacionDesc" class="mb-2 fs-12x text-muted">Alertas de renovación 60, 30 y 15 días antes del vencimiento</p>
+                        <div class="channels-supported d-flex gap-2">
+                            <mat-icon class="fs-14x text-blue-500">mail</mat-icon>
+                            <mat-icon class="fs-14x text-green-500">chat</mat-icon>
+                            <span class="fs-10x text-uppercase font-700 text-muted ls-05">Email & WhatsApp</span>
+                        </div>
                     </div>
                     <div class="notif-toggle">
                         <mat-slide-toggle id="btnToggleRenovacion" name="btnToggleRenovacion" [checked]="state().notifications.renovacion.active" (change)="toggleNotification('renovacion', $event)"></mat-slide-toggle>
@@ -38,7 +49,11 @@
                     <div class="notif-icon"><mat-icon>warning</mat-icon></div>
                     <div class="notif-details flex-grow-1">
                         <h4 id="txSiniestrosTitulo" name="txSiniestrosTitulo" class="mb-1">Siniestros</h4>
-                        <p id="spSiniestrosDesc" name="spSiniestrosDesc" class="mb-0">Actualizaciones sobre siniestros registrados y su seguimiento</p>
+                        <p id="spSiniestrosDesc" name="spSiniestrosDesc" class="mb-2 fs-12x text-muted">Actualizaciones sobre siniestros registrados y su seguimiento</p>
+                        <div class="channels-supported d-flex gap-2">
+                            <mat-icon class="fs-14x text-blue-500">mail</mat-icon>
+                            <span class="fs-10x text-uppercase font-700 text-muted ls-05">Email Only</span>
+                        </div>
                     </div>
                     <div class="notif-toggle">
                         <mat-slide-toggle id="btnToggleSiniestros" name="btnToggleSiniestros" [checked]="state().notifications.siniestros.active" (change)="toggleNotification('siniestros', $event)"></mat-slide-toggle>

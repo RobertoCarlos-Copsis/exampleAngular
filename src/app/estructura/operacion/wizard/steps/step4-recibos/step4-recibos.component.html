@@ -45,8 +45,30 @@
         <!-- Actions Panel -->
         <div class="col-md-8">
             <div class="actions-panel h-100 p-4">
-                <div class="panel-header mb-4">
+                <div class="panel-header d-flex align-items-center justify-content-between mb-4">
                     <h3 id="lbAccionesRecibo" name="lbAccionesRecibo" class="panel-title fs-20x font-800 text-figma-gray-900">Acciones para Recibo {{ activeIndex + 1 }}</h3>
+                    <div id="badgeEstadoActual" name="badgeEstadoActual" class="r-status-badge" [class.paid]="reciboActual.status === 'Pagado'">
+                        {{ reciboActual.status }}
+                    </div>
+                </div>
+
+                <!-- Receipt Detail Summary Card -->
+                <div class="receipt-detail-card mb-4 p-4">
+                    <div class="row align-items-center">
+                        <div class="col-8">
+                            <span id="lbMontoRecibo" name="lbMontoRecibo" class="d-block fs-14x text-figma-gray-500 mb-1">Monto del Recibo</span>
+                            <h2 id="txMontoRecibo" name="txMontoRecibo" class="fs-32x font-900 text-figma-blue-800 m-0">{{ reciboActual.prima | currency:'MXN' }}</h2>
+                            <div class="d-flex align-items-center gap-2 mt-2">
+                                <mat-icon class="fs-16x text-figma-gray-400">event</mat-icon>
+                                <span id="txVencimientoRecibo" name="txVencimientoRecibo" class="fs-14x text-figma-gray-600">Vence: <strong>{{ reciboActual.vencimiento }}</strong></span>
+                            </div>
+                        </div>
+                        <div class="col-4 text-end">
+                            <div class="receipt-icon-bg">
+                                <mat-icon>receipt_long</mat-icon>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="row g-3 mb-4">

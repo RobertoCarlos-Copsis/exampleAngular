@@ -10,27 +10,43 @@
 .notif-item {
     background: white;
     border: 1px solid #e2e8f0;
-    transition: all 0.2s ease;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     text-align: left;
     height: auto;
     width: 100%;
+    
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
 
     .notif-icon {
-        @include figma-icon-box(48px, white, #64748b, 50%);
+        @include figma-icon-box(48px, white, #64748b, 12px);
         box-shadow: 0 2px 4px rgba(0,0,0,0.05);
     }
 
     .notif-details {
         flex: 1;
-        h4 { font-size: 1rem; font-weight: 700; color: #111827; margin-bottom: 0.25rem; }
-        p { font-size: 0.875rem; color: #4b5563; margin: 0; line-height: 1.4; }
+        h4 { font-size: 1rem; font-weight: 800; color: #1e293b; margin-bottom: 0.25rem; }
+        
+        .channels-supported {
+            mat-icon {
+                font-size: 14px;
+                width: 14px;
+                height: 14px;
+            }
+            .ls-05 { letter-spacing: 0.05em; line-height: 14px; }
+            .text-blue-500 { color: #1d4ed8; }
+            .text-pink-500 { color: #be185d; }
+            .text-green-500 { color: #15803d; }
+        }
     }
 
-    &.cobranza { background: #ecfdf5; border-color: #d1fae5; .notif-icon { color: #10b981; } }
-    &.renovacion { background: #fff7ed; border-color: #ffedd5; .notif-icon { color: #f97316; } }
-    &.siniestros { background: #f9fafb; border-color: #f3f4f6; .notif-icon { color: #6b7280; } }
-    &.comisiones { background: #fffbeb; border-color: #fef3c7; .notif-icon { color: #f59e0b; } }
-    &.generales { background: #eff6ff; border-color: #dbeafe; .notif-icon { color: #3b82f6; } }
+    &.cobranza { background: white; border-left: 4px solid #047857; .notif-icon { color: #047857; background: #ecfdf5; } }
+    &.renovacion { background: white; border-left: 4px solid #c2410c; .notif-icon { color: #c2410c; background: #fff7ed; } }
+    &.siniestros { background: white; border-left: 4px solid #374151; .notif-icon { color: #374151; background: #f9fafb; } }
+    &.comisiones { background: white; border-left: 4px solid #b45309; .notif-icon { color: #b45309; background: #fffbeb; } }
+    &.generales { background: white; border-left: 4px solid #1d4ed8; .notif-icon { color: #1d4ed8; background: #eff6ff; } }
 }
 
 .info-box-footer {

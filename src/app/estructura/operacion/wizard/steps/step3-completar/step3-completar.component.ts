@@ -17,7 +17,8 @@ export class Step3CompletarComponent implements OnInit {
   
   completarForm: FormGroup = this.fb.group({
     email: ['', [Validators.required, Validators.pattern(String.raw`^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$`)]],
-    telefono: ['', [Validators.required, Validators.pattern(String.raw`^[0-9]{10}$`)]]
+    telefono: ['', [Validators.required, Validators.pattern(String.raw`^[0-9]{10}$`)]],
+    direccion: ['']
   });
 
   state = this.wizardService.state;
@@ -28,7 +29,8 @@ export class Step3CompletarComponent implements OnInit {
     const phoneValue = s.client.phone || '';
     this.completarForm.patchValue({
       email: s.client.email || '',
-      telefono: cleanDigits(phoneValue).substring(0, 10)
+      telefono: cleanDigits(phoneValue).substring(0, 10),
+      direccion: s.client.address || ''
     });
     this.comisionPorcentaje = s.commissionPercentage || 0;
   }
@@ -63,7 +65,8 @@ export class Step3CompletarComponent implements OnInit {
         client: {
           ...this.state().client,
           email: this.completarForm.value.email,
-          phone: this.completarForm.value.telefono
+          phone: this.completarForm.value.telefono,
+          address: this.completarForm.value.direccion
         },
         commissionPercentage: this.comisionPorcentaje
       });

@@ -44,6 +44,13 @@ export class EstadisticasService {
     return Object.values(notifications).filter((n: any) => typeof n === 'object' && n?.active).length;
   }
 
+  // Nuevo: Cálculo de cobranza real basado en recibos pagados
+  calcularPorcentajeCobranza(receipts: Receipt[]): number {
+    if (!receipts || receipts.length === 0) return 0;
+    const pagados = receipts.filter(r => r.status === 'Pagado').length;
+    return Math.round((pagados / receipts.length) * 100);
+  }
+
   generarKPIs(state: WizardState): KpiCard[] {
     const totalPrima = this.calcularTotalPrima(state.receipts);
     const totalComision = this.calcularTotalComision(totalPrima, state.commissionPercentage);

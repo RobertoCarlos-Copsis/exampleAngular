@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { MatStepper } from '@angular/material/stepper';
 import { StepperSelectionEvent } from '@angular/cdk/stepper';
+import { ThemeService } from '../../../core/services/theme.service';
 
 @Component({
   selector: 'app-wizard',
@@ -8,6 +9,8 @@ import { StepperSelectionEvent } from '@angular/cdk/stepper';
   styleUrls: ['./wizard.component.scss']
 })
 export class WizardComponent {
+  
+  constructor(public themeService: ThemeService) {}
 
   /** Rastrea qué pasos han sido completados para mostrar el check verde */
   completedSteps: boolean[] = [false, false, false, false, false, false, false];

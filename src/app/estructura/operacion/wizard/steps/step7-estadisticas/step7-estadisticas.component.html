@@ -1,9 +1,16 @@
 <div class="dashboard-container animation-fade-in py-4">
     
+    <!-- Success Animation -->
+    <div class="success-check-wrapper mb-4">
+        <div class="checkmark-circle">
+            <mat-icon id="icExitoFinal" name="icExitoFinal">check</mat-icon>
+        </div>
+    </div>
+
     <!-- Header Section -->
     <div class="text-center mb-5">
-        <h1 id="lbTituloFinal" name="lbTituloFinal" class="step-title" style="font-size: 2.25rem !important; font-weight: 800; color: #111827;">¡Operación Exitosa!</h1>
-        <p id="spResumenFinal" name="spResumenFinal" class="summary-text" style="font-size: 1.125rem;">La póliza ha sido procesada y el sistema de seguimiento está en marcha.</p>
+        <h1 id="lbTituloFinal" name="lbTituloFinal" class="step-title">¡Operación Exitosa!</h1>
+        <p id="spResumenFinal" name="spResumenFinal" class="summary-text">La póliza ha sido procesada y el sistema de seguimiento está en marcha.</p>
     </div>
 
     <!-- KPI Grid -->
@@ -11,29 +18,29 @@
         <div class="kpi-card">
             <div class="kpi-icon blue"><mat-icon>verified</mat-icon></div>
             <div class="kpi-info">
-                <span id="txPolizaEmitida" name="txPolizaEmitida" class="v">1</span>
-                <span id="lbPolizaEmitidaLabel" name="lbPolizaEmitidaLabel" class="l">Póliza Emitida</span>
+                <span id="txPolizaEmitida" name="txPolizaEmitida" class="v">{{ state().policy.data.policyNumber ? 'Vigente' : 'Pendiente' }}</span>
+                <span id="lbPolizaEmitidaLabel" name="lbPolizaEmitidaLabel" class="l">Estatus Póliza</span>
             </div>
         </div>
         <div class="kpi-card">
             <div class="kpi-icon purple"><mat-icon>contact_mail</mat-icon></div>
             <div class="kpi-info">
-                <span id="txClienteNuevo" name="txClienteNuevo" class="v">1</span>
-                <span id="lbClienteNuevoLabel" name="lbClienteNuevoLabel" class="l">Cliente Nuevo</span>
+                <span id="txClienteNuevo" name="txClienteNuevo" class="v" style="font-size: 1.25rem;">{{ totalPrima | currency:'MXN' }}</span>
+                <span id="lbClienteNuevoLabel" name="lbClienteNuevoLabel" class="l">Prima Total</span>
             </div>
         </div>
         <div class="kpi-card">
             <div class="kpi-icon yellow"><mat-icon>receipt_long</mat-icon></div>
             <div class="kpi-info">
-                <span id="txNumRecibos" name="txNumRecibos" class="v">{{ numRecibos }}</span>
-                <span id="lbRecibosLabel" name="lbRecibosLabel" class="l">Recibos</span>
+                <span id="txNumRecibos" name="txNumRecibos" class="v">{{ totalComision | currency:'MXN' }}</span>
+                <span id="lbRecibosLabel" name="lbRecibosLabel" class="l">Comisiones</span>
             </div>
         </div>
         <div class="kpi-card">
             <div class="kpi-icon green"><mat-icon>payments</mat-icon></div>
             <div class="kpi-info">
-                <span id="txTotalComision" name="txTotalComision" class="v" style="font-size: 1.25rem;">{{ totalComision | currency:'MXN' }}</span>
-                <span id="lbComisionesLabel" name="lbComisionesLabel" class="l">Comisiones</span>
+                <span id="txTotalComision" name="txTotalComision" class="v">{{ porcentajeCobranza }}%</span>
+                <span id="lbComisionesLabel" name="lbComisionesLabel" class="l">Cobranza</span>
             </div>
         </div>
     </div>
@@ -53,10 +60,16 @@
                             </div>
                         </div>
                         <div id="bar-chart" class="mt-2" style="min-height: 300px;">
-                            <apx-chart [series]="barChart().series!" [chart]="barChart().chart!"
-                                [xaxis]="barChart().xaxis!" [plotOptions]="barChart().plotOptions!"
-                                [colors]="barChart().colors!" [dataLabels]="barChart().dataLabels!">
-                            </apx-chart>
+                            @defer (on viewport) {
+                                <apx-chart [series]="barChart().series!" [chart]="barChart().chart!"
+                                    [xaxis]="barChart().xaxis!" [plotOptions]="barChart().plotOptions!"
+                                    [colors]="barChart().colors!" [dataLabels]="barChart().dataLabels!">
+                                </apx-chart>
+                            } @placeholder {
+                                <div class="d-flex align-items-center justify-content-center" style="height: 300px; background: #f8fafc; border-radius: 8px;">
+                                    <span class="text-muted fs-14x">Cargando gráfica...</span>
+                                </div>
+                            }
                         </div>
                     </div>
                 </div>
@@ -71,11 +84,17 @@
                             </div>
                         </div>
                         <div id="pie-chart" class="mt-2" style="min-height: 300px; display: flex; align-items: center; justify-content: center;">
-                            <apx-chart [series]="pieChart().series!" [chart]="pieChart().chart!"
-                                [labels]="pieChart().labels!" [colors]="pieChart().colors!" 
-                                [legend]="pieChart().legend!" [responsive]="pieChart().responsive!"
-                                [dataLabels]="pieChart().dataLabels!">
-                            </apx-chart>
+                            @defer (on viewport) {
+                                <apx-chart [series]="pieChart().series!" [chart]="pieChart().chart!"
+                                    [labels]="pieChart().labels!" [colors]="pieChart().colors!" 
+                                    [legend]="pieChart().legend!" [responsive]="pieChart().responsive!"
+                                    [dataLabels]="pieChart().dataLabels!">
+                                </apx-chart>
+                            } @placeholder {
+                                <div class="d-flex align-items-center justify-content-center w-100" style="height: 300px; background: #f8fafc; border-radius: 8px;">
+                                    <span class="text-muted fs-14x">Cargando distribución...</span>
+                                </div>
+                            }
                         </div>
                     </div>
                 </div>
@@ -113,9 +132,16 @@
                     </div>
                 </div>
                 <div class="mt-4 pt-2">
-                    <button id="btnDescargarReporte" name="btnDescargarReporte" class="btn-purple-figma w-100" style="padding: 12px !important;">
-                        <mat-icon>download</mat-icon>
-                        <span id="spDescargarReporte" name="spDescargarReporte">Descargar Reporte</span>
+                    <button id="btnDescargarReporte" name="btnDescargarReporte" 
+                            class="btn-purple-figma w-100 d-flex align-items-center justify-content-center gap-2" 
+                            style="padding: 12px !important;"
+                            [disabled]="downloading()"
+                            (click)="descargarReporte()">
+                        <mat-icon *ngIf="!downloading()">download</mat-icon>
+                        <output *ngIf="downloading()" class="spinner-border spinner-border-sm"></output>
+                        <span id="spDescargarReporte" name="spDescargarReporte">
+                            {{ downloading() ? 'Generando...' : 'Descargar Reporte' }}
+                        </span>
                     </button>
                 </div>
             </div>
@@ -138,7 +164,7 @@
 
                 <div class="table-responsive">
                     <table class="table table-hover align-middle">
-                        <thead class="table-light">
+                        <thead class="thead-premium">
                             <tr>
                                 <th class="fs-12x font-700 text-figma-gray-400 px-4">FECHA / HORA</th>
                                 <th class="fs-12x font-700 text-figma-gray-400">DOCUMENTO</th>
@@ -164,7 +190,7 @@
                                     </span>
                                 </td>
                                 <td class="text-end px-4">
-                                    <button class="btn btn-sm btn-outline-figma-blue" style="border-radius: 8px;">
+                                    <button class="btn btn-sm btn-outline-figma-blue" (click)="verData(item)" style="border-radius: 8px;">
                                         Ver Data
                                     </button>
                                 </td>
@@ -182,10 +208,14 @@
     </div>
 
     <!-- Final Action -->
-    <div class="d-flex justify-content-center pb-5 mt-5">
-        <button id="btnProcesarNueva" name="btnProcesarNueva" class="btn-primary-blue px-32px" (click)="onProbarOtra()" style="width: 350px; height: 56px;">
+    <div class="d-flex flex-column flex-sm-row justify-content-center gap-3 pb-5 mt-5">
+        <button id="btnProcesarNueva" name="btnProcesarNueva" class="btn-figma-secondary px-32px" (click)="onProbarOtra()" style="width: 320px; height: 56px; border-radius: 12px; font-weight: 700;">
             <mat-icon>add_circle</mat-icon>
             <span id="spProcesarNueva" name="spProcesarNueva">Procesar Nueva Póliza</span>
+        </button>
+        <button id="btnFinalizarTodo" name="btnFinalizarTodo" class="btn-primary-blue px-32px" (click)="onProbarOtra()" style="width: 320px; height: 56px; border-radius: 12px; font-weight: 700; background: #111827;">
+            <mat-icon>done_all</mat-icon>
+            <span id="spFinalizarTodo" name="spFinalizarTodo">Finalizar y Salir</span>
         </button>
     </div>
 

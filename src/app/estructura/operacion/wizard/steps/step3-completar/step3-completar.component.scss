@@ -7,7 +7,47 @@
 .figma-input {
     border-radius: 12px;
     padding: 12px 16px;
-    border: 1px solid var(--figma-gray-200);
+    border: 1px solid #e5e7eb;
+    transition: all 0.2s ease;
+    &:focus {
+        border-color: #2563eb;
+        box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+    }
+}
+
+.commission-summary-premium {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 20px;
+    
+    .summary-row-premium {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 0;
+        font-size: 14px;
+        color: #475569;
+    }
+
+    .summary-divider {
+        height: 1px;
+        background: #e2e8f0;
+    }
+
+    .total-premium {
+        color: #1e293b;
+        font-weight: 700;
+        font-size: 16px;
+        
+        .total-amount-box {
+            background: #dcfce7;
+            color: #166534;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 18px;
+        }
+    }
 }
 
 .w-100 { width: 100% !important; }

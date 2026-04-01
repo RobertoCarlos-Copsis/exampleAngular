@@ -6,11 +6,19 @@
                 <h1 style="font-size: 1.25rem; font-weight: 800; margin: 0; color: white;">qCRM 2.0</h1>
                 <p style="font-size: 0.75rem; margin: 0; opacity: 0.8; color: white; font-weight: 500;">Demo Interactiva</p>
             </div>
-            <div class="ms-auto pe-4 text-end d-none d-md-block">
-                <p style="font-size: 0.75rem; font-weight: 700; margin: 0; text-transform: uppercase; color: rgba(255, 255, 255, 0.6); letter-spacing: 0.05em;">Paso {{ stepper.selectedIndex + 1 }} de 7</p>
-                <p style="font-size: 0.95rem; font-weight: 600; margin: 0; color: white;">
-                    {{ getCurrentStepSummary(stepper.selectedIndex) }}
-                </p>
+            <div class="ms-auto d-flex align-items-center gap-3 pe-4 text-end">
+                <!-- Theme Toggle -->
+                <button mat-icon-button (click)="themeService.toggleTheme()" 
+                        class="text-white" style="background: rgba(255,255,255,0.1); border-radius: 8px;">
+                    <mat-icon>{{ themeService.isDarkMode() ? 'light_mode' : 'dark_mode' }}</mat-icon>
+                </button>
+
+                <div class="d-none d-md-block">
+                    <p style="font-size: 0.75rem; font-weight: 700; margin: 0; text-transform: uppercase; color: rgba(255, 255, 255, 0.6); letter-spacing: 0.05em;">Paso {{ stepper.selectedIndex + 1 }} de 7</p>
+                    <p style="font-size: 0.95rem; font-weight: 600; margin: 0; color: white;">
+                        {{ getCurrentStepSummary(stepper.selectedIndex) }}
+                    </p>
+                </div>
             </div>
         </div>
     </header>

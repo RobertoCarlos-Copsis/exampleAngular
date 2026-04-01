@@ -58,6 +58,48 @@
     }
 }
 
+.r-status-badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    background: #fef3c7;
+    color: #92400e;
+    &.paid { background: #d1fae5; color: #065f46; }
+}
+
+.receipt-detail-card {
+    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+    border: 1px solid #bae6fd;
+    border-radius: 1rem;
+    position: relative;
+    overflow: hidden;
+
+    &::after {
+        content: '';
+        position: absolute;
+        bottom: -50px;
+        right: -50px;
+        width: 150px;
+        height: 150px;
+        background: radial-gradient(circle, rgba(37, 99, 235, 0.05) 0%, transparent 70%);
+        border-radius: 50%;
+    }
+
+    .receipt-icon-bg {
+        width: 64px;
+        height: 64px;
+        background: white;
+        border-radius: 1rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: #0369a1;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        mat-icon { font-size: 32px; width: 32px; height: 32px; }
+    }
+}
+
 .actions-panel {
     flex: 1;
     background: white;
@@ -78,16 +120,17 @@
 }
 
 .action-card {
-    border: 1.5px solid #f1f5f9;
     border-radius: 16px;
     padding: 2rem 1.5rem;
     text-align: center;
     cursor: pointer;
     background: white;
+    border: 1px solid #f1f5f9;
     width: 100%;
     display: block;
     font-family: inherit;
-    &:hover, &:focus { outline: none; }
+    transition: all 0.2s ease;
+    &:hover, &:focus { outline: none; border-color: #2563eb; transform: translateY(-3px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
 
     .action-icon {
         @include figma-icon-box(64px, #f8fafc, #64748b, 16px);
