@@ -198,9 +198,22 @@ export class Step7EstadisticasComponent {
     }, 2000);
   }
 
+  activeDialogVisible = signal<boolean>(false);
+  activeDialogData = signal<string>('');
+
   verData(item: any) {
     const dataFormatted = JSON.stringify(item.data, null, 2);
-    // En un entorno real usaríamos un modal premium, aquí usamos un alert con formato para prototipado rápido
-    alert(`DETALLE DE EXTRACCIÓN IA:\n\n${dataFormatted}`);
+    
+    // Imprimir en consola para inspección detallada
+    console.log('--- DETALLE DE EXTRACCIÓN IA ---');
+    console.dir(item.data);
+
+    // Mostrar en modal
+    this.activeDialogData.set(dataFormatted);
+    this.activeDialogVisible.set(true);
+  }
+
+  closeDialog() {
+    this.activeDialogVisible.set(false);
   }
 }
