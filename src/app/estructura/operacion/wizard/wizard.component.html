@@ -53,7 +53,7 @@
                     <app-step2-extraccion (nextStep)="advance(1, stepper)"></app-step2-extraccion>
                 </mat-step>
                 <mat-step label="Completar" [completed]="completedSteps[2]">
-                    <app-step3-completar (nextStep)="advance(2, stepper)"></app-step3-completar>
+                    <app-step3-completar (siguientePaso)="advance(2, stepper)"></app-step3-completar>
                 </mat-step>
                 <mat-step label="Recibos" [completed]="completedSteps[3]">
                     <app-step4-recibos (nextStep)="advance(3, stepper)"></app-step4-recibos>

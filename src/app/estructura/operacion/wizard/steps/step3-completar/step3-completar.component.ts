@@ -10,99 +10,99 @@ import { cleanDigits } from '../../../../../core/utils/formatters';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Step3CompletarComponent implements OnInit {
-  @Output() nextStep = new EventEmitter<void>();
+  @Output() siguientePaso = new EventEmitter<void>();
 
-  private readonly fb = inject(FormBuilder);
-  private readonly wizardService = inject(WizardService);
+  private readonly constructorFormulario = inject(FormBuilder);
+  private readonly servicioAsistente = inject(WizardService);
 
-  completarForm: FormGroup = this.fb.group({
+  formularioCompletar: FormGroup = this.constructorFormulario.group({
     email: ['', [Validators.required, Validators.pattern(String.raw`^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$`)]],
     telefono: ['', [Validators.required, Validators.pattern(String.raw`^[0-9]{10}$`)]]
   });
 
-  state = this.wizardService.state;
+  estado = this.servicioAsistente.state;
   comisionPorcentaje = 0;
 
   ngOnInit(): void {
-    const s = this.state();
-    const phoneValue = s.client.phone || '';
-    this.completarForm.patchValue({
-      email: s.client.email || '',
-      telefono: cleanDigits(phoneValue).substring(0, 10)
+    const estadoActual = this.estado();
+    const valorTelefono = estadoActual.client.phone || '';
+    this.formularioCompletar.patchValue({
+      email: estadoActual.client.email || '',
+      telefono: cleanDigits(valorTelefono).substring(0, 10)
     });
     
-    let autoPercent = s.commissionPercentage;
-    if (!autoPercent || autoPercent === 0) {
-      const extracted = s.policy.data.extractedData;
-      const comisionExtraida = extracted?.importe?.porcentajeComision || 0;
-      const primaNeta = extracted?.importe?.primaNeta || 0;
+    let porcentajeAutomatico = estadoActual.commissionPercentage;
+    if (!porcentajeAutomatico || porcentajeAutomatico === 0) {
+      const datosExtraidos = estadoActual.policy.data.extractedData;
+      const comisionExtraida = datosExtraidos?.importe?.porcentajeComision || 0;
+      const primaNeta = datosExtraidos?.importe?.primaNeta || 0;
 
       if (comisionExtraida > 0 && comisionExtraida <= 100) {
         // La IA extrajo directamente el porcentaje
-        autoPercent = comisionExtraida;
+        porcentajeAutomatico = comisionExtraida;
       } else if (comisionExtraida > 100 && primaNeta > 0) {
         // La IA extrajo el monto monetario de la comisión, calculamos % sobre Prima Neta
-        autoPercent = Math.round((comisionExtraida / primaNeta) * 100);
+        porcentajeAutomatico = Math.round((comisionExtraida / primaNeta) * 100);
       } else {
         // Fallback inteligente basado en el ramo si no hay comisión
-        const ramo = s.policy.data.concept?.toLowerCase() || '';
-        if (ramo.includes('vida')) autoPercent = 20;
-        else if (ramo.includes('salud') || ramo.includes('gastos') || ramo.includes('medico')) autoPercent = 15;
-        else autoPercent = 10; // Por defecto autos y diversos
+        const ramo = estadoActual.policy.data.concept?.toLowerCase() || '';
+        if (ramo.includes('vida')) porcentajeAutomatico = 20;
+        else if (ramo.includes('salud') || ramo.includes('gastos') || ramo.includes('medico')) porcentajeAutomatico = 15;
+        else porcentajeAutomatico = 10; // Por defecto autos y diversos
       }
       
       // Sanitizar por si calculó algo excedido
-      if (autoPercent > 100) autoPercent = 10;
+      if (porcentajeAutomatico > 100) porcentajeAutomatico = 10;
       
       // Actualizamos estado para que aparezca ya prefijado de forma persistente
-      this.wizardService.updateState({ commissionPercentage: autoPercent });
+      this.servicioAsistente.updateState({ commissionPercentage: porcentajeAutomatico });
     }
 
-    this.comisionPorcentaje = autoPercent;
+    this.comisionPorcentaje = porcentajeAutomatico;
   }
 
   get totalPrima() {
-    return this.state().receipts.reduce((acc, r) => acc + (r.prima || 0), 0);
+    return this.estado().receipts.reduce((acumulado, recibo) => acumulado + (recibo.prima || 0), 0);
   }
 
   get comisionCalculada() {
     return (this.totalPrima * this.comisionPorcentaje) / 100;
   }
 
-  handlePhoneInput(event: Event) {
-    const input = event.target as HTMLInputElement;
-    const digits = cleanDigits(input.value).substring(0, 10);
-    input.value = digits;
-    this.completarForm.patchValue({ telefono: digits }, { emitEvent: false });
+  manejarEntradaTelefono(evento: Event) {
+    const entrada = evento.target as HTMLInputElement;
+    const digitos = cleanDigits(entrada.value).substring(0, 10);
+    entrada.value = digitos;
+    this.formularioCompletar.patchValue({ telefono: digitos }, { emitEvent: false });
   }
 
-  updateComision(event: Event) {
-    const input = event.target as HTMLInputElement;
-    const val = Number(input.value);
-    if (val >= 0 && val <= 100) {
-      this.comisionPorcentaje = val;
-      this.wizardService.updateState({ commissionPercentage: val });
+  actualizarComision(evento: Event) {
+    const entrada = evento.target as HTMLInputElement;
+    const valor = Number(entrada.value);
+    if (valor >= 0 && valor <= 100) {
+      this.comisionPorcentaje = valor;
+      this.servicioAsistente.updateState({ commissionPercentage: valor });
     }
   }
 
-  onSave() {
-    if (this.completarForm.valid) {
-      this.wizardService.updateState({
+  alGuardar() {
+    if (this.formularioCompletar.valid) {
+      this.servicioAsistente.updateState({
         client: {
-          ...this.state().client,
-          email: this.completarForm.value.email,
-          phone: this.completarForm.value.telefono
+          ...this.estado().client,
+          email: this.formularioCompletar.value.email,
+          phone: this.formularioCompletar.value.telefono
         },
         commissionPercentage: this.comisionPorcentaje
       });
-      this.wizardService.nextStep();
-      this.nextStep.emit();
+      this.servicioAsistente.nextStep();
+      this.siguientePaso.emit();
     } else {
-      this.completarForm.markAllAsTouched();
+      this.formularioCompletar.markAllAsTouched();
     }
   }
 
-  trackByReceiptId(_index: number, receipt: { id: number }): number {
-    return receipt.id;
+  rastrearPorIdRecibo(_indice: number, recibo: { id: number }): number {
+    return recibo.id;
   }
 }
