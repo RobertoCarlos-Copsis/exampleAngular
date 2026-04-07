@@ -21,14 +21,10 @@
                 </div>
             </div>
         </div>
-    </header>
-
-    <!-- Main Wizard Content -->
-    <main class="wizard-main fade-in w-100">
-        <div class="figma-container wizard-card-wrapper" style="margin: 0 auto !important; display: block;">
-
-            <!-- Stepper Indicator Container (Synced 1000px with React) -->
-            <div class="custom-stepper" style="max-width: 1000px; margin: 0 auto 1.5rem auto;">
+        <!-- Stepper Indicator Container (White Background Area) -->
+        <div class="w-100" style="border-top: 1px solid #e2e8f0;">
+            <div class="figma-container pt-4 pb-3 mt-2">
+                <div class="custom-stepper" style="max-width: 1000px; margin: 0 auto;">
                 <div class="stepper-progress-track">
                     <div class="stepper-progress-fill"
                         [style.width.%]="(stepper.selectedIndex / (stepSummaries.length - 1)) * 100"></div>
@@ -39,7 +35,14 @@
                     <div class="step-circle">{{ i + 1 }}</div>
                     <span class="step-label">{{ step }}</span>
                 </div>
+                </div>
             </div>
+        </div>
+    </header>
+
+    <!-- Main Wizard Content -->
+    <main class="wizard-main fade-in w-100">
+        <div class="figma-container wizard-card-wrapper" style="margin: 0 auto !important; display: block;">
 
             <!-- Mat Stepper (Hidden Headers via CSS) -->
             <mat-stepper #stepper class="bg-transparent" (selectionChange)="onStepChange($event)">
