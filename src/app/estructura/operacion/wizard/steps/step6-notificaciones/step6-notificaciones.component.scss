@@ -42,11 +42,76 @@
         }
     }
 
-    &.cobranza { background: white; border-left: 4px solid #047857; .notif-icon { color: #047857; background: #ecfdf5; } }
-    &.renovacion { background: white; border-left: 4px solid #c2410c; .notif-icon { color: #c2410c; background: #fff7ed; } }
-    &.siniestros { background: white; border-left: 4px solid #374151; .notif-icon { color: #374151; background: #f9fafb; } }
-    &.comisiones { background: white; border-left: 4px solid #b45309; .notif-icon { color: #b45309; background: #fffbeb; } }
-    &.generales { background: white; border-left: 4px solid #1d4ed8; .notif-icon { color: #1d4ed8; background: #eff6ff; } }
+    &.cobranza { 
+        background: #ecfdf5; border-color: #a7f3d0; 
+        .notif-icon { color: white; background: #059669; }
+        ::ng-deep .mat-mdc-slide-toggle.mat-checked {
+            --mdc-switch-selected-handle-color: #059669;
+            --mdc-switch-selected-hover-handle-color: #047857;
+            --mdc-switch-selected-focus-handle-color: #047857;
+            --mdc-switch-selected-pressed-handle-color: #047857;
+            --mdc-switch-selected-track-color: #6ee7b7;
+            --mdc-switch-selected-hover-track-color: #34d399;
+            --mdc-switch-selected-focus-track-color: #34d399;
+            --mdc-switch-selected-pressed-track-color: #34d399;
+        }
+    }
+    &.renovacion { 
+        background: #fff7ed; border-color: #fed7aa; 
+        .notif-icon { color: white; background: #ea580c; }
+        ::ng-deep .mat-mdc-slide-toggle.mat-checked {
+            --mdc-switch-selected-handle-color: #ea580c;
+            --mdc-switch-selected-hover-handle-color: #c2410c;
+            --mdc-switch-selected-focus-handle-color: #c2410c;
+            --mdc-switch-selected-pressed-handle-color: #c2410c;
+            --mdc-switch-selected-track-color: #fdba74;
+            --mdc-switch-selected-hover-track-color: #fb923c;
+            --mdc-switch-selected-focus-track-color: #fb923c;
+            --mdc-switch-selected-pressed-track-color: #fb923c;
+        }
+    }
+    &.siniestros { 
+        background: #f8fafc; border-color: #cbd5e1; 
+        .notif-icon { color: white; background: #64748b; }
+        ::ng-deep .mat-mdc-slide-toggle.mat-checked {
+            --mdc-switch-selected-handle-color: #475569;
+            --mdc-switch-selected-hover-handle-color: #334155;
+            --mdc-switch-selected-focus-handle-color: #334155;
+            --mdc-switch-selected-pressed-handle-color: #334155;
+            --mdc-switch-selected-track-color: #cbd5e1;
+            --mdc-switch-selected-hover-track-color: #94a3b8;
+            --mdc-switch-selected-focus-track-color: #94a3b8;
+            --mdc-switch-selected-pressed-track-color: #94a3b8;
+        }
+    }
+    &.comisiones { 
+        background: #fffbeb; border-color: #fde68a; 
+        .notif-icon { color: white; background: #d97706; }
+        ::ng-deep .mat-mdc-slide-toggle.mat-checked {
+            --mdc-switch-selected-handle-color: #d97706;
+            --mdc-switch-selected-hover-handle-color: #b45309;
+            --mdc-switch-selected-focus-handle-color: #b45309;
+            --mdc-switch-selected-pressed-handle-color: #b45309;
+            --mdc-switch-selected-track-color: #fcd34d;
+            --mdc-switch-selected-hover-track-color: #fbbf24;
+            --mdc-switch-selected-focus-track-color: #fbbf24;
+            --mdc-switch-selected-pressed-track-color: #fbbf24;
+        }
+    }
+    &.generales { 
+        background: #eff6ff; border-color: #bfdbfe; 
+        .notif-icon { color: white; background: #2563eb; }
+        ::ng-deep .mat-mdc-slide-toggle.mat-checked {
+            --mdc-switch-selected-handle-color: #2563eb;
+            --mdc-switch-selected-hover-handle-color: #1d4ed8;
+            --mdc-switch-selected-focus-handle-color: #1d4ed8;
+            --mdc-switch-selected-pressed-handle-color: #1d4ed8;
+            --mdc-switch-selected-track-color: #93c5fd;
+            --mdc-switch-selected-hover-track-color: #60a5fa;
+            --mdc-switch-selected-focus-track-color: #60a5fa;
+            --mdc-switch-selected-pressed-track-color: #60a5fa;
+        }
+    }
 }
 
 .info-box-footer {

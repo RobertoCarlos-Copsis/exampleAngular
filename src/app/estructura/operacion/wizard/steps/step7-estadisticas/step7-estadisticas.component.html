@@ -9,9 +9,9 @@
 
     <!-- Header Section -->
     <div class="text-center mb-5">
-        <h1 id="lbTituloFinal" name="lbTituloFinal" class="step-title">¡Operación Exitosa!</h1>
-        <p id="spResumenFinal" name="spResumenFinal" class="summary-text">La póliza ha sido procesada y el sistema de
-            seguimiento está en marcha.</p>
+        <h1 id="lbTituloFinal" name="lbTituloFinal" class="step-title">¡Póliza Registrada Exitosamente!</h1>
+        <p id="spResumenFinal" name="spResumenFinal" class="summary-text">Aquí está el resumen de toda la información
+            procesada y las estadísticas actualizadas</p>
     </div>
 
     <!-- KPI Grid -->
@@ -35,7 +35,8 @@
         <div class="kpi-card">
             <div class="kpi-icon yellow"><mat-icon>receipt_long</mat-icon></div>
             <div class="kpi-info">
-                <span id="txComisionesTotal" name="txComisionesTotal" class="v">{{ totalComision | currency:'MXN' }}</span>
+                <span id="txComisionesTotal" name="txComisionesTotal" class="v">{{ totalComision | currency:'MXN'
+                    }}</span>
                 <span id="lbComisionesLabel" name="lbComisionesLabel" class="l">Comisiones</span>
             </div>
         </div>
@@ -50,8 +51,8 @@
 
     <!-- Main Dashboard Container (Bootstrap 1200px) -->
     <div class="row g-4 mb-4">
-        <!-- Chart Section (Left) -->
-        <div class="col-lg-9">
+        <!-- Chart Section -->
+        <div class="col-lg-12">
             <div class="row g-4">
                 <!-- Bar Chart -->
                 <div class="col-md-7">
@@ -111,124 +112,78 @@
             </div>
         </div>
 
-        <!-- Checklist Section (Right) -->
-        <div class="col-lg-3">
-            <div class="figma-card h-100 p-4">
-                <div class="mb-4">
-                    <h3 id="lbChecklistCierre" name="lbChecklistCierre"
-                        class="fs-18x font-800 text-figma-gray-900 mb-1">Checklist de Cierre</h3>
-                    <p id="spChecklistDesc" name="spChecklistDesc" class="fs-14x text-figma-gray-400">Estado de la
-                        digitalización</p>
-                </div>
-                <div class="checklist-items">
-                    <div class="check-item d-flex align-items-center gap-3 p-3 mb-3"
-                        style="background: #f0fdf4; border: 1px solid #dcfce7; border-radius: 12px;">
-                        <mat-icon class="text-figma-green-600">check_circle</mat-icon>
-                        <div>
-                            <p id="txChecklistPdf" name="txChecklistPdf"
-                                class="fs-14x font-700 text-figma-gray-900 mb-0">PDF Procesado</p>
-                            <small id="spChecklistPdfEstado" name="spChecklistPdfEstado"
-                                class="text-figma-green-600">Correcto</small>
-                        </div>
-                    </div>
-                    <div class="check-item d-flex align-items-center gap-3 p-3 mb-3"
-                        style="background: #f0fdf4; border: 1px solid #dcfce7; border-radius: 12px;">
-                        <mat-icon class="text-figma-green-600">check_circle</mat-icon>
-                        <div>
-                            <p id="txChecklistRecibos" name="txChecklistRecibos"
-                                class="fs-14x font-700 text-figma-gray-900 mb-0">Recibos Vinculados</p>
-                            <small id="spChecklistRecibosCount" name="spChecklistRecibosCount"
-                                class="text-figma-green-600">{{ state().receipts.length }} detectados</small>
-                        </div>
-                    </div>
-                    <div class="check-item d-flex align-items-center gap-3 p-3"
-                        style="background: #eff6ff; border: 1px solid #dbeafe; border-radius: 12px;">
-                        <mat-icon class="text-figma-blue-600">info</mat-icon>
-                        <div>
-                            <p id="txChecklistNotif" name="txChecklistNotif"
-                                class="fs-14x font-700 text-figma-gray-900 mb-0">Notificaciones</p>
-                            <small id="spChecklistNotifEstado" name="spChecklistNotifEstado"
-                                class="text-figma-blue-600">Configuradas</small>
-                        </div>
-                    </div>
-                </div>
-                <div class="mt-4 pt-2">
-                    <button id="btnDescargarReporte" name="btnDescargarReporte"
-                        class="btn-purple-figma w-100 d-flex align-items-center justify-content-center gap-2"
-                        style="padding: 12px !important;" [disabled]="downloading()" (click)="descargarReporte()">
-                        <mat-icon *ngIf="!downloading()">download</mat-icon>
-                        <output *ngIf="downloading()" class="spinner-border spinner-border-sm"></output>
-                        <span id="spDescargarReporte" name="spDescargarReporte">
-                            {{ downloading() ? 'Generando...' : 'Descargar Reporte' }}
-                        </span>
-                    </button>
-                </div>
-            </div>
-        </div>
+
     </div>
 
-    <!-- AI Extraction History -->
-    <div class="row mt-5">
-        <div class="col-12">
-            <div class="figma-card p-4">
-                <div class="d-flex align-items-center gap-3 mb-4">
-                    <div class="icon-box-figma"
-                        style="background: #e0f2fe; color: #0369a1; padding: 10px; border-radius: 10px;">
-                        <mat-icon>history</mat-icon>
-                    </div>
-                    <div>
-                        <h3 id="lbHistorialIA" name="lbHistorialIA" class="fs-18x font-800 text-figma-gray-900 mb-1">
-                            Historial de Extracciones IA</h3>
-                        <p id="spHistorialIADesc" name="spHistorialIADesc" class="fs-14x text-figma-gray-400">Registro
-                            de auditoría de los documentos procesados en esta sesión</p>
-                    </div>
-                </div>
 
-                <div class="table-responsive">
-                    <table class="table table-hover align-middle">
-                        <thead class="thead-premium">
-                            <tr>
-                                <th class="fs-12x font-700 text-figma-gray-400 px-4">FECHA / HORA</th>
-                                <th class="fs-12x font-700 text-figma-gray-400">DOCUMENTO</th>
-                                <th class="fs-12x font-700 text-figma-gray-400">RESULTADO</th>
-                                <th class="fs-12x font-700 text-figma-gray-400 text-end px-4">ACCIONES</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let item of state().extractionHistory || []; let i = index">
-                                <td class="px-4">
-                                    <span [attr.id]="'txHistorialFecha' + i" [attr.name]="'txHistorialFecha' + i"
-                                        class="fs-14x font-600 text-figma-gray-900 d-block">{{ item.timestamp |
-                                        date:'short' }}</span>
-                                    <small class="text-figma-gray-400">Extracción exitosa</small>
-                                </td>
-                                <td>
-                                    <div class="d-flex align-items-center gap-2">
-                                        <mat-icon class="text-figma-blue-600">description</mat-icon>
-                                        <span [attr.id]="'txHistorialDoc' + i" [attr.name]="'txHistorialDoc' + i"
-                                            class="fs-14x font-600">Póliza Extraída</span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <span
-                                        class="badge bg-figma-green-50 text-figma-green-600 border border-success-subtle px-3 py-2 rounded-pill fs-12x">
-                                        {{ numRecibos }} recibos detectados
-                                    </span>
-                                </td>
-                                <td class="text-end px-4">
-                                    <button class="btn btn-sm btn-outline-figma-blue" (click)="verData(item)"
-                                        style="border-radius: 8px;">
-                                        Ver Data
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr *ngIf="!state().extractionHistory?.length">
-                                <td colspan="4" class="text-center py-5 text-figma-gray-400 fs-14x">
-                                    No hay extracciones registradas en esta sesión.
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+
+    <!-- Resumen de Acciones Realizadas -->
+    <div class="card border-success bg-light rounded-4 p-4 mb-5 shadow-sm border-opacity-25"
+        style="background-color: #f0fdf4 !important; border-color: #bbf7d0 !important;">
+        <!-- Cabecera de la sección -->
+        <div class="d-flex align-items-center mb-4 section-header">
+            <div class="bg-success rounded-circle d-flex align-items-center justify-content-center me-3"
+                style="width: 40px; height: 40px;">
+                <mat-icon class="text-white">check</mat-icon>
+            </div>
+            <h3 class="m-0 fw-bold" style="color: #166534; font-size: 1.25rem;">Resumen de Acciones Realizadas</h3>
+        </div>
+
+        <div class="row g-4">
+            <!-- Columna Izquierda: Datos Procesados -->
+            <div class="col-md-6">
+                <div class="bg-white rounded-4 p-4 h-100 border border-success shadow-sm transition-hover"
+                    style="border-color: rgba(22, 163, 74, 0.1) !important;">
+                    <h5 class="fw-bold mb-4 d-flex align-items-center" style="color: #14532d; font-size: 1rem;">
+                        Datos Procesados:
+                    </h5>
+                    <ul class="list-unstyled mb-0 custom-bullets">
+                        <li class="d-flex align-items-center">
+                            <span class="dot-green me-3"></span>
+                            <span class="text-secondary fw-semibold">Póliza importada y leída con IA</span>
+                        </li>
+                        <li class="d-flex align-items-center">
+                            <span class="dot-green me-3"></span>
+                            <span class="text-secondary fw-semibold">Datos del cliente completados</span>
+                        </li>
+                        <li class="d-flex align-items-center">
+                            <span class="dot-green me-3"></span>
+                            <span class="text-secondary fw-semibold">Comisión configurada al {{
+                                state().commissionPercentage }}%</span>
+                        </li>
+                        <li class="d-flex align-items-center mb-0">
+                            <span class="dot-green me-3"></span>
+                            <span class="text-secondary fw-semibold">{{ numRecibos }} recibos registrados</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Columna Derecha: Sistema Activado -->
+            <div class="col-md-6">
+                <div class="bg-white rounded-4 p-4 h-100 border border-primary shadow-sm transition-hover"
+                    style="border-color: rgba(29, 78, 216, 0.1) !important;">
+                    <h5 class="fw-bold mb-4 d-flex align-items-center" style="color: #1e3a8a; font-size: 1rem;">
+                        Sistema Activado:
+                    </h5>
+                    <ul class="list-unstyled mb-0 custom-bullets">
+                        <li class="d-flex align-items-center">
+                            <span class="dot-blue me-3"></span>
+                            <span class="text-secondary fw-semibold">Notificaciones automáticas configuradas</span>
+                        </li>
+                        <li class="d-flex align-items-center">
+                            <span class="dot-blue me-3"></span>
+                            <span class="text-secondary fw-semibold">Recordatorios de pago programados</span>
+                        </li>
+                        <li class="d-flex align-items-center">
+                            <span class="dot-blue me-3"></span>
+                            <span class="text-secondary fw-semibold">Alertas de renovación activadas</span>
+                        </li>
+                        <li class="d-flex align-items-center mb-0">
+                            <span class="dot-blue me-3"></span>
+                            <span class="text-secondary fw-semibold">Estadísticas en tiempo real</span>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -236,45 +191,12 @@
 
     <!-- Final Action -->
     <div class="d-flex flex-column flex-sm-row justify-content-center gap-3 pb-5 mt-5">
-        <button id="btnProcesarNueva" name="btnProcesarNueva" class="btn-figma-secondary px-32px"
+        <button id="btnProcesarNueva" name="btnProcesarNueva"
+            class="btn-figma-secondary px-32px d-flex align-items-center justify-content-center gap-2"
             (click)="onProbarOtra()" style="width: 320px; height: 56px; border-radius: 12px; font-weight: 700;">
             <mat-icon>add_circle</mat-icon>
             <span id="spProcesarNueva" name="spProcesarNueva">Procesar Nueva Póliza</span>
         </button>
     </div>
 
-</div>
-
-<!-- ── Backdrop ────────────────────────────────────────────────────── -->
-<button class="modal-backdrop-figma" *ngIf="activeDialogVisible()" (click)="closeDialog()" (keydown.escape)="closeDialog()" type="button" aria-label="Cerrar modal"></button>
-
-<!-- ── Dialog ────────────────────────────────────────────────────── -->
-<div class="action-modal-figma" *ngIf="activeDialogVisible()">
-    <!-- Header -->
-    <div class="modal-header-figma">
-        <div class="d-flex align-items-center gap-3">
-            <div class="icon-box-figma" style="background: #eff6ff; color: #1d4ed8;">
-                <mat-icon>data_object</mat-icon>
-            </div>
-            <div>
-                <h3 id="lbDialogTituloExtract" name="lbDialogTituloExtract" class="m-0 fs-18x font-800 text-figma-gray-900">Detalle de Extracción IA</h3>
-                <p id="spDialogSubtituloExtract" name="spDialogSubtituloExtract" class="m-0 fs-12x text-figma-gray-400">Datos en formato JSON</p>
-            </div>
-        </div>
-        <button id="btnDialogCloseExtract" name="btnDialogCloseExtract" class="btn-close-figma" (click)="closeDialog()">
-            <mat-icon>close</mat-icon>
-        </button>
-    </div>
-
-    <!-- Body -->
-    <div class="modal-body-figma py-4">
-        <div class="p-3" style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; max-height: 400px; overflow-y: auto; text-align: left;">
-            <pre style="margin: 0; font-family: monospace; font-size: 13px; color: #334155; white-space: pre-wrap; word-break: break-all;">{{ activeDialogData() }}</pre>
-        </div>
-    </div>
-
-    <!-- Footer -->
-    <div class="modal-footer-figma mt-2">
-        <button id="btnDialogCerrarExtract" name="btnDialogCerrarExtract" class="btn-figma-secondary w-100" (click)="closeDialog()">Cerrar</button>
-    </div>
 </div>

@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter, computed, inject, ChangeDetectionStrategy, signal } from '@angular/core';
+import { Component, Output, EventEmitter, computed, inject, ChangeDetectionStrategy } from '@angular/core';
 import {
   ApexNonAxisChartSeries,
   ApexResponsive,
@@ -44,7 +44,7 @@ export class Step7EstadisticasComponent {
   private readonly geminiService = inject(GeminiExtractionService);
   private readonly estadisticasService = inject(EstadisticasService);
   state = this.wizardService.state;
-  downloading = signal<boolean>(false);
+
 
   get totalPrima() {
     return this.estadisticasService.calcularTotalPrima(this.state().receipts);
@@ -156,64 +156,6 @@ export class Step7EstadisticasComponent {
     this.resetWizard.emit();
   }
 
-  descargarReporte() {
-    this.downloading.set(true);
-    
-    // Simular generación de PDF y descargar un TXT con el resumen
-    setTimeout(() => {
-      this.downloading.set(false);
-      
-      const policy = this.state().policy.data;
-      const client = this.state().client;
-      const receipts = this.state().receipts;
-      
-      const content = `
-        RESUMEN DE PÓLIZA - qCRM 2.0
-        ============================
-        Póliza: ${policy.policyNumber}
-        Aseguradora: ${policy.aseguradora}
-        Cliente: ${client.name}
-        Email: ${client.email}
-        Dirección: ${client.address}
-        
-        RESUMEN FINANCIERO
-        ==================
-        Prima Total: ${this.totalPrima.toLocaleString('es-MX', { style: 'currency', currency: 'MXN' })}
-        Comisión (${this.state().commissionPercentage}%): ${this.totalComision.toLocaleString('es-MX', { style: 'currency', currency: 'MXN' })}
-        Recibos Totales: ${receipts.length}
-        % de Cobranza: ${this.porcentajeCobranza}%
-        
-        DETALLE DE RECIBOS
-        ==================
-        ${receipts.map((r, i) => `Recibo ${i + 1}: ${r.status} - ${r.prima.toLocaleString('es-MX', { style: 'currency', currency: 'MXN' })}`).join('\n        ')}
-      `.trim();
 
-      const blob = new Blob([content], { type: 'text/plain' });
-      const url = globalThis.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `Reporte_Poliza_${policy.policyNumber || 'QCRM'}.txt`;
-      a.click();
-      globalThis.URL.revokeObjectURL(url);
-    }, 2000);
-  }
 
-  activeDialogVisible = signal<boolean>(false);
-  activeDialogData = signal<string>('');
-
-  verData(item: any) {
-    const dataFormatted = JSON.stringify(item.data, null, 2);
-    
-    // Imprimir en consola para inspección detallada
-    console.log('--- DETALLE DE EXTRACCIÓN IA ---');
-    console.dir(item.data);
-
-    // Mostrar en modal
-    this.activeDialogData.set(dataFormatted);
-    this.activeDialogVisible.set(true);
-  }
-
-  closeDialog() {
-    this.activeDialogVisible.set(false);
-  }
 }

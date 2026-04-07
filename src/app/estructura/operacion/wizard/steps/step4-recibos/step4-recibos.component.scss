@@ -2,7 +2,7 @@
 
 // Step 4 Layout Styles - Parity with React Sidebar Design
 .receipt-sidebar {
-    width: 320px;
+    width: 360px;
     display: flex;
     flex-direction: column;
     gap: 1rem;
@@ -19,10 +19,10 @@
     background: white;
     border: 1px solid var(--figma-gray-200);
     border-radius: 12px;
-    padding: 1.25rem;
+    padding: 1rem 0.75rem;
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 0.5rem;
     cursor: pointer;
     transition: all 0.2s ease;
     position: relative;
@@ -43,17 +43,24 @@
         flex: 1;
         display: flex;
         flex-direction: column;
-        .r-period { font-size: 0.75rem; color: #4b5563; margin-bottom: 2px; }
-        .r-amount { font-size: 1.125rem; font-weight: 800; color: #111827; }
+        min-width: 0;
+        .r-period { font-size: 0.75rem; color: #4b5563; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .r-amount { font-size: 1.125rem; font-weight: 800; color: #111827; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     }
 
     .r-status {
         @include figma-badge(#fef3c7, #92400e);
-        &.paid { @include figma-badge(#d1fae5, #065f46); }
+        font-size: 0.7rem;
+        padding: 0.25rem 0.5rem;
+        white-space: nowrap;
+        flex-shrink: 0;
+        &.paid { @include figma-badge(#d1fae5, #065f46); font-size: 0.7rem; padding: 0.25rem 0.5rem; }
     }
 
     ::ng-deep .mat-icon-button {
-        @include figma-icon-box(32px, transparent, #475569, 50%);
+        @include figma-icon-box(24px, transparent, #475569, 50%);
+        margin-left: 0 !important;
+        flex-shrink: 0;
         &:hover { background-color: #f1f5f9; color: #111827; }
     }
 }

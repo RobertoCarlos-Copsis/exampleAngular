@@ -167,3 +167,36 @@
     transition: all 0.2s ease;
     &:hover { background: var(--bg-app); transform: translateY(-1px); }
 }
+
+/* Resumen de Acciones Realizadas - Figma */
+.dot-green {
+  width: 8px;
+  height: 8px;
+  background-color: #22c55e;
+  border-radius: 50%;
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.1);
+}
+
+.dot-blue {
+  width: 8px;
+  height: 8px;
+  background-color: #3b82f6;
+  border-radius: 50%;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.transition-hover {
+  transition: all 0.3s ease;
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1) !important;
+  }
+}
+
+.rounded-4 {
+  border-radius: 1rem !important;
+}
+
+.custom-bullets li {
+  margin-bottom: 1rem;
+}

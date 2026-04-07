@@ -1,21 +1,21 @@
 <div class="app-container">
     <header class="header-brand">
         <div class="figma-container header-container py-2">
-            <div class="logo-box" style="background: #5d5bf0; box-shadow: 0 0 15px rgba(93, 91, 240, 0.4);">q</div>
+            <div class="logo-box"
+                style="background: oklch(42.4% .199 265.638) !important; color: #ffffff !important; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);">
+                q</div>
             <div class="ms-3">
-                <h1 style="font-size: 1.25rem; font-weight: 800; margin: 0; color: white;">qCRM 2.0</h1>
-                <p style="font-size: 0.75rem; margin: 0; opacity: 0.8; color: white; font-weight: 500;">Demo Interactiva</p>
+                <h1 style="font-size: 1.25rem; font-weight: 800; margin: 0; color: #111827;">qCRM 2.0</h1>
+                <p style="font-size: 0.75rem; margin: 0; color: #64748b; font-weight: 600;">Demo Interactiva</p>
             </div>
             <div class="ms-auto d-flex align-items-center gap-3 pe-4 text-end">
-                <!-- Theme Toggle -->
-                <button mat-icon-button (click)="themeService.toggleTheme()" 
-                        class="text-white" style="background: rgba(255,255,255,0.1); border-radius: 8px;">
-                    <mat-icon>{{ themeService.isDarkMode() ? 'light_mode' : 'dark_mode' }}</mat-icon>
-                </button>
+
 
                 <div class="d-none d-md-block">
-                    <p style="font-size: 0.75rem; font-weight: 700; margin: 0; text-transform: uppercase; color: rgba(255, 255, 255, 0.6); letter-spacing: 0.05em;">Paso {{ stepper.selectedIndex + 1 }} de 7</p>
-                    <p style="font-size: 0.95rem; font-weight: 600; margin: 0; color: white;">
+                    <p
+                        style="font-size: 0.75rem; font-weight: 700; margin: 0; text-transform: uppercase; color: #64748b; letter-spacing: 0.05em;">
+                        Paso {{ stepper.selectedIndex + 1 }} de 7</p>
+                    <p style="font-size: 0.95rem; font-weight: 700; margin: 0; color: #111827;">
                         {{ getCurrentStepSummary(stepper.selectedIndex) }}
                     </p>
                 </div>
@@ -30,7 +30,8 @@
             <!-- Stepper Indicator Container (Synced 1000px with React) -->
             <div class="custom-stepper" style="max-width: 1000px; margin: 0 auto 1.5rem auto;">
                 <div class="stepper-progress-track">
-                    <div class="stepper-progress-fill" [style.width.%]="(stepper.selectedIndex / (stepSummaries.length - 1)) * 100"></div>
+                    <div class="stepper-progress-fill"
+                        [style.width.%]="(stepper.selectedIndex / (stepSummaries.length - 1)) * 100"></div>
                 </div>
                 <div class="step-item" *ngFor="let step of stepSummaries; let i = index"
                     [class.active]="stepper.selectedIndex === i"

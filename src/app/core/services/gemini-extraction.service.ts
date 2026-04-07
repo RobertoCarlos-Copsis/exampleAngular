@@ -219,16 +219,21 @@ export class GeminiExtractionService {
 
       datos.importe.porcentajeComision = this.parseNumber(apiData.comision);
 
-      // ── Recibos ──
       if (Array.isArray(apiData.recibos) && apiData.recibos.length > 0) {
-        datos.recibos = apiData.recibos.map((r: GeminiReciboResponse, idx: number) => ({
-          numero: r.serie || idx + 1,
-          fechaInicio: r.vigenciaDe || '',
-          fechaFin: r.vigenciaA || '',
-          primaNeta: this.parseNumber(r.primaneta || r.primaNeta),
-          iva: this.parseNumber(r.iva),
-          primaTotal: this.parseNumber(r.primaTotal)
-        }));
+        datos.recibos = apiData.recibos.map((r: GeminiReciboResponse, idx: number) => {
+          const primaNeta = this.parseNumber(r.primaneta || r.primaNeta);
+          const iva = this.parseNumber(r.iva);
+          const primaTotal = this.parseNumber(r.primaTotal);
+
+          return {
+            numero: r.serie || idx + 1,
+            fechaInicio: r.vigenciaDe || '',
+            fechaFin: r.vigenciaA || '',
+            primaNeta: primaNeta,
+            iva: iva,
+            primaTotal: primaTotal > 0 ? primaTotal : (primaNeta + iva)
+          };
+        });
       } else {
         // → Gemini no regresó recibos: generarlos automáticamente
         datos.recibos = this.generarRecibos(
