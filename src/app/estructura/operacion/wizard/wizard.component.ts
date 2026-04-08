@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, inject, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { MatStepper } from '@angular/material/stepper';
 import { StepperSelectionEvent } from '@angular/cdk/stepper';
 import { ThemeService } from '../../../core/services/theme.service';
+import { AsistenteService } from '../../../core/services/asistente.service';
 
 @Component({
   selector: 'app-wizard',
@@ -10,7 +11,15 @@ import { ThemeService } from '../../../core/services/theme.service';
 })
 export class WizardComponent {
   
+  @ViewChild('stepper') stepper!: MatStepper;
+  
+  private readonly cdr = inject(ChangeDetectorRef);
+  private readonly servicioAsistente = inject(AsistenteService);
+  
   constructor(public servicioTema: ThemeService) {}
+
+  /** Índice del paso activo para control bidireccional */
+  pasoActivo = 0;
 
   /** Rastrea qué pasos han sido completados para mostrar el check verde */
   pasosCompletados: boolean[] = [false, false, false, false, false, false, false];
@@ -29,17 +38,31 @@ export class WizardComponent {
     return this.resumenesPasos[indice] || '';
   }
 
-  /** Marca el paso como completado y avanza al siguiente */
-  avanzar(indicePaso: number, stepper: MatStepper) {
+  /** Marca el paso como completado y avanza al siguiente usando control centralizado */
+  avanzar(indicePaso: number) {
+    console.log(`Paso ${indicePaso + 1} completado. Solicitando cambio de paso.`);
+    
+    // 1. Marcar el paso como completado visualmente
     this.pasosCompletados[indicePaso] = true;
-    // setTimeout asegura que Angular detecte [completed]=true ANTES de invocar next()
-    setTimeout(() => stepper.next(), 0);
+    
+    // 2. Notificar al servicio (opcional, para persistencia)
+    this.servicioAsistente.actualizarEstado({ pasoActual: indicePaso + 2 });
+
+    // 3. Forzar cambio de índice en el siguiente ciclo para evitar conflictos con OnPush
+    setTimeout(() => {
+      this.pasoActivo = indicePaso + 1;
+      this.cdr.detectChanges();
+    }, 50);
   }
 
-  reiniciarTodo(stepper: MatStepper) {
+  reiniciarTodo() {
     this.pasosCompletados = [false, false, false, false, false, false, false];
-    stepper.reset();
+    this.pasoActivo = 0;
+    this.stepper?.reset();
+    this.cdr.detectChanges();
   }
 
-  alCambiarPaso(evento: StepperSelectionEvent) { }
+  alCambiarPaso(evento: StepperSelectionEvent) {
+    this.pasoActivo = evento.selectedIndex;
+  }
 }

@@ -45,27 +45,27 @@
         <div class="figma-container wizard-card-wrapper" style="margin: 0 auto !important; display: block;">
 
             <!-- Mat Stepper (Hidden Headers via CSS) -->
-            <mat-stepper #stepper class="bg-transparent" (selectionChange)="alCambiarPaso($event)">
+            <mat-stepper #stepper [linear]="false" [(selectedIndex)]="pasoActivo" class="bg-transparent" (selectionChange)="alCambiarPaso($event)">
                 <mat-step label="Importar" [completed]="pasosCompletados[0]">
-                    <app-step1-importar (siguientePaso)="avanzar(0, stepper)"></app-step1-importar>
+                    <app-step1-importar (siguientePaso)="avanzar(0)"></app-step1-importar>
                 </mat-step>
                 <mat-step label="IA Extrae" [completed]="pasosCompletados[1]">
-                    <app-step2-extraccion (siguientePaso)="avanzar(1, stepper)"></app-step2-extraccion>
+                    <app-step2-extraccion (siguientePaso)="avanzar(1)"></app-step2-extraccion>
                 </mat-step>
                 <mat-step label="Completar" [completed]="pasosCompletados[2]">
-                    <app-step3-completar (siguientePaso)="avanzar(2, stepper)"></app-step3-completar>
+                    <app-step3-completar (siguientePaso)="avanzar(2)"></app-step3-completar>
                 </mat-step>
                 <mat-step label="Recibos" [completed]="pasosCompletados[3]">
-                    <app-step4-recibos (siguientePaso)="avanzar(3, stepper)"></app-step4-recibos>
+                    <app-step4-recibos (siguientePaso)="avanzar(3)"></app-step4-recibos>
                 </mat-step>
                 <mat-step label="Póliza" [completed]="pasosCompletados[4]">
-                    <app-step5-poliza (siguientePaso)="avanzar(4, stepper)"></app-step5-poliza>
+                    <app-step5-poliza (siguientePaso)="avanzar(4)"></app-step5-poliza>
                 </mat-step>
                 <mat-step label="Notificaciones" [completed]="pasosCompletados[5]">
-                    <app-step6-notificaciones (siguientePaso)="avanzar(5, stepper)"></app-step6-notificaciones>
+                    <app-step6-notificaciones (siguientePaso)="avanzar(5)"></app-step6-notificaciones>
                 </mat-step>
                 <mat-step label="Estadísticas" [completed]="pasosCompletados[6]">
-                    <app-step7-estadisticas (reiniciarAsistente)="reiniciarTodo(stepper)"></app-step7-estadisticas>
+                    <app-step7-estadisticas (reiniciarAsistente)="reiniciarTodo()"></app-step7-estadisticas>
                 </mat-step>
             </mat-stepper>
         </div>

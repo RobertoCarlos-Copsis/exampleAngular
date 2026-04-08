@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter, ViewChild, ElementRef, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Output, EventEmitter, ViewChild, ElementRef, inject, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { AsistenteService } from '../../../../../core/services/asistente.service';
 import { ServicioExtraccionGemini } from '../../../../../core/services/extraccion-gemini.service';
 import { ReciboExtraido, EstadoRecibo } from '../../../../../core/models/wizard.model';
@@ -16,6 +16,7 @@ export class Step1ImportarComponent {
   @Output() siguientePaso = new EventEmitter<void>();
 
   private readonly servicioAsistente = inject(AsistenteService);
+  private readonly cdr = inject(ChangeDetectorRef);
   public servicioGemini = inject(ServicioExtraccionGemini);
 
   get estado(): EstadoCarga {
@@ -80,10 +81,13 @@ export class Step1ImportarComponent {
       // Registrar en el historial de extracciones
       this.servicioAsistente.agregarExtraccionAlHistorial(datos);
 
-      // Avanzar automáticamente después de un breve delay para mostrar el estado "done"
+      // Asegurar que la UI responda de inmediato antes de emitir el avance
+      this.cdr.detectChanges();
+
+      // Avanzar automáticamente tras el procesamiento
       setTimeout(() => {
         this.siguientePaso.emit();
-      }, 1500);
+      }, 200);
 
     } catch (error) {
       console.error('Error al procesar el archivo con Gemini', error);

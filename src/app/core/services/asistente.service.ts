@@ -62,7 +62,21 @@ export class AsistenteService {
     if (guardado) {
       try {
         const parseado = JSON.parse(guardado);
-        this.estado.set(parseado);
+        // Fusión profunda básica para asegurar que propiedades nuevas (como notificaciones)
+        // existan incluso si el localStorage tiene una versión antigua.
+        this.estado.set({
+          ...estadoInicial,
+          ...parseado,
+          // Asegurar que sub-objetos críticos también se fusionen si es necesario
+          notificaciones: {
+            ...estadoInicial.notificaciones,
+            ...(parseado.notificaciones || {})
+          },
+          poliza: {
+            ...estadoInicial.poliza,
+            ...(parseado.poliza || {})
+          }
+        });
       } catch (e) {
         console.error('Error al cargar el estado del asistente', e);
       }
