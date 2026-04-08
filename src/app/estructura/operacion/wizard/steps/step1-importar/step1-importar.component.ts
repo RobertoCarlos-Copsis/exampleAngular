@@ -1,10 +1,10 @@
 import { Component, Output, EventEmitter, ViewChild, ElementRef, inject, ChangeDetectionStrategy } from '@angular/core';
-import { WizardService } from '../../../../../core/services/wizard.service';
-import { GeminiExtractionService } from '../../../../../core/services/gemini-extraction.service';
+import { AsistenteService } from '../../../../../core/services/asistente.service';
+import { ServicioExtraccionGemini } from '../../../../../core/services/extraccion-gemini.service';
 import { ReciboExtraido, EstadoRecibo } from '../../../../../core/models/wizard.model';
 
 /** Estados posibles de la demo de importación */
-type UploadState = 'idle' | 'processing' | 'done';
+type EstadoCarga = 'idle' | 'processing' | 'done';
 
 @Component({
   selector: 'app-step1-importar',
@@ -13,107 +13,106 @@ type UploadState = 'idle' | 'processing' | 'done';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Step1ImportarComponent {
-  @Output() nextStep = new EventEmitter<void>();
+  @Output() siguientePaso = new EventEmitter<void>();
 
-  private readonly wizardService = inject(WizardService);
-  public geminiService = inject(GeminiExtractionService);
+  private readonly servicioAsistente = inject(AsistenteService);
+  public servicioGemini = inject(ServicioExtraccionGemini);
 
-  get state(): UploadState {
-    if (this.geminiService.extrayendo()) return 'processing';
-    if (this.geminiService.datosExtraidos()) return 'done';
+  get estado(): EstadoCarga {
+    if (this.servicioGemini.extrayendo()) return 'processing';
+    if (this.servicioGemini.datosExtraidos()) return 'done';
     return 'idle';
   }
 
-  get files(): File[] {
-    const file = this.geminiService.archivoSeleccionado();
-    return file ? [file] : [];
+  get archivos(): File[] {
+    const archivo = this.servicioGemini.archivoSeleccionado();
+    return archivo ? [archivo] : [];
   }
 
-  /** Handles real file upload from the hidden file input or dropzone */
-  async onSelect(event: { addedFiles: File[] }) {
-    const file: File = event.addedFiles[0];
-    if (!file) return;
+  /** Maneja la carga real de archivos desde el input oculto o dropzone */
+  async alSeleccionar(evento: { addedFiles: File[] }) {
+    const archivo: File = evento.addedFiles[0];
+    if (!archivo) return;
 
-    // Check if it's a PDF or Image
-    const isPdf = file.type === 'application/pdf';
-    const isImage = file.type.startsWith('image/');
+    // Verificar si es PDF o Imagen
+    const esPdf = archivo.type === 'application/pdf';
+    const esImagen = archivo.type.startsWith('image/');
 
-    if (!isPdf && !isImage) {
-      this.geminiService.error.set('Solo se aceptan archivos PDF o Imágenes.');
+    if (!esPdf && !esImagen) {
+      this.servicioGemini.error.set('Solo se aceptan archivos PDF o Imágenes.');
       return;
     }
 
     try {
       // Usar el servicio de Gemini para extraer datos
-      const datos = await this.geminiService.extractText(file);
+      const datos = await this.servicioGemini.extraerTexto(archivo);
 
-      // Actualizar el estado global del wizard con lo extraído
-      this.wizardService.updateState({
-        client: {
-          name: datos.cliente.nombreCompleto,
+      // Actualizar el estado global del asistente con lo extraído
+      this.servicioAsistente.actualizarEstado({
+        cliente: {
+          nombre: datos.cliente.nombreCompleto,
           email: datos.cliente.email,
-          phone: datos.cliente.telefono,
-          address: datos.cliente.direccion
+          telefono: datos.cliente.telefono,
+          direccion: datos.cliente.direccion
         },
-        policy: {
-          data: {
-            policyNumber: datos.poliza.numeroPoliza,
-            concept: datos.poliza.tipoPoliza,
+        poliza: {
+          datos: {
+            numeroPoliza: datos.poliza.numeroPoliza,
+            concepto: datos.poliza.tipoPoliza,
             aseguradora: datos.poliza.aseguradora,
-            agentCode: datos.poliza.claveAgente,
+            claveAgente: datos.poliza.claveAgente,
             formaPago: datos.poliza.formaPago,
             moneda: datos.poliza.moneda || 'MXN',
-            startDate: datos.vigencia.vigenciaDesde,
-            endDate: datos.vigencia.vigenciaHasta,
-            extractedData: datos // Guardar objeto completo para pasos posteriores
+            fechaInicio: datos.vigencia.vigenciaDesde,
+            fechaFin: datos.vigencia.vigenciaHasta,
+            datosExtraidos: datos // Guardar objeto completo para pasos posteriores
           }
         },
-        receipts: datos.recibos.map((r: ReciboExtraido) => ({
+        recibos: datos.recibos.map((r: ReciboExtraido) => ({
           id: r.numero,
           prima: r.primaTotal,
           periodo: `${r.fechaInicio} al ${r.fechaFin}`,
           vencimiento: r.fechaFin,
-          status: EstadoRecibo.Pendiente
+          estado: EstadoRecibo.Pendiente
         }))
       });
 
       // Registrar en el historial de extracciones
-      this.wizardService.addExtractionToHistory(datos);
+      this.servicioAsistente.agregarExtraccionAlHistorial(datos);
 
       // Avanzar automáticamente después de un breve delay para mostrar el estado "done"
       setTimeout(() => {
-        this.nextStep.emit();
+        this.siguientePaso.emit();
       }, 1500);
 
     } catch (error) {
       console.error('Error al procesar el archivo con Gemini', error);
-      // Error is already set by the service via its error signal - no alert needed
+      // El error ya está establecido por el servicio mediante su señal de error
     }
   }
 
-  onCapturePhoto() {
+  alCapturarFoto() {
     // Simular flujo de captura (en una app real usaría Capacitor/Cordova o MediaDevices)
-    // Para la demo, lanzamos un archivo mock o simplemente disparamos el servicio con un delay
     console.warn('Función de cámara disponible en versión móvil.');
-    this.triggerFileInput();
+    this.dispararSeleccionArchivo();
   }
 
-  onRemove() {
-    this.geminiService.reset();
+  alEliminar() {
+    this.servicioGemini.reiniciar();
   }
 
-  @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
+  @ViewChild('fileInput') entradaArchivo!: ElementRef<HTMLInputElement>;
 
-  triggerFileInput() {
-    this.fileInput.nativeElement.accept = '.pdf,.jpg,.jpeg,.png';
-    this.fileInput.nativeElement.click();
+  dispararSeleccionArchivo() {
+    this.entradaArchivo.nativeElement.accept = '.pdf,.jpg,.jpeg,.png';
+    this.entradaArchivo.nativeElement.click();
   }
 
-  onFileSelected(event: Event) {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files.length > 0) {
-      this.onSelect({ addedFiles: [input.files[0]] });
-      input.value = '';
+  alSeleccionarArchivo(evento: Event) {
+    const entrada = evento.target as HTMLInputElement;
+    if (entrada.files && entrada.files.length > 0) {
+      this.alSeleccionar({ addedFiles: [entrada.files[0]] });
+      entrada.value = '';
     }
   }
 }

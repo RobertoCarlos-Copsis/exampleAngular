@@ -19,7 +19,7 @@
         <div class="kpi-card">
             <div class="kpi-icon blue"><mat-icon>verified</mat-icon></div>
             <div class="kpi-info">
-                <span id="txPolizaEstatus" name="txPolizaEstatus" class="v">{{ state().policy.data.policyNumber ?
+                <span id="txPolizaEstatus" name="txPolizaEstatus" class="v">{{ estado().poliza.datos.numeroPoliza ?
                     'Vigente' : 'Pendiente' }}</span>
                 <span id="lbPolizaEstatusLabel" name="lbPolizaEstatusLabel" class="l">Estatus Póliza</span>
             </div>
@@ -67,9 +67,9 @@
                         </div>
                         <div id="bar-chart" class="mt-2" style="min-height: 300px;">
                             @defer (on viewport) {
-                            <apx-chart [series]="barChart().series!" [chart]="barChart().chart!"
-                                [xaxis]="barChart().xaxis!" [plotOptions]="barChart().plotOptions!"
-                                [colors]="barChart().colors!" [dataLabels]="barChart().dataLabels!">
+                            <apx-chart [series]="graficaBarras().series!" [chart]="graficaBarras().chart!"
+                                [xaxis]="graficaBarras().xaxis!" [plotOptions]="graficaBarras().plotOptions!"
+                                [colors]="graficaBarras().colors!" [dataLabels]="graficaBarras().dataLabels!">
                             </apx-chart>
                             } @placeholder {
                             <div class="d-flex align-items-center justify-content-center"
@@ -95,10 +95,10 @@
                         <div id="pie-chart" class="mt-2"
                             style="min-height: 300px; display: flex; align-items: center; justify-content: center;">
                             @defer (on viewport) {
-                            <apx-chart [series]="pieChart().series!" [chart]="pieChart().chart!"
-                                [labels]="pieChart().labels!" [colors]="pieChart().colors!"
-                                [legend]="pieChart().legend!" [responsive]="pieChart().responsive!"
-                                [dataLabels]="pieChart().dataLabels!">
+                            <apx-chart [series]="graficaPastel().series!" [chart]="graficaPastel().chart!"
+                                [labels]="graficaPastel().labels!" [colors]="graficaPastel().colors!"
+                                [legend]="graficaPastel().legend!" [responsive]="graficaPastel().responsive!"
+                                [dataLabels]="graficaPastel().dataLabels!">
                             </apx-chart>
                             } @placeholder {
                             <div class="d-flex align-items-center justify-content-center w-100"
@@ -149,7 +149,7 @@
                         <li class="d-flex align-items-center">
                             <span class="dot-green me-3"></span>
                             <span class="text-secondary fw-semibold">Comisión configurada al {{
-                                state().commissionPercentage }}%</span>
+                                estado().porcentajeComision }}%</span>
                         </li>
                         <li class="d-flex align-items-center mb-0">
                             <span class="dot-green me-3"></span>
@@ -193,10 +193,8 @@
     <div class="d-flex flex-column flex-sm-row justify-content-center gap-3 pb-5 mt-5">
         <button id="btnProcesarNueva" name="btnProcesarNueva"
             class="btn-figma-secondary px-32px d-flex align-items-center justify-content-center gap-2"
-            (click)="onProbarOtra()" style="width: 320px; height: 56px; border-radius: 12px; font-weight: 700;">
+            (click)="alProbarOtra()" style="width: 320px; height: 56px; border-radius: 12px; font-weight: 700;">
             <mat-icon>add_circle</mat-icon>
             <span id="spProcesarNueva" name="spProcesarNueva">Procesar Nueva Póliza</span>
         </button>
     </div>
-
-</div>

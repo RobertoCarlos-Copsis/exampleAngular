@@ -23,7 +23,7 @@
                         </div>
                     </div>
                     <div class="notif-toggle">
-                        <mat-slide-toggle id="btnToggleCobranza" name="btnToggleCobranza" [checked]="state().notifications.cobranza.active" (change)="toggleNotification('cobranza', $event)"></mat-slide-toggle>
+                        <mat-slide-toggle id="btnToggleCobranza" name="btnToggleCobranza" [checked]="estado().notificaciones.cobranza.activa" (change)="alternarNotificacion('cobranza', $event)"></mat-slide-toggle>
                     </div>
                 </div>
 
@@ -40,7 +40,7 @@
                         </div>
                     </div>
                     <div class="notif-toggle">
-                        <mat-slide-toggle id="btnToggleRenovacion" name="btnToggleRenovacion" [checked]="state().notifications.renovacion.active" (change)="toggleNotification('renovacion', $event)"></mat-slide-toggle>
+                        <mat-slide-toggle id="btnToggleRenovacion" name="btnToggleRenovacion" [checked]="estado().notificaciones.renovacion.activa" (change)="alternarNotificacion('renovacion', $event)"></mat-slide-toggle>
                     </div>
                 </div>
 
@@ -56,7 +56,7 @@
                         </div>
                     </div>
                     <div class="notif-toggle">
-                        <mat-slide-toggle id="btnToggleSiniestros" name="btnToggleSiniestros" [checked]="state().notifications.siniestros.active" (change)="toggleNotification('siniestros', $event)"></mat-slide-toggle>
+                        <mat-slide-toggle id="btnToggleSiniestros" name="btnToggleSiniestros" [checked]="estado().notificaciones.siniestros.activa" (change)="alternarNotificacion('siniestros', $event)"></mat-slide-toggle>
                     </div>
                 </div>
 
@@ -68,7 +68,7 @@
                         <p id="spComisionesDesc" name="spComisionesDesc" class="mb-0">Avisos cuando se registren nuevos pagos de comisiones</p>
                     </div>
                     <div class="notif-toggle">
-                        <mat-slide-toggle id="btnToggleComisiones" name="btnToggleComisiones" [checked]="state().notifications.comisiones.active" (change)="toggleNotification('comisiones', $event)"></mat-slide-toggle>
+                        <mat-slide-toggle id="btnToggleComisiones" name="btnToggleComisiones" [checked]="estado().notificaciones.comisiones.activa" (change)="alternarNotificacion('comisiones', $event)"></mat-slide-toggle>
                     </div>
                 </div>
 
@@ -80,7 +80,7 @@
                         <p id="spGeneralesDesc" name="spGeneralesDesc" class="mb-0">Actualizaciones del sistema y novedades de la plataforma</p>
                     </div>
                     <div class="notif-toggle">
-                        <mat-slide-toggle id="btnToggleGenerales" name="btnToggleGenerales" [checked]="state().notifications.generales.active" (change)="toggleNotification('generales', $event)"></mat-slide-toggle>
+                        <mat-slide-toggle id="btnToggleGenerales" name="btnToggleGenerales" [checked]="estado().notificaciones.generales.activa" (change)="alternarNotificacion('generales', $event)"></mat-slide-toggle>
                     </div>
                 </div>
             </div>
@@ -98,7 +98,7 @@
 
     <!-- Final Actions -->
     <div class="d-flex justify-content-center mt-5 pb-4">
-        <button id="btnVerEstadisticas" name="btnVerEstadisticas" class="btn-primary-blue px-32px" (click)="onContinue()" style="width: 300px;">
+        <button id="btnVerEstadisticas" name="btnVerEstadisticas" class="btn-primary-blue px-32px" (click)="alContinuar()" style="width: 300px;">
             <span id="spVerEstadisticas" name="spVerEstadisticas">Ver Estadísticas Finales</span>
             <mat-icon>bar_chart</mat-icon>
         </button>

@@ -10,12 +10,12 @@ import { ThemeService } from '../../../core/services/theme.service';
 })
 export class WizardComponent {
   
-  constructor(public themeService: ThemeService) {}
+  constructor(public servicioTema: ThemeService) {}
 
   /** Rastrea qué pasos han sido completados para mostrar el check verde */
-  completedSteps: boolean[] = [false, false, false, false, false, false, false];
+  pasosCompletados: boolean[] = [false, false, false, false, false, false, false];
 
-  stepSummaries: string[] = [
+  resumenesPasos: string[] = [
     'Sube tu póliza',
     'Datos extraídos',
     'Configura comisiones',
@@ -25,21 +25,21 @@ export class WizardComponent {
     'Resumen de demo'
   ];
 
-  getCurrentStepSummary(index: number): string {
-    return this.stepSummaries[index] || '';
+  obtenerResumenPasoActual(indice: number): string {
+    return this.resumenesPasos[indice] || '';
   }
 
   /** Marca el paso como completado y avanza al siguiente */
-  advance(stepIndex: number, stepper: MatStepper) {
-    this.completedSteps[stepIndex] = true;
+  avanzar(indicePaso: number, stepper: MatStepper) {
+    this.pasosCompletados[indicePaso] = true;
     // setTimeout asegura que Angular detecte [completed]=true ANTES de invocar next()
     setTimeout(() => stepper.next(), 0);
   }
 
-  resetAll(stepper: MatStepper) {
-    this.completedSteps = [false, false, false, false, false, false, false];
+  reiniciarTodo(stepper: MatStepper) {
+    this.pasosCompletados = [false, false, false, false, false, false, false];
     stepper.reset();
   }
 
-  onStepChange(event: StepperSelectionEvent) { }
+  alCambiarPaso(evento: StepperSelectionEvent) { }
 }

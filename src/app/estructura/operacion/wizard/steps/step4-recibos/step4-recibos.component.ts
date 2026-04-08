@@ -1,6 +1,6 @@
 import { Component, Output, EventEmitter, inject, ChangeDetectionStrategy } from '@angular/core';
-import { WizardService } from '../../../../../core/services/wizard.service';
-import { Receipt, EstadoRecibo } from '../../../../../core/models/wizard.model';
+import { AsistenteService } from '../../../../../core/services/asistente.service';
+import { Recibo, EstadoRecibo } from '../../../../../core/models/wizard.model';
 
 @Component({
   selector: 'app-step4-recibos',
@@ -9,164 +9,163 @@ import { Receipt, EstadoRecibo } from '../../../../../core/models/wizard.model';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Step4RecibosComponent {
-  @Output() nextStep = new EventEmitter<void>();
+  @Output() siguientePaso = new EventEmitter<void>();
 
-  private readonly wizardService = inject(WizardService);
-  state = this.wizardService.state;
+  private readonly servicioAsistente = inject(AsistenteService);
+  estado = this.servicioAsistente.estado;
 
-  showBitacora = false;
-  activeIndex = 0;
-  actionSuccess: { type: string, message: string } | null = null;
-  activeDialog: { type: string, title: string, subtitle: string, icon: string } | null = null;
-  actionText = '';
-  isSending = false;
+  mostrarBitacora = false;
+  indiceActivo = 0;
+  exitoAccion: { tipo: string, mensaje: string } | null = null;
+  dialogoActivo: { tipo: string, titulo: string, subtitulo: string, icono: string } | null = null;
+  textoAccion = '';
+  enviando = false;
 
-  bitacoraItems = [
-    { fecha: 'Hoy, 10:24 AM', evento: 'Recibo detectado por IA', icon: 'auto_awesome', color: 'blue' },
-    { fecha: 'Ayer, 03:15 PM', evento: 'Póliza digitalizada correctamente', icon: 'description', color: 'green' }
+  elementosBitacora = [
+    { fecha: 'Hoy, 10:24 AM', evento: 'Recibo detectado por IA', icono: 'auto_awesome', color: 'blue' },
+    { fecha: 'Ayer, 03:15 PM', evento: 'Póliza digitalizada correctamente', icono: 'description', color: 'green' }
   ];
 
 
-  get reciboActual(): Receipt {
-    return this.state().receipts[this.activeIndex] || { id: 0, status: EstadoRecibo.Pendiente, vencimiento: '15/04/2025', prima: 0, periodo: '' };
+  get reciboActual(): Recibo {
+    return this.estado().recibos[this.indiceActivo] || { id: 0, estado: EstadoRecibo.Pendiente, vencimiento: '15/04/2025', prima: 0, periodo: '' };
   }
 
-  selectReceipt(index: number) {
-    this.activeIndex = index;
-    // Reiniciar bitácora simulada para cada recibo si fuera necesario
+  seleccionarRecibo(indice: number) {
+    this.indiceActivo = indice;
   }
 
-  openBitacora() {
-    this.showBitacora = true;
+  abrirBitacora() {
+    this.mostrarBitacora = true;
   }
 
-  closeBitacora() {
-    this.showBitacora = false;
+  cerrarBitacora() {
+    this.mostrarBitacora = false;
   }
 
-  closeDialog() {
-    this.activeDialog = null;
-    this.actionSuccess = null;
-    this.isSending = false;
+  cerrarDialogo() {
+    this.dialogoActivo = null;
+    this.exitoAccion = null;
+    this.enviando = false;
   }
 
-  onActionClick(action: string) {
-    if (action === 'Bitácora') {
-      this.openBitacora();
+  alHacerClicAccion(accion: string) {
+    if (accion === 'Bitácora') {
+      this.abrirBitacora();
       return;
     }
 
-    const client = this.state().client;
-    const policy = this.state().policy.data;
-    const amount = this.reciboActual.prima;
-    const formattedAmount = amount.toLocaleString('es-MX', { style: 'currency', currency: 'MXN' });
-    const dueDate = this.reciboActual.vencimiento || 'pronto';
+    const cliente = this.estado().cliente;
+    const poliza = this.estado().poliza.datos;
+    const monto = this.reciboActual.prima;
+    const montoFormateado = monto.toLocaleString('es-MX', { style: 'currency', currency: 'MXN' });
+    const fechaVencimiento = this.reciboActual.vencimiento || 'pronto';
 
-    const iconMap: Record<string, string> = {
+    const mapaIconos: Record<string, string> = {
       'Email': 'mail',
       'SMS': 'smartphone',
       'WhatsApp': 'chat'
     };
 
-    this.activeDialog = {
-      type: action,
-      title: `Enviar ${action}`,
-      subtitle: `Comunicación para Recibo ${this.activeIndex + 1}`,
-      icon: iconMap[action] || 'info'
+    this.dialogoActivo = {
+      tipo: accion,
+      titulo: `Enviar ${accion}`,
+      subtitulo: `Comunicación para Recibo ${this.indiceActivo + 1}`,
+      icono: mapaIconos[accion] || 'info'
     };
 
-    if (action === 'Email') {
-      this.actionText = `Estimado ${client.name},\n\nLe informamos que su recibo por ${formattedAmount} de la póliza ${policy.policyNumber} vence el ${dueDate}. Puede realizar su pago de forma segura en el siguiente enlace:\n\nhttps://quattrocrm.mx/pago\n\nQuedamos a sus órdenes.`;
-    } else if (action === 'SMS') {
-      this.actionText = `Q-Seguros: Hola ${client.name}, tu recibo de ${formattedAmount} vence el ${dueDate}. Paga aquí: https://q-seg.mx/p`;
-    } else if (action === 'WhatsApp') {
-      this.actionText = `Hola *${client.name}*! 👋\n\nTe saludo de Q-Seguros. Te comparto tu link de pago para el recibo de ${formattedAmount} con vencimiento al ${dueDate}:\n\n🔗 https://wa.link/pago-seguros\n\nQuedo a tus órdenes.`;
+    if (accion === 'Email') {
+      this.textoAccion = `Estimado ${cliente.nombre},\n\nLe informamos que su recibo por ${montoFormateado} de la póliza ${poliza.numeroPoliza} vence el ${fechaVencimiento}. Puede realizar su pago de forma segura en el siguiente enlace:\n\nhttps://quattrocrm.mx/pago\n\nQuedamos a sus órdenes.`;
+    } else if (accion === 'SMS') {
+      this.textoAccion = `Q-Seguros: Hola ${cliente.nombre}, tu recibo de ${montoFormateado} vence el ${fechaVencimiento}. Paga aquí: https://q-seg.mx/p`;
+    } else if (accion === 'WhatsApp') {
+      this.textoAccion = `Hola *${cliente.nombre}*! 👋\n\nTe saludo de Q-Seguros. Te comparto tu link de pago para el recibo de ${montoFormateado} con vencimiento al ${fechaVencimiento}:\n\n🔗 https://wa.link/pago-seguros\n\nQuedo a tus órdenes.`;
     }
   }
 
-  confirmAction() {
-    if (!this.activeDialog) return;
+  confirmarAccion() {
+    if (!this.dialogoActivo) return;
 
-    this.isSending = true;
+    this.enviando = true;
 
     // Simular retraso de red
     setTimeout(() => {
-      this.isSending = false;
-      this.actionSuccess = {
-        type: this.activeDialog!.type,
-        message: `¡${this.activeDialog!.type} enviado exitosamente a ${this.activeDialog!.type === 'Email' ? this.state().client.email : this.state().client.phone}!`
+      this.enviando = false;
+      this.exitoAccion = {
+        tipo: this.dialogoActivo!.tipo,
+        mensaje: `¡${this.dialogoActivo!.tipo} enviado exitosamente a ${this.dialogoActivo!.tipo === 'Email' ? this.estado().cliente.email : this.estado().cliente.telefono}!`
       };
 
-      const colorMap: Record<string, string> = {
+      const mapaColores: Record<string, string> = {
         'Email': 'blue',
         'SMS': 'pink',
         'WhatsApp': 'green'
       };
 
       // Agregar a la bitácora
-      this.bitacoraItems.unshift({
+      this.elementosBitacora.unshift({
         fecha: 'Hace un momento',
-        evento: `${this.activeDialog!.type} enviado: ${this.activeDialog!.type === 'Email' ? 'Recordatorio de pago' : 'Link de cobro'}`,
-        icon: this.activeDialog!.icon,
-        color: colorMap[this.activeDialog!.type] || 'gray'
+        evento: `${this.dialogoActivo!.tipo} enviado: ${this.dialogoActivo!.tipo === 'Email' ? 'Recordatorio de pago' : 'Link de cobro'}`,
+        icono: this.dialogoActivo!.icono,
+        color: mapaColores[this.dialogoActivo!.tipo] || 'gray'
       });
 
       setTimeout(() => {
-        this.closeDialog();
+        this.cerrarDialogo();
       }, 2000);
     }, 1500);
   }
 
-  togglePaid(index: number) {
-    const receipts = [...this.state().receipts];
-    const r = { ...receipts[index] };
-    r.status = r.status === EstadoRecibo.Pagado ? EstadoRecibo.Pendiente : EstadoRecibo.Pagado;
-    receipts[index] = r;
-    this.wizardService.updateState({ receipts });
+  alternarPagado(indice: number) {
+    const recibos = [...this.estado().recibos];
+    const r = { ...recibos[indice] };
+    r.estado = r.estado === EstadoRecibo.Pagado ? EstadoRecibo.Pendiente : EstadoRecibo.Pagado;
+    recibos[indice] = r;
+    this.servicioAsistente.actualizarEstado({ recibos });
 
     // Agregar a la bitácora
-    this.bitacoraItems.unshift({
+    this.elementosBitacora.unshift({
       fecha: 'Hace un momento',
-      evento: `Estado cambiado a: ${r.status}`,
-      icon: r.status === EstadoRecibo.Pagado ? 'check_circle' : 'pending',
-      color: r.status === EstadoRecibo.Pagado ? 'green' : 'yellow'
+      evento: `Estado cambiado a: ${r.estado}`,
+      icono: r.estado === EstadoRecibo.Pagado ? 'check_circle' : 'pending',
+      color: r.estado === EstadoRecibo.Pagado ? 'green' : 'yellow'
     });
   }
 
-  onContinue() {
-    this.wizardService.nextStep();
-    this.nextStep.emit();
+  alContinuar() {
+    this.servicioAsistente.siguientePaso();
+    this.siguientePaso.emit();
   }
 
   get totalPrimas() {
-    return (this.state().receipts || []).reduce((acc: number, r: Receipt) => acc + (r.prima || 0), 0);
+    return (this.estado().recibos || []).reduce((acc: number, r: Recibo) => acc + (r.prima || 0), 0);
   }
 
   get comisionEstimada() {
-    const pct = this.state().commissionPercentage || 0;
+    const pct = this.estado().porcentajeComision || 0;
     return (this.totalPrimas * pct) / 100;
   }
 
-  get isFormValid(): boolean {
-    if (!this.activeDialog) return true;
+  get esFormularioValido(): boolean {
+    if (!this.dialogoActivo) return true;
 
     // Validar mensaje no vacío
-    if (!this.actionText || this.actionText.trim().length === 0) return false;
+    if (!this.textoAccion || this.textoAccion.trim().length === 0) return false;
 
     // Validar según tipo
-    if (this.activeDialog.type === 'Email') {
-      const email = this.state().client.email;
+    if (this.dialogoActivo.tipo === 'Email') {
+      const email = this.estado().cliente.email;
       return !!email && email.includes('@');
     } else {
-      const phone = this.state().client.phone;
-      return !!phone && phone.trim().length >= 8;
+      const telefono = this.estado().cliente.telefono;
+      return !!telefono && telefono.trim().length >= 8;
     }
   }
-  trackByReceiptId(_index: number, receipt: Receipt): number {
-    return receipt.id;
+  rastrearPorIdRecibo(_indice: number, recibo: Recibo): number {
+    return recibo.id;
   }
 
-  trackByIndex(index: number): number {
-    return index;
+  rastrearPorIndice(indice: number): number {
+    return indice;
   }
 }

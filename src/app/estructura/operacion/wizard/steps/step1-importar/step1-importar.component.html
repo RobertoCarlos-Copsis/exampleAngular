@@ -7,21 +7,21 @@
     </div>
 
     <!-- Hidden native file input -->
-    <input #fileInput type="file" accept=".pdf,image/*" style="display: none" (change)="onFileSelected($event)" />
+    <input #fileInput type="file" accept=".pdf,image/*" style="display: none" (change)="alSeleccionarArchivo($event)" />
 
     <!-- Main Upload Area -->
     <div class="figma-card mb-32px overflow-hidden">
         <div class="dropzone-figma" 
-             [class.processing]="state === 'processing'" 
-             [class.success]="state === 'done'" 
-             (click)="state === 'idle' ? triggerFileInput() : null" 
-             (keydown.enter)="state === 'idle' ? triggerFileInput() : null"
-             (keydown.space)="state === 'idle' ? triggerFileInput() : null"
+             [class.processing]="estado === 'processing'" 
+             [class.success]="estado === 'done'" 
+             (click)="estado === 'idle' ? dispararSeleccionArchivo() : null" 
+             (keydown.enter)="estado === 'idle' ? dispararSeleccionArchivo() : null"
+             (keydown.space)="estado === 'idle' ? dispararSeleccionArchivo() : null"
              tabindex="0"
              role="button"
              aria-label="Zona de carga de documentos">
 
-            <ng-container *ngIf="state === 'idle'">
+            <ng-container *ngIf="estado === 'idle'">
                 <div class="orb-container mb-20px">
                     <div class="orb blue"><mat-icon>description</mat-icon></div>
                     <div class="orb purple"><mat-icon>photo_camera</mat-icon></div>
@@ -31,13 +31,13 @@
 
                 <div class="d-flex justify-content-center vertical-center gap-3">
                     <button id="btnSubirArchivo" name="btnSubirArchivo" class="dz-action-item" 
-                            (click)="$event.stopPropagation(); triggerFileInput()"
+                            (click)="$event.stopPropagation(); dispararSeleccionArchivo()"
                             type="button">
                         <div class="dz-icon-box blue"><mat-icon>upload_file</mat-icon></div>
                         <span>Subir Archivo</span>
                     </button>
                     <button id="btnCapturarFoto" name="btnCapturarFoto" class="dz-action-item" 
-                            (click)="$event.stopPropagation(); onCapturePhoto()"
+                            (click)="$event.stopPropagation(); alCapturarFoto()"
                             type="button">
                         <div class="dz-icon-box purple"><mat-icon>photo_camera</mat-icon></div>
                         <span>Capturar Foto</span>
@@ -48,23 +48,23 @@
             </ng-container>
 
             <!-- Processing / Scanner UI -->
-            <ng-container *ngIf="state === 'processing'">
+            <ng-container *ngIf="estado === 'processing'">
                 <div class="ai-processing-ui py-5 text-center">
                     <div class="scanner-container mb-32px mx-auto">
                         <div class="scanner-line"></div>
                         <mat-icon class="ai-brain-icon">psychology</mat-icon>
                     </div>
                     <h3 class="fs-20x font-700 text-figma-blue-600 mb-10px">Analizando Póliza con IA</h3>
-                    <p class="fs-14x text-figma-gray-400 text-center">{{ geminiService.archivoSeleccionado()?.name }}
+                    <p class="fs-14x text-figma-gray-400 text-center">{{ servicioGemini.archivoSeleccionado()?.name }}
                     </p>
                     <div class="custom-progress mt-4 mx-auto" style="max-width: 300px;">
-                        <div class="progress-fill" [style.width.%]="geminiService.progreso()"></div>
+                        <div class="progress-fill" [style.width.%]="servicioGemini.progreso()"></div>
                     </div>
                 </div>
             </ng-container>
 
             <!-- Success State -->
-            <ng-container *ngIf="state === 'done' && !geminiService.error()">
+            <ng-container *ngIf="estado === 'done' && !servicioGemini.error()">
                 <div class="success-ui py-5 text-center">
                     <div class="success-orb mb-32px mx-auto">
                         <mat-icon>check</mat-icon>
@@ -76,14 +76,14 @@
             </ng-container>
 
             <!-- Error State -->
-            <ng-container *ngIf="geminiService.error()">
+            <ng-container *ngIf="servicioGemini.error()">
                 <div class="error-ui py-5 text-center animation-fade-in">
                     <div class="orb bg-danger text-white mx-auto mb-32px" style="width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 20px rgba(239, 68, 68, 0.2);">
                         <mat-icon style="font-size: 40px; width: 40px; height: 40px;">error_outline</mat-icon>
                     </div>
                     <h3 class="fs-24x font-800 text-danger mb-2">Error de Lectura</h3>
-                    <p class="fs-16x text-figma-gray-400 mb-4 px-4">{{ geminiService.error() }}</p>
-                    <button class="btn-primary-blue mx-auto" (click)="geminiService.reset()">
+                    <p class="fs-16x text-figma-gray-400 mb-4 px-4">{{ servicioGemini.error() }}</p>
+                    <button class="btn-primary-blue mx-auto" (click)="servicioGemini.reiniciar()">
                         <mat-icon class="me-2">refresh</mat-icon>
                         Intentar de Nuevo
                     </button>
@@ -96,37 +96,37 @@
     <div class="row justify-content-center g-4 mt-4 text-start">
         <div class="col-md-4">
             <div class="figma-card p-4 d-flex align-items-center gap-3 border-0 bg-white h-100" style="background: white !important;">
-                <mat-icon *ngIf="state !== 'processing'" class="text-figma-blue-600 fs-24x">picture_as_pdf</mat-icon>
-                <div *ngIf="state === 'processing'" class="skeleton" style="width: 24px; height: 24px;"></div>
+                <mat-icon *ngIf="estado !== 'processing'" class="text-figma-blue-600 fs-24x">picture_as_pdf</mat-icon>
+                <div *ngIf="estado === 'processing'" class="skeleton" style="width: 24px; height: 24px;"></div>
                 <div class="flex-grow-1">
-                    <span *ngIf="state !== 'processing'" class="d-block fs-16x font-700 text-figma-gray-900">Formatos PDF</span>
-                    <div *ngIf="state === 'processing'" class="skeleton mb-1" style="width: 80%; height: 18px;"></div>
-                    <small *ngIf="state !== 'processing'" class="text-figma-gray-400">Lectura instantánea</small>
-                    <div *ngIf="state === 'processing'" class="skeleton" style="width: 50%; height: 12px;"></div>
+                    <span *ngIf="estado !== 'processing'" class="d-block fs-16x font-700 text-figma-gray-900">Formatos PDF</span>
+                    <div *ngIf="estado === 'processing'" class="skeleton mb-1" style="width: 80%; height: 18px;"></div>
+                    <small *ngIf="estado !== 'processing'" class="text-figma-gray-400">Lectura instantánea</small>
+                    <div *ngIf="estado === 'processing'" class="skeleton" style="width: 50%; height: 12px;"></div>
                 </div>
             </div>
         </div>
         <div class="col-md-4">
             <div class="figma-card p-4 d-flex align-items-center gap-3 border-0 bg-white h-100" style="background: white !important;">
-                <mat-icon *ngIf="state !== 'processing'" class="text-figma-amber-500 fs-24x">stay_primary_portrait</mat-icon>
-                <div *ngIf="state === 'processing'" class="skeleton" style="width: 24px; height: 24px;"></div>
+                <mat-icon *ngIf="estado !== 'processing'" class="text-figma-amber-500 fs-24x">stay_primary_portrait</mat-icon>
+                <div *ngIf="estado === 'processing'" class="skeleton" style="width: 24px; height: 24px;"></div>
                 <div class="flex-grow-1">
-                    <span *ngIf="state !== 'processing'" class="d-block fs-16x font-700 text-figma-gray-900">Mobile Ready</span>
-                    <div *ngIf="state === 'processing'" class="skeleton mb-1" style="width: 70%; height: 18px;"></div>
-                    <small *ngIf="state !== 'processing'" class="text-figma-gray-400">Optimizado para fotos</small>
-                    <div *ngIf="state === 'processing'" class="skeleton" style="width: 40%; height: 12px;"></div>
+                    <span *ngIf="estado !== 'processing'" class="d-block fs-16x font-700 text-figma-gray-900">Mobile Ready</span>
+                    <div *ngIf="estado === 'processing'" class="skeleton mb-1" style="width: 70%; height: 18px;"></div>
+                    <small *ngIf="estado !== 'processing'" class="text-figma-gray-400">Optimizado para fotos</small>
+                    <div *ngIf="estado === 'processing'" class="skeleton" style="width: 40%; height: 12px;"></div>
                 </div>
             </div>
         </div>
         <div class="col-md-4">
             <div class="figma-card p-4 d-flex align-items-center gap-3 border-0 bg-figma-green-50 h-100" style="background: #f0fdf4 !important; border: 1px solid #dcfce7 !important; border-radius: 12px;">
-                <mat-icon *ngIf="state !== 'processing'" class="text-figma-green-600 fs-24x">task_alt</mat-icon>
-                <div *ngIf="state === 'processing'" class="skeleton" style="width: 24px; height: 24px;"></div>
+                <mat-icon *ngIf="estado !== 'processing'" class="text-figma-green-600 fs-24x">task_alt</mat-icon>
+                <div *ngIf="estado === 'processing'" class="skeleton" style="width: 24px; height: 24px;"></div>
                 <div class="flex-grow-1">
-                    <span *ngIf="state !== 'processing'" class="d-block fs-16x font-700 text-figma-green-600">OCR Inteligente</span>
-                    <div *ngIf="state === 'processing'" class="skeleton mb-1" style="width: 90%; height: 18px;"></div>
-                    <small *ngIf="state !== 'processing'" class="text-figma-green-600">Extracción precisa</small>
-                    <div *ngIf="state === 'processing'" class="skeleton" style="width: 60%; height: 12px;"></div>
+                    <span *ngIf="estado !== 'processing'" class="d-block fs-16x font-700 text-figma-green-600">OCR Inteligente</span>
+                    <div *ngIf="estado === 'processing'" class="skeleton mb-1" style="width: 90%; height: 18px;"></div>
+                    <small *ngIf="estado !== 'processing'" class="text-figma-green-600">Extracción precisa</small>
+                    <div *ngIf="estado === 'processing'" class="skeleton" style="width: 60%; height: 12px;"></div>
                 </div>
             </div>
         </div>

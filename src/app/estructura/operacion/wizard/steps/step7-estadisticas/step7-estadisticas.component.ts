@@ -12,11 +12,11 @@ import {
   ApexPlotOptions,
   ApexTooltip
 } from "ng-apexcharts";
-import { WizardService } from '../../../../../core/services/wizard.service';
-import { GeminiExtractionService } from '../../../../../core/services/gemini-extraction.service';
+import { AsistenteService } from '../../../../../core/services/asistente.service';
+import { ServicioExtraccionGemini } from '../../../../../core/services/extraccion-gemini.service';
 import { EstadisticasService } from '../../../../../core/services/estadisticas.service';
 
-export type ChartOptions = {
+export type OpcionesGrafica = {
   series: ApexAxisChartSeries | ApexNonAxisChartSeries;
   chart: ApexChart;
   responsive: ApexResponsive[];
@@ -38,46 +38,46 @@ export type ChartOptions = {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Step7EstadisticasComponent {
-  @Output() resetWizard = new EventEmitter<void>();
+  @Output() reiniciarAsistente = new EventEmitter<void>();
 
-  private readonly wizardService = inject(WizardService);
-  private readonly geminiService = inject(GeminiExtractionService);
+  private readonly servicioAsistente = inject(AsistenteService);
+  private readonly servicioGemini = inject(ServicioExtraccionGemini);
   private readonly estadisticasService = inject(EstadisticasService);
-  state = this.wizardService.state;
+  estado = this.servicioAsistente.estado;
 
 
   get totalPrima() {
-    return this.estadisticasService.calcularTotalPrima(this.state().receipts);
+    return this.estadisticasService.calcularTotalPrima(this.estado().recibos);
   }
 
   get totalComision() {
-    return this.estadisticasService.calcularTotalComision(this.totalPrima, this.state().commissionPercentage);
+    return this.estadisticasService.calcularTotalComision(this.totalPrima, this.estado().porcentajeComision);
   }
 
   get numRecibos() {
-    return this.estadisticasService.calcularNumRecibos(this.state().receipts);
+    return this.estadisticasService.calcularNumRecibos(this.estado().recibos);
   }
 
   get numAlertas() {
-    return this.estadisticasService.calcularNumAlertas(this.state().notifications);
+    return this.estadisticasService.calcularNumAlertas(this.estado().notificaciones);
   }
 
   get porcentajeCobranza() {
-    return this.estadisticasService.calcularPorcentajeCobranza(this.state().receipts);
+    return this.estadisticasService.calcularPorcentajeCobranza(this.estado().recibos);
   }
 
   // Configuración de la Gráfica de Pastel (Distribución)
-  public pieChart = computed<Partial<ChartOptions>>(() => {
-    const data = this.estadisticasService.generarDatosPastel(this.totalPrima);
+  public graficaPastel = computed<Partial<OpcionesGrafica>>(() => {
+    const datos = this.estadisticasService.generarDatosPastel(this.totalPrima);
 
     return {
-      series: data.series,
+      series: datos.series,
       chart: {
         width: "100%",
         type: "pie",
         fontFamily: 'Inter, sans-serif'
       },
-      labels: data.labels,
+      labels: datos.labels,
       colors: ['#2563EB', '#9333EA', '#F59E0B'],
       legend: { position: 'bottom' },
       dataLabels: { 
@@ -106,11 +106,11 @@ export class Step7EstadisticasComponent {
   });
 
   // Configuración de la Gráfica de Barras (Comisiones)
-  public barChart = computed<Partial<ChartOptions>>(() => {
-    const data = this.estadisticasService.generarDatosBarras(this.totalComision);
+  public graficaBarras = computed<Partial<OpcionesGrafica>>(() => {
+    const datos = this.estadisticasService.generarDatosBarras(this.totalComision);
 
     return {
-      series: data.series,
+      series: datos.series,
       chart: {
         type: "bar",
         height: 300,
@@ -130,7 +130,7 @@ export class Step7EstadisticasComponent {
           return "$" + Math.round(val).toLocaleString('es-MX');
         }
       },
-      xaxis: { categories: data.categories },
+      xaxis: { categories: datos.categories },
       yaxis: {
         labels: {
           formatter: function (val: number) {
@@ -150,12 +150,9 @@ export class Step7EstadisticasComponent {
     };
   });
 
-  onProbarOtra() {
-    this.geminiService.reset();
-    this.wizardService.resetState();
-    this.resetWizard.emit();
+  alProbarOtra() {
+    this.servicioGemini.reiniciar();
+    this.servicioAsistente.reiniciarEstado();
+    this.reiniciarAsistente.emit();
   }
-
-
-
 }

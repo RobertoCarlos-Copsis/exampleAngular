@@ -12,7 +12,7 @@
             <div class="doc-header">
                 <div class="insurer-logo-mock">
                     <mat-icon style="color: #4f46e5; font-size: 32px; width: 32px; height: 32px;">shield</mat-icon>
-                    <span id="txAseguradora" name="txAseguradora">{{ state().policy.data.aseguradora || 'ASEGURADORA QUATTRO' }}</span>
+                    <span id="txAseguradora" name="txAseguradora">{{ estado().poliza.datos.aseguradora || 'ASEGURADORA QUATTRO' }}</span>
                 </div>
                 <div id="lbDocStatus" name="lbDocStatus" class="doc-status-badge">DOCUMENTO LISTO</div>
             </div>
@@ -21,11 +21,11 @@
                 <div class="doc-main-info">
                     <div class="doc-field">
                         <span id="lbNumeroPolizaLabel" name="lbNumeroPolizaLabel" class="doc-label">Número de Póliza</span>
-                        <strong id="txNumeroPoliza" name="txNumeroPoliza">{{ state().policy.data.policyNumber || '—' }}</strong>
+                        <strong id="txNumeroPoliza" name="txNumeroPoliza">{{ estado().poliza.datos.numeroPoliza || '—' }}</strong>
                     </div>
                     <div class="doc-field">
                         <span id="lbTipoSeguroLabel" name="lbTipoSeguroLabel" class="doc-label">Tipo de Seguro</span>
-                        <p id="txTipoSeguro" name="txTipoSeguro">{{ state().policy.data.concept || '—' }}</p>
+                        <p id="txTipoSeguro" name="txTipoSeguro">{{ estado().poliza.datos.concepto || '—' }}</p>
                     </div>
                 </div>
 
@@ -34,16 +34,16 @@
                 <div class="doc-footer-info">
                     <div class="doc-field">
                         <span id="lbAseguradoLabel" name="lbAseguradoLabel" class="doc-label">Asegurado / Contratante</span>
-                        <strong id="txAseguradoNombre" name="txAseguradoNombre">{{ state().client.name || '—' }}</strong>
+                        <strong id="txAseguradoNombre" name="txAseguradoNombre">{{ estado().cliente.nombre || '—' }}</strong>
                     </div>
                     <div class="doc-dates">
                         <div class="doc-field">
                             <span id="lbDesdeLabel" name="lbDesdeLabel" class="doc-label">Desde</span>
-                            <span id="txFechaDesde" name="txFechaDesde">{{ state().policy.data.startDate || '—' }}</span>
+                            <span id="txFechaDesde" name="txFechaDesde">{{ estado().poliza.datos.fechaInicio || '—' }}</span>
                         </div>
                         <div class="doc-field">
                             <span id="lbHastaLabel" name="lbHastaLabel" class="doc-label">Hasta</span>
-                            <span id="txFechaHasta" name="txFechaHasta">{{ state().policy.data.endDate || '—' }}</span>
+                            <span id="txFechaHasta" name="txFechaHasta">{{ estado().poliza.datos.fechaFin || '—' }}</span>
                         </div>
                     </div>
                 </div>
@@ -59,10 +59,10 @@
             <div class="col-md-4">
                 <button id="btnMetodoTuPoliza" name="btnMetodoTuPoliza" 
                         class="d-card email h-100 w-100" 
-                        [class.active]="selectedMethod === 'TuPoliza'" 
-                        (click)="onMethodSelect('TuPoliza')"
+                        [class.active]="metodoSeleccionado === 'TuPoliza'" 
+                        (click)="alSeleccionarMetodo('TuPoliza')"
                         type="button">
-                    <div class="card-check" *ngIf="selectedMethod === 'TuPoliza'"><mat-icon>check_box</mat-icon></div>
+                    <div class="card-check" *ngIf="metodoSeleccionado === 'TuPoliza'"><mat-icon>check_box</mat-icon></div>
                     <div class="d-icon-box"><mat-icon>mail</mat-icon></div>
                     <h4 id="lbTuPoliza" name="lbTuPoliza">TuPoliza</h4>
                     <p id="spTuPolizaDesc" name="spTuPolizaDesc">Envío por correo con landing</p>
@@ -72,10 +72,10 @@
             <div class="col-md-4">
                 <button id="btnMetodoApp" name="btnMetodoApp" 
                         class="d-card app h-100 w-100" 
-                        [class.active]="selectedMethod === 'App'" 
-                        (click)="onMethodSelect('App')"
+                        [class.active]="metodoSeleccionado === 'App'" 
+                        (click)="alSeleccionarMetodo('App')"
                         type="button">
-                    <div class="card-check" *ngIf="selectedMethod === 'App'"><mat-icon>check_box</mat-icon></div>
+                    <div class="card-check" *ngIf="metodoSeleccionado === 'App'"><mat-icon>check_box</mat-icon></div>
                     <div class="d-icon-box"><mat-icon>phone_android</mat-icon></div>
                     <h4 id="lbMiPolizaApp" name="lbMiPolizaApp">MiPoliza App</h4>
                     <p id="spMiPolizaAppDesc" name="spMiPolizaAppDesc">Compartir vía app móvil</p>
@@ -85,10 +85,10 @@
             <div class="col-md-4">
                 <button id="btnMetodoRenovacion" name="btnMetodoRenovacion" 
                         class="d-card renewal h-100 w-100" 
-                        [class.active]="selectedMethod === 'Renovacion'" 
-                        (click)="onMethodSelect('Renovacion')"
+                        [class.active]="metodoSeleccionado === 'Renovacion'" 
+                        (click)="alSeleccionarMetodo('Renovacion')"
                         type="button">
-                    <div class="card-check" *ngIf="selectedMethod === 'Renovacion'"><mat-icon>check_box</mat-icon></div>
+                    <div class="card-check" *ngIf="metodoSeleccionado === 'Renovacion'"><mat-icon>check_box</mat-icon></div>
                     <div class="d-icon-box"><mat-icon>sync</mat-icon></div>
                     <h4 id="lbRenovacion" name="lbRenovacion">Renovación</h4>
                     <p id="spRenovacionDesc" name="spRenovacionDesc">Recordatorio de vencimiento</p>
@@ -96,92 +96,92 @@
             </div>
         </div>
 
-        <button id="btnConfirmarPaso5" name="btnConfirmarPaso5" class="btn-primary-blue mt-4 w-100" (click)="onContinue()" style="height: 52px;">
-            <mat-icon>{{ selectedMethod ? 'check_circle' : 'arrow_forward' }}</mat-icon>
-            <span id="spConfirmarPaso5" name="spConfirmarPaso5">{{ selectedMethod ? 'Confirmar y Continuar' : 'Continuar sin Seleccionar' }}</span>
+        <button id="btnConfirmarPaso5" name="btnConfirmarPaso5" class="btn-primary-blue mt-4 w-100" (click)="alContinuar()" style="height: 52px;">
+            <mat-icon>{{ metodoSeleccionado ? 'check_circle' : 'arrow_forward' }}</mat-icon>
+            <span id="spConfirmarPaso5" name="spConfirmarPaso5">{{ metodoSeleccionado ? 'Confirmar y Continuar' : 'Continuar sin Seleccionar' }}</span>
         </button>
     </div>
 
 </div>
 
 <!-- ── Backdrop ────────────────────────────────────────────────────── -->
-<button class="modal-backdrop-figma" *ngIf="activeDialog" (click)="closeDialog()" (keydown.escape)="closeDialog()" type="button" aria-label="Cerrar modal"></button>
+<button class="modal-backdrop-figma" *ngIf="dialogoActivo" (click)="cerrarDialogo()" (keydown.escape)="cerrarDialogo()" type="button" aria-label="Cerrar modal"></button>
 
 <!-- ── Dialog ────────────────────────────────────────────────────── -->
-<div class="action-modal-figma" *ngIf="activeDialog">
+<div class="action-modal-figma" *ngIf="dialogoActivo">
 
     <!-- Header -->
     <div class="modal-header-figma">
         <div class="d-flex align-items-center gap-3">
-            <div class="icon-box-figma" [ngClass]="activeDialog.type.toLowerCase()">
-                <mat-icon>{{ activeDialog.icon }}</mat-icon>
+            <div class="icon-box-figma" [ngClass]="dialogoActivo.tipo.toLowerCase()">
+                <mat-icon>{{ dialogoActivo.icono }}</mat-icon>
             </div>
             <div>
-                <h3 id="lbDialogTitulo" name="lbDialogTitulo" class="m-0 fs-18x font-800">{{ activeDialog.title }}</h3>
-                <p id="spDialogSubtitulo" name="spDialogSubtitulo" class="m-0 fs-12x text-figma-gray-400">{{ activeDialog.subtitle }}</p>
+                <h3 id="lbDialogTitulo" name="lbDialogTitulo" class="m-0 fs-18x font-800">{{ dialogoActivo.titulo }}</h3>
+                <p id="spDialogSubtitulo" name="spDialogSubtitulo" class="m-0 fs-12x text-figma-gray-400">{{ dialogoActivo.subtitulo }}</p>
             </div>
         </div>
-        <button id="btnDialogClose" name="btnDialogClose" class="btn-close-figma" (click)="closeDialog()">
+        <button id="btnDialogClose" name="btnDialogClose" class="btn-close-figma" (click)="cerrarDialogo()">
             <mat-icon>close</mat-icon>
         </button>
     </div>
 
     <!-- Body — Success -->
-    <div class="modal-body-figma py-5 text-center" *ngIf="dialogSuccess">
+    <div class="modal-body-figma py-5 text-center" *ngIf="exitoDialogo">
         <div class="success-icon-anim mb-4">
             <mat-icon>check_circle</mat-icon>
         </div>
         <h4 id="lbSuccessTitle" name="lbSuccessTitle" class="font-800 mb-2">¡Listo!</h4>
         <p id="spSuccessMsg" name="spSuccessMsg" class="text-figma-gray-400 fs-14x">
-            <ng-container *ngIf="activeDialog.type === 'TuPoliza'">La póliza fue enviada al correo del cliente.</ng-container>
-            <ng-container *ngIf="activeDialog.type === 'App'">La póliza fue compartida a la app del cliente.</ng-container>
-            <ng-container *ngIf="activeDialog.type === 'Renovacion'">El recordatorio de renovación fue programado.</ng-container>
+            <ng-container *ngIf="dialogoActivo.tipo === 'TuPoliza'">La póliza fue enviada al correo del cliente.</ng-container>
+            <ng-container *ngIf="dialogoActivo.tipo === 'App'">La póliza fue compartida a la app del cliente.</ng-container>
+            <ng-container *ngIf="dialogoActivo.tipo === 'Renovacion'">El recordatorio de renovación fue programado.</ng-container>
         </p>
     </div>
 
     <!-- Body — TuPoliza form -->
-    <div class="modal-body-figma py-4" *ngIf="!dialogSuccess && activeDialog.type === 'TuPoliza'">
+    <div class="modal-body-figma py-4" *ngIf="!exitoDialogo && dialogoActivo.tipo === 'TuPoliza'">
         <div class="input-group-figma mb-3">
             <label id="lbDiagPara" name="lbDiagPara" for="txDiagEmail">Para:</label>
-            <input id="txDiagEmail" name="txDiagEmail" type="text" [value]="state().client.email || ''" readonly>
+            <input id="txDiagEmail" name="txDiagEmail" type="text" [value]="estado().cliente.email || ''" readonly>
         </div>
         <div class="input-group-figma mb-3">
             <label id="lbDiagAsunto" name="lbDiagAsunto" for="txDiagAsunto">Asunto:</label>
-            <input id="txDiagAsunto" name="txDiagAsunto" type="text" [value]="'Tu Póliza ' + (state().policy.data.policyNumber || '') + ' está lista'" readonly>
+            <input id="txDiagAsunto" name="txDiagAsunto" type="text" [value]="'Tu Póliza ' + (estado().poliza.datos.numeroPoliza || '') + ' está lista'" readonly>
         </div>
         <div class="input-group-figma">
             <label id="lbDiagMensaje" name="lbDiagMensaje" for="txaDiagMensaje">Vista previa del mensaje:</label>
             <textarea id="txaDiagMensaje" name="txaDiagMensaje" rows="4" readonly
-                [value]="'Hola ' + (state().client.name || 'Cliente') + ',\n\nTe compartimos tu póliza ' + (state().policy.data.policyNumber || '') + ' de ' + (state().policy.data.aseguradora || 'tu aseguradora') + '.\n\nVigencia: ' + (state().policy.data.startDate || '') + ' al ' + (state().policy.data.endDate || '') + '.'">
+                [value]="'Hola ' + (estado().cliente.nombre || 'Cliente') + ',\n\nTe compartimos tu póliza ' + (estado().poliza.datos.numeroPoliza || '') + ' de ' + (estado().poliza.datos.aseguradora || 'tu aseguradora') + '.\n\nVigencia: ' + (estado().poliza.datos.fechaInicio || '') + ' al ' + (estado().poliza.datos.fechaFin || '') + '.'">
             </textarea>
         </div>
     </div>
 
     <!-- Body — MiPoliza App form -->
-    <div class="modal-body-figma py-4" *ngIf="!dialogSuccess && activeDialog.type === 'App'">
+    <div class="modal-body-figma py-4" *ngIf="!exitoDialogo && dialogoActivo.tipo === 'App'">
         <div class="input-group-figma mb-3">
             <label id="lbDiagNombreApp" name="lbDiagNombreApp" for="txDiagNombreApp">Cliente:</label>
-            <input id="txDiagNombreApp" name="txDiagNombreApp" type="text" [value]="state().client.name || ''" readonly>
+            <input id="txDiagNombreApp" name="txDiagNombreApp" type="text" [value]="estado().cliente.nombre || ''" readonly>
         </div>
         <div class="input-group-figma mb-3">
             <label id="lbDiagTelApp" name="lbDiagTelApp" for="txDiagTelApp">Teléfono / WhatsApp:</label>
-            <input id="txDiagTelApp" name="txDiagTelApp" type="text" [value]="state().client.phone || ''" readonly>
+            <input id="txDiagTelApp" name="txDiagTelApp" type="text" [value]="estado().cliente.telefono || ''" readonly>
         </div>
         <div class="p-3 rounded-3 text-center" style="background: #f0fdf4; border: 1px solid #bbf7d0;">
-            <mat-icon style="color: #16a34a; font-size: 32px; width:32px; height:32px;">qr_code_2</mat-icon>
+            <mat-icon style="color: #16a34a; font-size: 32px; width: 32px; height: 32px;">qr_code_2</mat-icon>
             <p id="spQrInfo" name="spQrInfo" class="mt-2 mb-0 fs-13x" style="color:#15803d; font-weight:600;">Se generará un QR de acceso a la app para el cliente</p>
         </div>
     </div>
 
     <!-- Body — Renovacion form -->
-    <div class="modal-body-figma py-4" *ngIf="!dialogSuccess && activeDialog.type === 'Renovacion'">
+    <div class="modal-body-figma py-4" *ngIf="!exitoDialogo && dialogoActivo.tipo === 'Renovacion'">
         <div class="input-group-figma mb-3">
             <label id="lbDiagVencimiento" name="lbDiagVencimiento" for="txDiagVencimiento">Fecha de vencimiento:</label>
-            <input id="txDiagVencimiento" name="txDiagVencimiento" type="text" [value]="state().policy.data.endDate || ''" readonly>
+            <input id="txDiagVencimiento" name="txDiagVencimiento" type="text" [value]="estado().poliza.datos.fechaFin || ''" readonly>
         </div>
         <div class="input-group-figma mb-3">
             <label id="lbDiagRecordatorio" name="lbDiagRecordatorio" for="seDiagRecordatorio">Enviar recordatorio:</label>
-            <select id="seDiagRecordatorio" name="seDiagRecordatorio" class="form-select" [(ngModel)]="renovacionFecha" style="border-radius:8px; border:1px solid #e5e7eb; padding: 0.6rem 1rem;">
+            <select id="seDiagRecordatorio" name="seDiagRecordatorio" class="form-select" [(ngModel)]="fechaRenovacion" style="border-radius:8px; border:1px solid #e5e7eb; padding: 0.6rem 1rem;">
                 <option value="30">30 días antes</option>
                 <option value="60">60 días antes</option>
                 <option value="90">90 días antes</option>
@@ -196,11 +196,11 @@
     </div>
 
     <!-- Footer — actions -->
-    <div class="modal-footer-figma mt-2" *ngIf="!dialogSuccess">
-        <button id="btnDialogCancelar" name="btnDialogCancelar" class="btn-figma-secondary w-100" (click)="closeDialog()" [disabled]="isSending">Cancelar</button>
-        <button id="btnDialogConfirmar" name="btnDialogConfirmar" class="btn-figma-primary w-100" (click)="confirmDialog()" [disabled]="isSending">
-            <span class="spinner-border spinner-border-sm me-2" *ngIf="isSending"></span>
-            <span id="spDialogConfirmarTxt" name="spDialogConfirmarTxt">{{ isSending ? 'Enviando...' : 'Confirmar' }}</span>
+    <div class="modal-footer-figma mt-2" *ngIf="!exitoDialogo">
+        <button id="btnDialogCancelar" name="btnDialogCancelar" class="btn-figma-secondary w-100" (click)="cerrarDialogo()" [disabled]="enviando">Cancelar</button>
+        <button id="btnDialogConfirmar" name="btnDialogConfirmar" class="btn-figma-primary w-100" (click)="confirmarDialogo()" [disabled]="enviando">
+            <span class="spinner-border spinner-border-sm me-2" *ngIf="enviando"></span>
+            <span id="spDialogConfirmarTxt" name="spDialogConfirmarTxt">{{ enviando ? 'Enviando...' : 'Confirmar' }}</span>
         </button>
     </div>
 </div>

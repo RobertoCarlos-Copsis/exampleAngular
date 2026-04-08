@@ -10,18 +10,18 @@
         <!-- Sidebar: Receipt List -->
         <div class="col-md-4">
             <div class="receipt-sidebar h-100">
-                <button *ngFor="let r of state().receipts; let i = index; trackBy: trackByReceiptId" 
+                <button *ngFor="let r of estado().recibos; let i = index; trackBy: rastrearPorIdRecibo" 
                         [attr.id]="'btnReciboItem' + i" [attr.name]="'btnReciboItem' + i"
                         class="receipt-item-card w-100" 
-                        [class.active]="activeIndex === i"
-                        (click)="selectReceipt(i)"
+                        [class.active]="indiceActivo === i"
+                        (click)="seleccionarRecibo(i)"
                         type="button">
                     <div class="receipt-info">
                         <span [attr.id]="'txPeriodo' + i" [attr.name]="'txPeriodo' + i" class="r-period">{{ r.periodo }}</span>
                         <span [attr.id]="'txPrima' + i" [attr.name]="'txPrima' + i" class="r-amount">{{ r.prima | currency:'MXN' }}</span>
                     </div>
-                    <div [attr.id]="'txEstado' + i" [attr.name]="'txEstado' + i" class="r-status" [class.paid]="r.status === 'Pagado'">
-                        {{ r.status }}
+                    <div [attr.id]="'txEstado' + i" [attr.name]="'txEstado' + i" class="r-status" [class.paid]="r.estado === 'Pagado'">
+                        {{ r.estado }}
                     </div>
                     
                     <button mat-icon-button [matMenuTriggerFor]="menu" (click)="$event.stopPropagation()" class="ms-2">
@@ -29,11 +29,11 @@
                     </button>
 
                     <mat-menu #menu="matMenu" xPosition="before">
-                        <button mat-menu-item (click)="selectReceipt(i)">
+                        <button mat-menu-item (click)="seleccionarRecibo(i)">
                             <mat-icon>visibility</mat-icon>
                             <span>Ver Detalles</span>
                         </button>
-                        <button mat-menu-item (click)="onActionClick('Email')">
+                        <button mat-menu-item (click)="alHacerClicAccion('Email')">
                             <mat-icon>send</mat-icon>
                             <span>Enviar por Email</span>
                         </button>
@@ -46,9 +46,9 @@
         <div class="col-md-8">
             <div class="actions-panel h-100 p-4">
                 <div class="panel-header d-flex align-items-center justify-content-between mb-4">
-                    <h3 id="lbAccionesRecibo" name="lbAccionesRecibo" class="panel-title fs-20x font-800 text-figma-gray-900">Acciones para Recibo {{ activeIndex + 1 }}</h3>
-                    <div id="badgeEstadoActual" name="badgeEstadoActual" class="r-status-badge" [class.paid]="reciboActual.status === 'Pagado'">
-                        {{ reciboActual.status }}
+                    <h3 id="lbAccionesRecibo" name="lbAccionesRecibo" class="panel-title fs-20x font-800 text-figma-gray-900">Acciones para Recibo {{ indiceActivo + 1 }}</h3>
+                    <div id="badgeEstadoActual" name="badgeEstadoActual" class="r-status-badge" [class.paid]="reciboActual.estado === 'Pagado'">
+                        {{ reciboActual.estado }}
                     </div>
                 </div>
 
@@ -73,28 +73,28 @@
 
                 <div class="row g-3 mb-4">
                     <div class="col-sm-6">
-                        <button id="btnEnviarEmail" name="btnEnviarEmail" class="action-card email w-100 h-100" (click)="onActionClick('Email')" type="button">
+                        <button id="btnEnviarEmail" name="btnEnviarEmail" class="action-card email w-100 h-100" (click)="alHacerClicAccion('Email')" type="button">
                             <div class="action-icon"><mat-icon>mail</mat-icon></div>
                             <h4 id="lbEnviarEmail" name="lbEnviarEmail">Enviar Email</h4>
                             <p id="spEnviarEmail" name="spEnviarEmail">Envío de liga de pago por correo</p>
                         </button>
                     </div>
                     <div class="col-sm-6">
-                        <button id="btnEnviarSMS" name="btnEnviarSMS" class="action-card sms w-100 h-100" (click)="onActionClick('SMS')" type="button">
+                        <button id="btnEnviarSMS" name="btnEnviarSMS" class="action-card sms w-100 h-100" (click)="alHacerClicAccion('SMS')" type="button">
                             <div class="action-icon"><mat-icon>smartphone</mat-icon></div>
                             <h4 id="lbEnviarSMS" name="lbEnviarSMS">Enviar SMS</h4>
                             <p id="spEnviarSMS" name="spEnviarSMS">Recordatorio rápido al celular</p>
                         </button>
                     </div>
                     <div class="col-sm-6">
-                        <button id="btnWhatsApp" name="btnWhatsApp" class="action-card whatsapp w-100 h-100" (click)="onActionClick('WhatsApp')" type="button">
+                        <button id="btnWhatsApp" name="btnWhatsApp" class="action-card whatsapp w-100 h-100" (click)="alHacerClicAccion('WhatsApp')" type="button">
                             <div class="action-icon"><mat-icon>chat</mat-icon></div>
                             <h4 id="lbWhatsApp" name="lbWhatsApp">WhatsApp</h4>
                             <p id="spWhatsApp" name="spWhatsApp">Comunicación directa y oficial</p>
                         </button>
                     </div>
                     <div class="col-sm-6">
-                        <button id="btnBitacora" name="btnBitacora" class="action-card log w-100 h-100" (click)="onActionClick('Bitácora')" type="button">
+                        <button id="btnBitacora" name="btnBitacora" class="action-card log w-100 h-100" (click)="alHacerClicAccion('Bitácora')" type="button">
                             <div class="action-icon"><mat-icon>history_edu</mat-icon></div>
                             <h4 id="lbBitacora" name="lbBitacora">Bitácora</h4>
                             <p id="spBitacora" name="spBitacora">Ver historial de este recibo</p>
@@ -105,10 +105,10 @@
                 <div class="status-toggle-box p-4 rounded-12 bg-light-figma">
                     <p id="lbPreguntaLiquidado" name="lbPreguntaLiquidado" class="fs-14x text-figma-gray-600 mb-3">¿Este recibo ya fue liquidado?</p>
                     <button id="btnToggleLiquidado" name="btnToggleLiquidado" class="btn w-100 py-2 font-700" 
-                            [class.btn-success]="reciboActual.status === 'Pagado'"
-                            [class.btn-primary]="reciboActual.status !== 'Pagado'"
-                            (click)="togglePaid(activeIndex)">
-                        {{ reciboActual.status === 'Pagado' ? 'Pagado ✓' : 'Marcar como Pagado' }}
+                            [class.btn-success]="reciboActual.estado === 'Pagado'"
+                            [class.btn-primary]="reciboActual.estado !== 'Pagado'"
+                            (click)="alternarPagado(indiceActivo)">
+                        {{ reciboActual.estado === 'Pagado' ? 'Pagado ✓' : 'Marcar como Pagado' }}
                     </button>
                 </div>
             </div>
@@ -116,70 +116,70 @@
     </div>
 
     <!-- Modals / Overlays -->
-    <button class="modal-backdrop-figma" *ngIf="activeDialog || showBitacora" (click)="closeDialog(); closeBitacora()" (keydown.escape)="closeDialog(); closeBitacora()" type="button"></button>
+    <button class="modal-backdrop-figma" *ngIf="dialogoActivo || mostrarBitacora" (click)="cerrarDialogo(); cerrarBitacora()" (keydown.escape)="cerrarDialogo(); cerrarBitacora()" type="button"></button>
 
     <!-- Action Modal (Email, SMS, WhatsApp) -->
-    <div class="action-modal-figma" *ngIf="activeDialog">
+    <div class="action-modal-figma" *ngIf="dialogoActivo">
         <div class="modal-header-figma">
             <div class="d-flex align-items-center gap-3">
-                <div class="icon-box-figma" [ngClass]="activeDialog.type.toLowerCase()">
-                    <mat-icon>{{ activeDialog.icon }}</mat-icon>
+                <div class="icon-box-figma" [ngClass]="dialogoActivo.tipo.toLowerCase()">
+                    <mat-icon>{{ dialogoActivo.icono }}</mat-icon>
                 </div>
                 <div>
-                    <h3 id="lbDialogTitle" name="lbDialogTitle" class="m-0 fs-18x font-800">{{ activeDialog.title }}</h3>
-                    <p id="spDialogSubtitle" name="spDialogSubtitle" class="m-0 fs-12x text-figma-gray-400">{{ activeDialog.subtitle }}</p>
+                    <h3 id="lbDialogTitle" name="lbDialogTitle" class="m-0 fs-18x font-800">{{ dialogoActivo.titulo }}</h3>
+                    <p id="spDialogSubtitle" name="spDialogSubtitle" class="m-0 fs-12x text-figma-gray-400">{{ dialogoActivo.subtitulo }}</p>
                 </div>
             </div>
-            <button id="btnDialogClose" name="btnDialogClose" class="btn-close-figma" (click)="closeDialog()"><mat-icon>close</mat-icon></button>
+            <button id="btnDialogClose" name="btnDialogClose" class="btn-close-figma" (click)="cerrarDialogo()"><mat-icon>close</mat-icon></button>
         </div>
 
-        <div class="modal-body-figma py-4" *ngIf="!actionSuccess">
+        <div class="modal-body-figma py-4" *ngIf="!exitoAccion">
             <!-- Email Fields -->
-            <div *ngIf="activeDialog.type === 'Email'" class="mb-3">
+            <div *ngIf="dialogoActivo.tipo === 'Email'" class="mb-3">
                 <div class="input-group-figma mb-2">
                     <label id="lbPara" name="lbPara" for="txParaEmail">Para:</label>
-                    <input id="txParaEmail" name="txParaEmail" type="text" [value]="state().client.email" readonly>
+                    <input id="txParaEmail" name="txParaEmail" type="text" [value]="estado().cliente.email" readonly>
                 </div>
                 <div class="input-group-figma">
                     <label id="lbAsunto" name="lbAsunto" for="txAsuntoEmail">Asunto:</label>
-                    <input id="txAsuntoEmail" name="txAsuntoEmail" type="text" [value]="'Recordatorio de Pago - Póliza ' + state().policy.data.policyNumber" readonly>
+                    <input id="txAsuntoEmail" name="txAsuntoEmail" type="text" [value]="'Recordatorio de Pago - Póliza ' + estado().poliza.datos.numeroPoliza" readonly>
                 </div>
             </div>
 
             <!-- Phone Field for SMS/WhatsApp -->
-            <div *ngIf="activeDialog.type !== 'Email'" class="input-group-figma mb-3">
+            <div *ngIf="dialogoActivo.tipo !== 'Email'" class="input-group-figma mb-3">
                 <label id="lbNumero" name="lbNumero" for="txNumeroTel">Número:</label>
-                <input id="txNumeroTel" name="txNumeroTel" type="text" [value]="state().client.phone" readonly>
+                <input id="txNumeroTel" name="txNumeroTel" type="text" [value]="estado().cliente.telefono" readonly>
             </div>
 
             <!-- Message Body -->
             <div class="input-group-figma">
                 <label id="lbMensaje" name="lbMensaje" for="txaMensajeCuerpo">Mensaje:</label>
-                <textarea id="txaMensajeCuerpo" name="txaMensajeCuerpo" rows="6" [(ngModel)]="actionText"></textarea>
+                <textarea id="txaMensajeCuerpo" name="txaMensajeCuerpo" rows="6" [(ngModel)]="textoAccion"></textarea>
             </div>
         </div>
 
         <!-- Success State -->
-        <div class="modal-body-figma py-5 text-center" *ngIf="actionSuccess">
+        <div class="modal-body-figma py-5 text-center" *ngIf="exitoAccion">
             <div class="success-icon-anim mb-4">
                 <mat-icon>check_circle</mat-icon>
             </div>
-            <h4 id="lbSuccessTitle" name="lbSuccessTitle" class="font-800 mb-2">{{ actionSuccess.message }}</h4>
+            <h4 id="lbSuccessTitle" name="lbSuccessTitle" class="font-800 mb-2">{{ exitoAccion.mensaje }}</h4>
             <p id="spSuccessMsg" name="spSuccessMsg" class="text-figma-gray-400 fs-14x">La bitácora del recibo ha sido actualizada.</p>
         </div>
 
-        <div class="modal-footer-figma mt-2" *ngIf="!actionSuccess">
-            <button id="btnCancelarAccion" name="btnCancelarAccion" class="btn-figma-secondary w-100" (click)="closeDialog()" [disabled]="isSending">Cancelar</button>
-            <button id="btnConfirmarEnviar" name="btnConfirmarEnviar" class="btn-figma-primary w-100" (click)="confirmAction()" [disabled]="isSending || !isFormValid">
-                <span id="spConfirmarEnviar" name="spConfirmarEnviar" *ngIf="!isSending">Confirmar y Enviar</span>
-                <span *ngIf="isSending" class="spinner-border spinner-border-sm me-2"></span>
-                <span id="spEnviando" name="spEnviando" *ngIf="isSending">Enviando...</span>
+        <div class="modal-footer-figma mt-2" *ngIf="!exitoAccion">
+            <button id="btnCancelarAccion" name="btnCancelarAccion" class="btn-figma-secondary w-100" (click)="cerrarDialogo()" [disabled]="enviando">Cancelar</button>
+            <button id="btnConfirmarEnviar" name="btnConfirmarEnviar" class="btn-figma-primary w-100" (click)="confirmarAccion()" [disabled]="enviando || !esFormularioValido">
+                <span id="spConfirmarEnviar" name="spConfirmarEnviar" *ngIf="!enviando">Confirmar y Enviar</span>
+                <span *ngIf="enviando" class="spinner-border spinner-border-sm me-2"></span>
+                <span id="spEnviando" name="spEnviando" *ngIf="enviando">Enviando...</span>
             </button>
         </div>
     </div>
 
     <!-- Bitácora Modal -->
-    <div class="action-modal-figma bitacora-modal" *ngIf="showBitacora">
+    <div class="action-modal-figma bitacora-modal" *ngIf="mostrarBitacora">
         <div class="modal-header-figma">
             <div class="d-flex align-items-center gap-3">
                 <div class="icon-box-figma log">
@@ -187,17 +187,17 @@
                 </div>
                 <div>
                     <h3 id="lbBitacoraTitle" name="lbBitacoraTitle" class="m-0 fs-18x font-800">Bitácora de Seguimiento</h3>
-                    <p id="spBitacoraSubtitle" name="spBitacoraSubtitle" class="m-0 fs-12x text-figma-gray-400">Recibo {{ activeIndex + 1 }} - Historial completo</p>
+                    <p id="spBitacoraSubtitle" name="spBitacoraSubtitle" class="m-0 fs-12x text-figma-gray-400">Recibo {{ indiceActivo + 1 }} - Historial completo</p>
                 </div>
             </div>
-            <button id="btnBitacoraClose" name="btnBitacoraClose" class="btn-close-figma" (click)="closeBitacora()"><mat-icon>close</mat-icon></button>
+            <button id="btnBitacoraClose" name="btnBitacoraClose" class="btn-close-figma" (click)="cerrarBitacora()"><mat-icon>close</mat-icon></button>
         </div>
 
         <div class="modal-body-figma py-4">
             <div class="timeline-figma">
-                <div class="timeline-item" *ngFor="let item of bitacoraItems; let j = index; trackBy: trackByIndex">
+                <div class="timeline-item" *ngFor="let item of elementosBitacora; let j = index; trackBy: rastrearPorIndice">
                     <div class="timeline-icon" [ngClass]="item.color">
-                        <mat-icon>{{ item.icon }}</mat-icon>
+                        <mat-icon>{{ item.icono }}</mat-icon>
                     </div>
                     <div class="timeline-content">
                         <span [attr.id]="'txBitacoraFecha' + j" [attr.name]="'txBitacoraFecha' + j" class="t-date">{{ item.fecha }}</span>
@@ -208,13 +208,13 @@
         </div>
 
         <div class="modal-footer-figma mt-3">
-            <button id="btnCerrarBitacora" name="btnCerrarBitacora" class="btn-figma-secondary w-100" (click)="closeBitacora()">Cerrar Historia</button>
+            <button id="btnCerrarBitacora" name="btnCerrarBitacora" class="btn-figma-secondary w-100" (click)="cerrarBitacora()">Cerrar Historia</button>
         </div>
     </div>
 
     <!-- Final Actions -->
     <div class="d-flex justify-content-center mt-5">
-        <button id="btnContinuarPaso5" name="btnContinuarPaso5" class="btn-primary-blue fs-16x font-700 px-32px" (click)="onContinue()">
+        <button id="btnContinuarPaso5" name="btnContinuarPaso5" class="btn-primary-blue fs-16x font-700 px-32px" (click)="alContinuar()">
             <span id="spContinuarPaso5" name="spContinuarPaso5">Continuar al Siguiente Paso</span>
             <mat-icon>arrow_forward_ios</mat-icon>
         </button>

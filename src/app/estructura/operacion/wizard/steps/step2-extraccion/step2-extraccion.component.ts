@@ -1,6 +1,6 @@
 import { Component, Output, EventEmitter, inject, ChangeDetectionStrategy } from '@angular/core';
-import { WizardService } from '../../../../../core/services/wizard.service';
-import { GeminiExtractionService } from '../../../../../core/services/gemini-extraction.service';
+import { AsistenteService } from '../../../../../core/services/asistente.service';
+import { ServicioExtraccionGemini } from '../../../../../core/services/extraccion-gemini.service';
 import { EstadoRecibo } from '../../../../../core/models/wizard.model';
 
 @Component({
@@ -10,38 +10,38 @@ import { EstadoRecibo } from '../../../../../core/models/wizard.model';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Step2ExtraccionComponent {
-  @Output() nextStep = new EventEmitter<void>();
+  @Output() siguientePaso = new EventEmitter<void>();
 
-  private readonly wizardService = inject(WizardService);
-  public geminiService = inject(GeminiExtractionService);
+  private readonly servicioAsistente = inject(AsistenteService);
+  public servicioGemini = inject(ServicioExtraccionGemini);
 
-  get state() {
-    return this.wizardService.state;
+  get estado() {
+    return this.servicioAsistente.estado;
   }
 
-  /** True when page was reloaded and state was restored from localStorage */
-  get isRestoredSession(): boolean {
-    const hasHistory = (this.wizardService.state().extractionHistory || []).length > 0;
-    const hasNoActiveFile = !this.geminiService.archivoSeleccionado();
-    return hasHistory && hasNoActiveFile;
+  /** Verdadero cuando la página fue recargada y el estado fue restaurado de localStorage */
+  get esSesionRestaurada(): boolean {
+    const tieneHistorial = (this.servicioAsistente.estado().historialExtraccion || []).length > 0;
+    const noTieneArchivoActivo = !this.servicioGemini.archivoSeleccionado();
+    return tieneHistorial && noTieneArchivoActivo;
   }
 
-  onConfirm() {
+  alConfirmar() {
     // Sincronizar recibos extraídos al estado global si aún no están
-    const datosExtraidos = this.geminiService.datosExtraidos();
+    const datosExtraidos = this.servicioGemini.datosExtraidos();
     if (datosExtraidos && datosExtraidos.recibos.length > 0) {
-      this.wizardService.updateState({
-        receipts: datosExtraidos.recibos.map(r => ({
+      this.servicioAsistente.actualizarEstado({
+        recibos: datosExtraidos.recibos.map(r => ({
           id: r.numero,
           periodo: `Recibo ${r.numero}`,
           prima: r.primaTotal,
-          status: EstadoRecibo.Pendiente,
+          estado: EstadoRecibo.Pendiente,
           vencimiento: r.fechaInicio
         }))
       });
     }
 
-    this.wizardService.nextStep();
-    this.nextStep.emit();
+    this.servicioAsistente.siguientePaso();
+    this.siguientePaso.emit();
   }
 }

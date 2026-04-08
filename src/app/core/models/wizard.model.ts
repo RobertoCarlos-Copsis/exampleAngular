@@ -10,36 +10,36 @@ export enum CanalNotificacion {
   WhatsApp = 'WhatsApp'
 }
 
-export interface Client {
-  name: string;
+export interface Cliente {
+  nombre: string;
   email: string;
-  phone: string;
-  address: string;
+  telefono: string;
+  direccion: string;
 }
 
-export interface PolicyData {
-  policyNumber: string;
-  concept: string;
+export interface DatosPoliza {
+  numeroPoliza: string;
+  concepto: string;
   aseguradora: string;
-  agentCode: string;
+  claveAgente: string;
   formaPago: string;
   moneda: string;
-  startDate: string;
-  endDate: string;
-  extractedData?: DatosPolizaExtraidos; // Raw extraction data from Gemini
+  fechaInicio: string;
+  fechaFin: string;
+  datosExtraidos?: DatosPolizaExtraidos; // Raw extraction data from Gemini
 }
 
-export interface Receipt {
+export interface Recibo {
   id: number;
   prima: number;
   periodo: string;
   vencimiento: string;
-  status: EstadoRecibo;
-  commission?: number;
+  estado: EstadoRecibo;
+  comision?: number;
 }
 
-export interface NotificationConfig {
-  active: boolean;
+export interface ConfiguracionNotificacion {
+  activa: boolean;
 }
 
 export interface ReciboExtraido {
@@ -84,26 +84,26 @@ export interface DatosPolizaExtraidos {
   recibos: ReciboExtraido[];
 }
 
-export interface WizardState {
-  currentStep: number;
-  policy: {
-    data: PolicyData;
+export interface EstadoAsistente {
+  pasoActual: number;
+  poliza: {
+    datos: DatosPoliza;
   };
-  client: Client;
-  receipts: Receipt[];
-  commissionPercentage: number;
-  notifications: {
-    cobranza: NotificationConfig;
-    renovacion: NotificationConfig;
-    siniestros: NotificationConfig;
-    comisiones: NotificationConfig;
-    generales: NotificationConfig;
-  [key: string]: NotificationConfig;
+  cliente: Cliente;
+  recibos: Recibo[];
+  porcentajeComision: number;
+  notificaciones: {
+    cobranza: ConfiguracionNotificacion;
+    renovacion: ConfiguracionNotificacion;
+    siniestros: ConfiguracionNotificacion;
+    comisiones: ConfiguracionNotificacion;
+    generales: ConfiguracionNotificacion;
+    [key: string]: ConfiguracionNotificacion;
   };
-  logs: string[];
-  statistics?: any;
-  extractionHistory: {
-    timestamp: string;
-    data: DatosPolizaExtraidos;
+  bitacora: string[];
+  estadisticas?: any;
+  historialExtraccion: {
+    marcaTiempo: string;
+    datos: DatosPolizaExtraidos;
   }[];
 }

@@ -16,10 +16,10 @@ const TIPO_SEGURO_MAP: Record<number, string> = {
   8: 'Diversos / Otros'
 };
 
-const PROGRESS_START = 10;
-const PROGRESS_DATA_APPENDED = 20;
-const PROGRESS_JSON_LOADED = 30;
-const PROGRESS_COMPLETE = 100;
+const PROGRESO_INICIO = 10;
+const PROGRESO_DATOS_ADJUNTOS = 20;
+const PROGRESO_JSON_CARGADO = 30;
+const PROGRESO_COMPLETO = 100;
 
 /** Mapa de IDs de forma de pago devueltos por la API → etiqueta legible */
 const FORMA_PAGO_MAP: Record<number, string> = {
@@ -84,7 +84,6 @@ export interface GeminiReciboResponse {
   primaTotal?: number | string;
 }
 
-// Configuration now comes from environments and interceptor
 const DATOS_VACIOS: DatosPolizaExtraidos = {
   cliente: { nombreCompleto: '', rfc: '', direccion: '', codigoPostal: '', telefono: '', email: '' },
   poliza: { numeroPoliza: '', tipoPoliza: '', aseguradora: '', claveAgente: '', formaPago: '', moneda: 'MXN' },
@@ -94,7 +93,7 @@ const DATOS_VACIOS: DatosPolizaExtraidos = {
 };
 
 @Injectable({ providedIn: 'root' })
-export class GeminiExtractionService {
+export class ServicioExtraccionGemini {
 
   constructor(private readonly http: HttpClient) { }
 
@@ -107,7 +106,7 @@ export class GeminiExtractionService {
   readonly error = signal<string>('');
 
   /** true cuando hay suficientes datos extraídos */
-  readonly isStepComplete = computed(() => {
+  readonly pasoCompleto = computed(() => {
     const d = this.datosPoliza();
     const tieneCliente = !!d.cliente.nombreCompleto.trim();
     const tienePoliza = !!d.poliza.numeroPoliza.trim();
@@ -117,20 +116,20 @@ export class GeminiExtractionService {
   });
 
   // ── Extracción usando API de Gemini ──────────────────────────────────────
-  async extractText(file: File): Promise<DatosPolizaExtraidos> {
+  async extraerTexto(file: File): Promise<DatosPolizaExtraidos> {
     this.extrayendo.set(true);
     this.progreso.set(0);
     this.error.set('');
     this.archivoSeleccionado.set(file);
 
     try {
-      this.progreso.set(10);
+      this.progreso.set(PROGRESO_INICIO);
 
       const formData = new FormData();
       formData.append('modelo', environment.gemini.modelo.toString());
       formData.append('files', file);
 
-      this.progreso.set(20);
+      this.progreso.set(PROGRESO_DATOS_ADJUNTOS);
 
       // Cargar archivo de formato JSON de referencia
       try {
@@ -140,13 +139,13 @@ export class GeminiExtractionService {
           const fileFormato = new File([blobFormato], 'formato-json.txt', { type: 'text/plain' });
           formData.append('files', fileFormato);
         } else {
-          console.warn('[GeminiExtraction] No se encontró FormatoJson.txt, código:', responseFormato.status);
+          console.warn('[ServicioExtraccionGemini] No se encontró FormatoJson.txt, código:', responseFormato.status);
         }
       } catch (err) {
-        console.warn('[GeminiExtraction] Error obteniendo FormatoJson.txt:', err);
+        console.warn('[ServicioExtraccionGemini] Error obteniendo FormatoJson.txt:', err);
       }
 
-      this.progreso.set(30);
+      this.progreso.set(PROGRESO_JSON_CARGADO);
 
       // Token handled by HTTP Interceptor
       const response = await firstValueFrom(
@@ -157,7 +156,7 @@ export class GeminiExtractionService {
         const datos = this.mapearRespuestaAPI(response.result);
         this.datosPoliza.set(datos);
         this.datosExtraidos.set(datos);
-        this.progreso.set(PROGRESS_COMPLETE);
+        this.progreso.set(PROGRESO_COMPLETO);
         return datos;
       } else {
         throw new Error(response?.message || 'Error en la respuesta de la API');
@@ -166,7 +165,7 @@ export class GeminiExtractionService {
     } catch (err) {
       const mensaje = err instanceof Error ? err.message : 'Error desconocido al procesar el PDF';
       this.error.set(mensaje);
-      console.error('[GeminiExtractionService] Error:', err);
+      console.error('[ServicioExtraccionGemini] Error:', err);
       this.progreso.set(0);
       throw err;
     } finally {
@@ -191,7 +190,7 @@ export class GeminiExtractionService {
       datos.poliza.numeroPoliza = apiData.poliza || '';
       // 'tipo' viene como ID numérico (1=Autos, 3=Salud, 5=Vida, 7=Diversos)
       const tipoId = typeof apiData.tipo === 'number' ? apiData.tipo : Number(apiData.tipo);
-      datos.poliza.tipoPoliza = TIPO_SEGURO_MAP[tipoId] ?? this.normalizeTipoPoliza(apiData.ramo || '');
+      datos.poliza.tipoPoliza = TIPO_SEGURO_MAP[tipoId] ?? this.normalizarTipoPoliza(apiData.ramo || '');
       datos.poliza.aseguradora = apiData.aseguradora || '';
       datos.poliza.claveAgente = apiData.cveAgente || '';
       // formaPago viene como ID numérico (1=Anual, 2=Semestral, 3=Trimestral, 4=Bimestral, 5=Mensual)
@@ -207,23 +206,23 @@ export class GeminiExtractionService {
       datos.vigencia.vigenciaHasta = apiData.vigenciaA || '';
 
       // ── Importes ──
-      datos.importe.primaNeta = this.parseNumber(apiData.primaneta || apiData.primaNeta);
-      datos.importe.derechoPoliza = this.parseNumber(apiData.derecho);
-      datos.importe.recargoPago = this.parseNumber(apiData.recargo);
-      datos.importe.iva = this.parseNumber(apiData.iva);
+      datos.importe.primaNeta = this.parsearNumero(apiData.primaneta || apiData.primaNeta);
+      datos.importe.derechoPoliza = this.parsearNumero(apiData.derecho);
+      datos.importe.recargoPago = this.parsearNumero(apiData.recargo);
+      datos.importe.iva = this.parsearNumero(apiData.iva);
 
-      const primaTotal = this.parseNumber(apiData.primaTotal);
+      const primaTotal = this.parsearNumero(apiData.primaTotal);
       datos.importe.primaTotal = primaTotal > 0
         ? primaTotal
         : datos.importe.primaNeta + datos.importe.derechoPoliza + datos.importe.recargoPago + datos.importe.iva;
 
-      datos.importe.porcentajeComision = this.parseNumber(apiData.comision);
+      datos.importe.porcentajeComision = this.parsearNumero(apiData.comision);
 
       if (Array.isArray(apiData.recibos) && apiData.recibos.length > 0) {
         datos.recibos = apiData.recibos.map((r: GeminiReciboResponse, idx: number) => {
-          const primaNeta = this.parseNumber(r.primaneta || r.primaNeta);
-          const iva = this.parseNumber(r.iva);
-          const primaTotal = this.parseNumber(r.primaTotal);
+          const primaNeta = this.parsearNumero(r.primaneta || r.primaNeta);
+          const iva = this.parsearNumero(r.iva);
+          const primaTotal = this.parsearNumero(r.primaTotal);
 
           return {
             numero: r.serie || idx + 1,
@@ -247,7 +246,7 @@ export class GeminiExtractionService {
 
 
     } catch (err) {
-      console.error('[GeminiExtraction] Error mapeando respuesta:', err);
+      console.error('[ServicioExtraccionGemini] Error mapeando respuesta:', err);
     }
 
     return datos;
@@ -257,7 +256,7 @@ export class GeminiExtractionService {
    * Fallback para identificar el ramo cuando no viene el campo 'tipo' numérico.
    * Usa palabras clave del campo 'ramo' en texto libre.
    */
-  private normalizeTipoPoliza(ramo: string): string {
+  private normalizarTipoPoliza(ramo: string): string {
     if (!ramo) return 'Diversos / Otros';
     const r = ramo.toLowerCase();
     if (r.includes('auto') || r.includes('vehiculo') || r.includes('camion')) return 'Autos';
@@ -300,7 +299,7 @@ export class GeminiExtractionService {
     });
   }
 
-  private parseNumber(value: number | string | null | undefined): number {
+  private parsearNumero(value: number | string | null | undefined): number {
     if (typeof value === 'number') return value;
     if (typeof value === 'string') {
       const cleaned = value.replaceAll(/[$, ]/g, '');
@@ -310,7 +309,7 @@ export class GeminiExtractionService {
     return 0;
   }
 
-  reset(): void {
+  reiniciar(): void {
     this.archivoSeleccionado.set(null);
     this.datosPoliza.set(structuredClone(DATOS_VACIOS));
     this.datosExtraidos.set(null);

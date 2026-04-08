@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { WizardState, Receipt } from '../models/wizard.model';
+import { EstadoAsistente, Recibo } from '../models/wizard.model';
 
 export const ESTADISTICAS_CONSTANTES = {
   TASA_NETA: 0.8,
@@ -8,7 +8,7 @@ export const ESTADISTICAS_CONSTANTES = {
   PROYECCION_CRECIMIENTO: 1.5
 };
 
-export interface KpiCard {
+export interface TarjetaKpi {
   titulo: string;
   valor: string | number;
   icono: string;
@@ -17,7 +17,7 @@ export interface KpiCard {
   porcentajeCambio?: number;
 }
 
-export interface ChartData {
+export interface DatosGrafica {
   series: number[] | { name: string; data: number[] }[];
   labels?: string[];
   categories?: string[];
@@ -26,35 +26,35 @@ export interface ChartData {
 @Injectable({ providedIn: 'root' })
 export class EstadisticasService {
 
-  // Cálculos financieros basados en el estado del Wizard
-  calcularTotalPrima(receipts: Receipt[]): number {
-    return receipts.reduce((acc: number, r: Receipt) => acc + (r.prima || 0), 0);
+  // Cálculos financieros basados en el estado del Asistente
+  calcularTotalPrima(recibos: Recibo[]): number {
+    return recibos.reduce((acumulado: number, r: Recibo) => acumulado + (r.prima || 0), 0);
   }
 
-  calcularTotalComision(totalPrima: number, commissionPercentage: number): number {
-    return (totalPrima * (commissionPercentage || 0)) / 100;
+  calcularTotalComision(totalPrima: number, porcentajeComision: number): number {
+    return (totalPrima * (porcentajeComision || 0)) / 100;
   }
 
-  calcularNumRecibos(receipts: Receipt[]): number {
-    return receipts.length;
+  calcularNumRecibos(recibos: Recibo[]): number {
+    return recibos.length;
   }
 
-  calcularNumAlertas(notifications: WizardState['notifications']): number {
-    if (!notifications) return 0;
-    return Object.values(notifications).filter((n: any) => typeof n === 'object' && n?.active).length;
+  calcularNumAlertas(notificaciones: EstadoAsistente['notificaciones']): number {
+    if (!notificaciones) return 0;
+    return Object.values(notificaciones).filter((n: any) => typeof n === 'object' && n?.activa).length;
   }
 
-  // Nuevo: Cálculo de cobranza real basado en recibos pagados
-  calcularPorcentajeCobranza(receipts: Receipt[]): number {
-    if (!receipts || receipts.length === 0) return 0;
-    const pagados = receipts.filter(r => r.status === 'Pagado').length;
-    return Math.round((pagados / receipts.length) * 100);
+  // Cálculo de cobranza real basado en recibos pagados
+  calcularPorcentajeCobranza(recibos: Recibo[]): number {
+    if (!recibos || recibos.length === 0) return 0;
+    const pagados = recibos.filter(r => r.estado === 'Pagado').length;
+    return Math.round((pagados / recibos.length) * 100);
   }
 
-  generarKPIs(state: WizardState): KpiCard[] {
-    const totalPrima = this.calcularTotalPrima(state.receipts);
-    const totalComision = this.calcularTotalComision(totalPrima, state.commissionPercentage);
-    const numAlertas = this.calcularNumAlertas(state.notifications);
+  generarKPIs(estado: EstadoAsistente): TarjetaKpi[] {
+    const totalPrima = this.calcularTotalPrima(estado.recibos);
+    const totalComision = this.calcularTotalComision(totalPrima, estado.porcentajeComision);
+    const numAlertas = this.calcularNumAlertas(estado.notificaciones);
 
     return [
       {
@@ -74,7 +74,7 @@ export class EstadisticasService {
       },
       {
         titulo: 'Recibos Procesados',
-        valor: state.receipts.length,
+        valor: estado.recibos.length,
         icono: 'receipt_long',
         color: '#4CAF50',
         tendencia: 'up'
@@ -89,7 +89,7 @@ export class EstadisticasService {
     ];
   }
 
-  generarDatosPastel(totalPrima: number): ChartData {
+  generarDatosPastel(totalPrima: number): DatosGrafica {
     const total = Math.round(totalPrima || 1000);
     const neta = Math.round(total * ESTADISTICAS_CONSTANTES.TASA_NETA);
     const impuestos = Math.round(total * ESTADISTICAS_CONSTANTES.TASA_IVA);
@@ -101,7 +101,7 @@ export class EstadisticasService {
     };
   }
 
-  generarDatosBarras(totalComision: number): ChartData {
+  generarDatosBarras(totalComision: number): DatosGrafica {
     const actual = Math.round(totalComision || 500);
     const proyectado = Math.round(actual * ESTADISTICAS_CONSTANTES.PROYECCION_CRECIMIENTO);
 

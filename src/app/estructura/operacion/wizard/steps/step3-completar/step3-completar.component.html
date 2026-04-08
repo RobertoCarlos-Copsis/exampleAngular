@@ -69,7 +69,7 @@
                         <h3 id="lbComisionesCalculadas" name="lbComisionesCalculadas" class="fs-18x font-800 m-0">Resumen de Comisiones</h3>
                     </div>
                     <div class="summary-details p-3">
-                        <div *ngFor="let r of estado().receipts; let i = index; trackBy: rastrearPorIdRecibo" class="summary-row-premium">
+                        <div *ngFor="let r of estado().recibos; let i = index; trackBy: rastrearPorIdRecibo" class="summary-row-premium">
                             <span [attr.id]="'lbRecibo' + i" [attr.name]="'lbRecibo' + i">Recibo {{ i + 1 }}</span>
                             <div class="d-flex align-items-center gap-2">
                                 <span class="text-muted fs-12x">{{ r.prima | currency:'MXN' }} × {{ comisionPorcentaje }}%</span>

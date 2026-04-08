@@ -10,7 +10,7 @@
     </div>
 
     <!-- Session Restored Banner -->
-    <div *ngIf="isRestoredSession" class="alert d-flex align-items-center gap-3 mb-3 animation-fade-in" 
+    <div *ngIf="esSesionRestaurada" class="alert d-flex align-items-center gap-3 mb-3 animation-fade-in" 
          style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 12px; padding: 0.85rem 1.25rem;">
         <mat-icon style="color: #2563eb; flex-shrink: 0;">restore</mat-icon>
         <span style="color: #1d4ed8; font-size: 0.875rem; font-weight: 500;">Estado restaurado desde sesión anterior. Revisa los datos antes de continuar.</span>
@@ -22,20 +22,20 @@
         <div class="col-md-6">
             <div class="info-card client">
                 <div class="card-header">
-                    <div class="icon-box blue" *ngIf="!geminiService.extrayendo()"><mat-icon>person</mat-icon></div>
-                    <div class="skeleton-box skeleton-icon" *ngIf="geminiService.extrayendo()"></div>
-                    <h3 id="lbDatosCliente" name="lbDatosCliente" *ngIf="!geminiService.extrayendo()">Datos del Cliente</h3>
-                    <div class="skeleton-box skeleton-title ms-3" *ngIf="geminiService.extrayendo()"></div>
+                    <div class="icon-box blue" *ngIf="!servicioGemini.extrayendo()"><mat-icon>person</mat-icon></div>
+                    <div class="skeleton-box skeleton-icon" *ngIf="servicioGemini.extrayendo()"></div>
+                    <h3 id="lbDatosCliente" name="lbDatosCliente" *ngIf="!servicioGemini.extrayendo()">Datos del Cliente</h3>
+                    <div class="skeleton-box skeleton-title ms-3" *ngIf="servicioGemini.extrayendo()"></div>
                 </div>
                 <div class="data-item">
                     <span id="lbNombreCompleto" name="lbNombreCompleto">Nombre Completo</span>
-                    <p id="txNombreCompleto" name="txNombreCompleto" *ngIf="!geminiService.extrayendo()">{{ state().client.name || 'N/A' }}</p>
-                    <div class="skeleton-box skeleton-text mt-1" *ngIf="geminiService.extrayendo()"></div>
+                    <p id="txNombreCompleto" name="txNombreCompleto" *ngIf="!servicioGemini.extrayendo()">{{ estado().cliente.nombre || 'N/A' }}</p>
+                    <div class="skeleton-box skeleton-text mt-1" *ngIf="servicioGemini.extrayendo()"></div>
                 </div>
                 <div class="data-item">
                     <span id="lbDireccion" name="lbDireccion">Dirección</span>
-                    <p id="txDireccion" name="txDireccion" *ngIf="!geminiService.extrayendo()">{{ state().client.address || '—' }}</p>
-                    <div class="skeleton-box skeleton-text mt-1" *ngIf="geminiService.extrayendo()"></div>
+                    <p id="txDireccion" name="txDireccion" *ngIf="!servicioGemini.extrayendo()">{{ estado().cliente.direccion || '—' }}</p>
+                    <div class="skeleton-box skeleton-text mt-1" *ngIf="servicioGemini.extrayendo()"></div>
                 </div>
             </div>
         </div>
@@ -44,20 +44,20 @@
         <div class="col-md-6">
             <div class="info-card policy">
                 <div class="card-header">
-                    <div class="icon-box green" *ngIf="!geminiService.extrayendo()"><mat-icon>assignment</mat-icon></div>
-                    <div class="skeleton-box skeleton-icon" *ngIf="geminiService.extrayendo()"></div>
-                    <h3 id="lbDatosPoliza" name="lbDatosPoliza" *ngIf="!geminiService.extrayendo()">Datos de la Póliza</h3>
-                    <div class="skeleton-box skeleton-title ms-3" *ngIf="geminiService.extrayendo()"></div>
+                    <div class="icon-box green" *ngIf="!servicioGemini.extrayendo()"><mat-icon>assignment</mat-icon></div>
+                    <div class="skeleton-box skeleton-icon" *ngIf="servicioGemini.extrayendo()"></div>
+                    <h3 id="lbDatosPoliza" name="lbDatosPoliza" *ngIf="!servicioGemini.extrayendo()">Datos de la Póliza</h3>
+                    <div class="skeleton-box skeleton-title ms-3" *ngIf="servicioGemini.extrayendo()"></div>
                 </div>
                 <div class="data-item">
                     <span id="lbNumPoliza" name="lbNumPoliza">Número de Póliza</span>
-                    <p id="txNumPoliza" name="txNumPoliza" *ngIf="!geminiService.extrayendo()">{{ state().policy.data.policyNumber || '—' }}</p>
-                    <div class="skeleton-box skeleton-text mt-1" *ngIf="geminiService.extrayendo()"></div>
+                    <p id="txNumPoliza" name="txNumPoliza" *ngIf="!servicioGemini.extrayendo()">{{ estado().poliza.datos.numeroPoliza || '—' }}</p>
+                    <div class="skeleton-box skeleton-text mt-1" *ngIf="servicioGemini.extrayendo()"></div>
                 </div>
                 <div class="data-item">
                     <span id="lbTipoSeguro" name="lbTipoSeguro">Tipo de Seguro</span>
-                    <p id="txTipoSeguro" name="txTipoSeguro" *ngIf="!geminiService.extrayendo()">{{ state().policy.data.concept || 'N/A' }}</p>
-                    <div class="skeleton-box skeleton-text mt-1" *ngIf="geminiService.extrayendo()"></div>
+                    <p id="txTipoSeguro" name="txTipoSeguro" *ngIf="!servicioGemini.extrayendo()">{{ estado().poliza.datos.concepto || 'N/A' }}</p>
+                    <div class="skeleton-box skeleton-text mt-1" *ngIf="servicioGemini.extrayendo()"></div>
                 </div>
             </div>
         </div>
@@ -66,20 +66,20 @@
         <div class="col-md-6">
             <div class="info-card validity">
                 <div class="card-header">
-                    <div class="icon-box purple" *ngIf="!geminiService.extrayendo()"><mat-icon>event_available</mat-icon></div>
-                    <div class="skeleton-box skeleton-icon" *ngIf="geminiService.extrayendo()"></div>
-                    <h3 id="lbVigencia" name="lbVigencia" *ngIf="!geminiService.extrayendo()">Vigencia</h3>
-                    <div class="skeleton-box skeleton-title ms-3" *ngIf="geminiService.extrayendo()"></div>
+                    <div class="icon-box purple" *ngIf="!servicioGemini.extrayendo()"><mat-icon>event_available</mat-icon></div>
+                    <div class="skeleton-box skeleton-icon" *ngIf="servicioGemini.extrayendo()"></div>
+                    <h3 id="lbVigencia" name="lbVigencia" *ngIf="!servicioGemini.extrayendo()">Vigencia</h3>
+                    <div class="skeleton-box skeleton-title ms-3" *ngIf="servicioGemini.extrayendo()"></div>
                 </div>
                 <div class="data-item">
                     <span id="lbInicio" name="lbInicio">Fecha de Inicio</span>
-                    <p id="txInicio" name="txInicio" *ngIf="!geminiService.extrayendo()">{{ state().policy.data.startDate || '—' }}</p>
-                    <div class="skeleton-box skeleton-text mt-1" *ngIf="geminiService.extrayendo()"></div>
+                    <p id="txInicio" name="txInicio" *ngIf="!servicioGemini.extrayendo()">{{ estado().poliza.datos.fechaInicio || '—' }}</p>
+                    <div class="skeleton-box skeleton-text mt-1" *ngIf="servicioGemini.extrayendo()"></div>
                 </div>
                 <div class="data-item">
                     <span id="lbFin" name="lbFin">Fecha de Fin</span>
-                    <p id="txFin" name="txFin" *ngIf="!geminiService.extrayendo()">{{ state().policy.data.endDate || '—' }}</p>
-                    <div class="skeleton-box skeleton-text mt-1" *ngIf="geminiService.extrayendo()"></div>
+                    <p id="txFin" name="txFin" *ngIf="!servicioGemini.extrayendo()">{{ estado().poliza.datos.fechaFin || '—' }}</p>
+                    <div class="skeleton-box skeleton-text mt-1" *ngIf="servicioGemini.extrayendo()"></div>
                 </div>
             </div>
         </div>
@@ -88,14 +88,14 @@
         <div class="col-md-6">
             <div class="info-card receipts">
                 <div class="card-header">
-                    <div class="icon-box yellow" *ngIf="!geminiService.extrayendo()"><mat-icon>account_balance_wallet</mat-icon></div>
-                    <div class="skeleton-box skeleton-icon" *ngIf="geminiService.extrayendo()"></div>
-                    <h3 id="lbRecibos" name="lbRecibos" *ngIf="!geminiService.extrayendo()">Recibos ({{ state().receipts.length || 0 }} encontrados)</h3>
-                    <div class="skeleton-box skeleton-title ms-3" *ngIf="geminiService.extrayendo()"></div>
+                    <div class="icon-box yellow" *ngIf="!servicioGemini.extrayendo()"><mat-icon>account_balance_wallet</mat-icon></div>
+                    <div class="skeleton-box skeleton-icon" *ngIf="servicioGemini.extrayendo()"></div>
+                    <h3 id="lbRecibos" name="lbRecibos" *ngIf="!servicioGemini.extrayendo()">Recibos ({{ estado().recibos.length || 0 }} encontrados)</h3>
+                    <div class="skeleton-box skeleton-title ms-3" *ngIf="servicioGemini.extrayendo()"></div>
                 </div>
                 <div class="receipt-mini-list scroll-figma" style="max-height: 120px; overflow-y: auto; display: flex; flex-direction: column; gap: 0.75rem;">
-                    <ng-container *ngIf="!geminiService.extrayendo()">
-                        <div *ngFor="let r of state().receipts; let i = index" 
+                    <ng-container *ngIf="!servicioGemini.extrayendo()">
+                        <div *ngFor="let r of estado().recibos; let i = index" 
                              style="display: flex; justify-content: space-between; align-items: center; background: rgba(255, 255, 255, 0.6); padding: 0.8rem 1rem; border-radius: 8px;">
                             <div style="display: flex; flex-direction: column;">
                                 <span style="font-size: 0.875rem; color: #4b5563; font-weight: 500;">Pago {{ i + 1 }}</span>
@@ -104,9 +104,9 @@
                             <strong style="font-size: 1rem; color: #111827;">{{ r.prima | currency:'MXN' }}</strong>
                         </div>
                     </ng-container>
-                    <div *ngIf="geminiService.extrayendo()" class="skeleton-box skeleton-text"></div>
-                    <div *ngIf="geminiService.extrayendo()" class="skeleton-box skeleton-text"></div>
-                    <p *ngIf="!state().receipts.length && !geminiService.extrayendo()" style="color: #9ca3af; font-size: 0.875rem; text-align: center;">No se detectaron recibos.</p>
+                    <div *ngIf="servicioGemini.extrayendo()" class="skeleton-box skeleton-text"></div>
+                    <div *ngIf="servicioGemini.extrayendo()" class="skeleton-box skeleton-text"></div>
+                    <p *ngIf="!estado().recibos.length && !servicioGemini.extrayendo()" style="color: #9ca3af; font-size: 0.875rem; text-align: center;">No se detectaron recibos.</p>
                 </div>
             </div>
         </div>
@@ -114,7 +114,7 @@
 
     <!-- Actions -->
     <div class="d-flex justify-content-center mt-5">
-        <button id="btnConfirmar" name="btnConfirmar" class="btn-primary-blue fs-16x font-700 px-32px" (click)="onConfirm()">
+        <button id="btnConfirmar" name="btnConfirmar" class="btn-primary-blue fs-16x font-700 px-32px" (click)="alConfirmar()">
             <mat-icon>verified_user</mat-icon>
             <span id="spConfirmar" name="spConfirmar">Confirmar Datos y Continuar</span>
         </button>

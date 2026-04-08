@@ -1,11 +1,11 @@
 import { Component, Output, EventEmitter, inject, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
-import { WizardService } from '../../../../../core/services/wizard.service';
+import { AsistenteService } from '../../../../../core/services/asistente.service';
 
-export interface Step5Dialog {
-  type: 'TuPoliza' | 'App' | 'Renovacion';
-  title: string;
-  icon: string;
-  subtitle: string;
+export interface DialogoPaso5 {
+  tipo: 'TuPoliza' | 'App' | 'Renovacion';
+  titulo: string;
+  icono: string;
+  subtitulo: string;
 }
 
 @Component({
@@ -15,58 +15,58 @@ export interface Step5Dialog {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Step5PolizaComponent {
-  @Output() nextStep = new EventEmitter<void>();
+  @Output() siguientePaso = new EventEmitter<void>();
 
-  private readonly wizardService = inject(WizardService);
+  private readonly servicioAsistente = inject(AsistenteService);
   private readonly cdr = inject(ChangeDetectorRef);
 
-  state = this.wizardService.state;
-  selectedMethod: string | null = null;
+  estado = this.servicioAsistente.estado;
+  metodoSeleccionado: string | null = null;
 
-  activeDialog: Step5Dialog | null = null;
-  dialogSuccess = false;
-  isSending = false;
-  renovacionFecha = '';
+  dialogoActivo: DialogoPaso5 | null = null;
+  exitoDialogo = false;
+  enviando = false;
+  fechaRenovacion = '';
 
-  private readonly DIALOG_CONFIG: Record<string, Step5Dialog> = {
-    TuPoliza: { type: 'TuPoliza', title: 'Enviar por TuPoliza', icon: 'mail', subtitle: 'Envío de la póliza por correo con landing personalizado' },
-    App:      { type: 'App',      title: 'Compartir en App',   icon: 'phone_android', subtitle: 'El cliente accederá a su póliza desde la app móvil' },
-    Renovacion: { type: 'Renovacion', title: 'Programar Renovación', icon: 'sync', subtitle: 'Recibe un recordatorio automático antes del vencimiento' }
+  private readonly CONFIG_DIALOGO: Record<string, DialogoPaso5> = {
+    TuPoliza: { tipo: 'TuPoliza', titulo: 'Enviar por TuPoliza', icono: 'mail', subtitulo: 'Envío de la póliza por correo con landing personalizado' },
+    App:      { tipo: 'App',      titulo: 'Compartir en App',   icono: 'phone_android', subtitulo: 'El cliente accederá a su póliza desde la app móvil' },
+    Renovacion: { tipo: 'Renovacion', titulo: 'Programar Renovación', icono: 'sync', subtitulo: 'Recibe un recordatorio automático antes del vencimiento' }
   };
 
-  onMethodSelect(method: string) {
-    this.selectedMethod = method;
-    this.activeDialog = this.DIALOG_CONFIG[method] ?? null;
-    this.dialogSuccess = false;
-    this.isSending = false;
+  alSeleccionarMetodo(metodo: string) {
+    this.metodoSeleccionado = metodo;
+    this.dialogoActivo = this.CONFIG_DIALOGO[metodo] ?? null;
+    this.exitoDialogo = false;
+    this.enviando = false;
     this.cdr.markForCheck();
   }
 
-  closeDialog() {
-    this.activeDialog = null;
-    this.dialogSuccess = false;
+  cerrarDialogo() {
+    this.dialogoActivo = null;
+    this.exitoDialogo = false;
     this.cdr.markForCheck();
   }
 
-  confirmDialog() {
-    this.isSending = true;
+  confirmarDialogo() {
+    this.enviando = true;
     this.cdr.markForCheck();
 
-    // Simulate async send (replace with real API call if needed)
+    // Simular envío asíncrono
     setTimeout(() => {
-      this.isSending = false;
-      this.dialogSuccess = true;
+      this.enviando = false;
+      this.exitoDialogo = true;
       this.cdr.markForCheck();
 
-      // Auto-close dialog after 2s on success
+      // Cerrar diálogo automáticamente después de 2s al tener éxito
       setTimeout(() => {
-        this.closeDialog();
+        this.cerrarDialogo();
       }, 2000);
     }, 1200);
   }
 
-  onContinue() {
-    this.wizardService.nextStep();
-    this.nextStep.emit();
+  alContinuar() {
+    this.servicioAsistente.siguientePaso();
+    this.siguientePaso.emit();
   }
 }

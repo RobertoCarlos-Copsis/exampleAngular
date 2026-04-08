@@ -1,6 +1,6 @@
 import { Component, Output, EventEmitter, inject, ChangeDetectionStrategy } from '@angular/core';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
-import { WizardService } from '../../../../../core/services/wizard.service';
+import { AsistenteService } from '../../../../../core/services/asistente.service';
 
 @Component({
   selector: 'app-step6-notificaciones',
@@ -9,20 +9,20 @@ import { WizardService } from '../../../../../core/services/wizard.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Step6NotificacionesComponent {
-  @Output() nextStep = new EventEmitter<void>();
+  @Output() siguientePaso = new EventEmitter<void>();
 
-  private readonly wizardService = inject(WizardService);
-  state = this.wizardService.state;
+  private readonly servicioAsistente = inject(AsistenteService);
+  estado = this.servicioAsistente.estado;
 
-  toggleNotification(key: string, event: MatSlideToggleChange) {
-    const checked = event.checked;
-    const currentNotifications = { ...this.state().notifications };
-    currentNotifications[key] = { ...currentNotifications[key], active: checked };
-    this.wizardService.updateState({ notifications: currentNotifications });
+  alternarNotificacion(clave: string, evento: MatSlideToggleChange) {
+    const activado = evento.checked;
+    const notificacionesActuales = { ...this.estado().notificaciones };
+    notificacionesActuales[clave] = { ...notificacionesActuales[clave], activa: activado };
+    this.servicioAsistente.actualizarEstado({ notificaciones: notificacionesActuales });
   }
 
-  onContinue() {
-    this.wizardService.nextStep();
-    this.nextStep.emit();
+  alContinuar() {
+    this.servicioAsistente.siguientePaso();
+    this.siguientePaso.emit();
   }
 }
